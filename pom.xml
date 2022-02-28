@@ -261,7 +261,6 @@ export JBOSS_HOME=/Users/shibaevv/dev/jboss/jboss-as-7.1.1.Final
         <hibernate.infinispan.version>${hibernate.version}</hibernate.infinispan.version>
 
         <jboss.version>5.1.0.GA</jboss.version>
-        <jboss-security.scope>provided</jboss-security.scope>
         <json.version>20090211</json.version>
         <junit.version>4.8.1</junit.version>
         <!--junit.version>4.8.1</junit.version-->
@@ -336,6 +335,12 @@ export JBOSS_HOME=/Users/shibaevv/dev/jboss/jboss-as-7.1.1.Final
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
 
         <dependency>
@@ -445,15 +450,6 @@ export JBOSS_HOME=/Users/shibaevv/dev/jboss/jboss-as-7.1.1.Final
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-envers</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.security</groupId>
-            <artifactId>jbosssx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.logging</groupId>
-            <artifactId>jboss-logging-spi</artifactId>
         </dependency>
     </dependencies>
 
@@ -1308,19 +1304,6 @@ export JBOSS_HOME=/Users/shibaevv/dev/jboss/jboss-as-7.1.1.Final
                 <scope>system</scope>
                 <systemPath>${crjava.lib.path}/com.azalea.ufl.barcode.1.0.jar</systemPath>
             </dependency>
-
-            <dependency>
-                <groupId>org.jboss.security</groupId>
-                <artifactId>jbosssx</artifactId>
-                <version>2.0.3.SP1</version>
-                <scope>${jboss-security.scope}</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.logging</groupId>
-                <artifactId>jboss-logging-spi</artifactId>
-                <version>2.1.0.GA</version>
-                <scope>${jboss-security.scope}</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1365,7 +1348,6 @@ mvn clean install -Dtest -Plocal-tomcat
                 <application.env>local</application.env>
                 <!-- artifacts not provided by tomcat -->
                 <profile.scope>compile</profile.scope>
-                <jboss-security.scope>compile</jboss-security.scope>
                 <tx.managerLookupClass>org.hibernate.transaction.BTMTransactionManagerLookup</tx.managerLookupClass>
                 <hibernate.transaction.jta.platform>org.hibernate.service.jta.platform.internal.BitronixJtaPlatform</hibernate.transaction.jta.platform>
                 <hibernate.cache.region.factory_class>org.hibernate.cache.infinispan.InfinispanRegionFactory</hibernate.cache.region.factory_class>
