@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>au.gov.qld.fire</groupId>
+        <artifactId>qfrs</artifactId>
+        <version>${application.version}</version>
+    </parent>
+    <groupId>au.gov.qld.fire.uaa</groupId>
+    <artifactId>uaa-web</artifactId>
+    <version>${uaa.version}</version>
+    <packaging>war</packaging>
+    <name>QFRS UAA Web</name>
+    <url>http://myjms.com.au/qfrs/uaa</url>
+
+    <build>
+        <finalName>uaa</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <!-- copy "WEB-INF/jboss-deployment-structure.xml" resources from commons-web -->
+                                <delete dir="${project.build.directory}/${project.build.finalName}/WEB-INF/jboss-deployment-structure.xml"/>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/WEB-INF">
+                                    <fileset dir="${project.parent.basedir}/commons-web/src/main/webapp/WEB-INF" includes="jboss-deployment-structure.xml"/>
+                                </copy>
+                                <!-- copy "ckeditor" resources from commons-web -->
+                                <delete dir="${project.build.directory}/${project.build.finalName}/ckeditor"/>
+                                <copy todir="${project.build.directory}/${project.build.finalName}">
+                                    <fileset dir="${project.parent.basedir}/commons-web/src/main/webapp" includes="ckeditor/**"/>
+                                </copy>
+                                <!-- copy "jscalendar-1.0" resources from commons-web -->
+                                <delete dir="${project.build.directory}/${project.build.finalName}/jscalendar-1.0"/>
+                                <copy todir="${project.build.directory}/${project.build.finalName}">
+                                    <fileset dir="${project.parent.basedir}/commons-web/src/main/webapp" includes="jscalendar-1.0/**"/>
+                                </copy>
+                                <!-- copy "yui" resources from commons-web -->
+                                <delete dir="${project.build.directory}/${project.build.finalName}/yui"/>
+                                <copy todir="${project.build.directory}/${project.build.finalName}">
+                                    <fileset dir="${project.parent.basedir}/commons-web/src/main/webapp" includes="yui/**"/>
+                                </copy>
+                                <!-- copy "styles/images" resources from commons-web -->
+                                <copy todir="${project.build.directory}/${project.build.finalName}">
+                                    <fileset dir="${project.parent.basedir}/commons-web/src/main/webapp" includes="styles/**" excludes="styles/*.css"/>
+                                </copy>
+                                <!-- copy "scripts" resources from commons-web -->
+                                <copy todir="${project.build.directory}/${project.build.finalName}/scripts">
+                                    <fileset dir="${project.parent.basedir}/commons-web/src/main/webapp/scripts" includes="*.js"/>
+                                </copy>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Enabling and configuring web resources filtering -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version> <!-- make maven 2 works with java 7 -->
+                <configuration>
+                    <archiveClasses>true</archiveClasses>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>WEB-INF/jboss-web.xml</include>
+                                <include>WEB-INF/weblogic.xml</include>
+                                <include>WEB-INF/web.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>war</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${application.env}</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>au.gov.qld.fire.commons</groupId>
+            <artifactId>commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>au.gov.qld.fire.commons</groupId>
+            <artifactId>commons-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>au.gov.qld.fire.uaa</groupId>
+            <artifactId>uaa-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>sitemesh</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+    </dependencies>
+</project>

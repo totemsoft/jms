@@ -1,0 +1,1500 @@
+/*
+ * Binary File to Base64 Encoder / Translator
+ *     greywyvern.com/code/php/binary2base64
+ * Online Image Conversion
+ *     iaza.com
+ */
+
+/*
+html {
+    filter: expression(document.execCommand('BackgroundImageCache', false, true));
+}
+*/
+
+/* ======================================================================== */
+/* general css (partial)                                                    */
+/* ======================================================================== */
+
+/* toggle container */
+.jms-container {
+    border: 1px solid #808080;
+    /*margin: 2px;*/
+    /*overflow: auto;*/
+}
+.jms-container-hd {
+    height: 22px;
+}
+.jms-container .jms-container-hd {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -205px;
+    position:relative;
+}
+.jms-container .jms-container-hd h2 {
+    color: #000000;
+    font-size: 110%;
+    font-weight: bold;
+    margin: 0;
+    padding: 0.2em 1em;
+    text-align: left;
+}
+.jms-container .jms-container-hd span.collapse {
+    cursor: pointer;
+    display: block;
+    height: 15px;
+    overflow: hidden;
+    position: absolute;
+    right: 2px;
+    text-indent: 9999px;
+    top: 4px;
+    width: 15px;
+}
+.jms-container .jms-container-option {
+    color: #0062D5;
+    padding-bottom: 1px;
+    text-align: right;
+    text-decoration: none;
+}
+.jms-container .jms-container-bd {
+    font-size: 11px;
+    /*padding: 1px;*/
+    width: 100%;
+    *width: 100%;
+}
+.jms-container .collapse {
+	background:transparent url(../yui/assets/skins/sam/sprite.png) no-repeat scroll 0 -400px;
+}
+.jms-container .collapsed {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) no-repeat scroll 0 -350px;
+}
+
+#logo {
+    background-image: url(images/default.png);
+    background-position: 0px -20px;
+    background-repeat: no-repeat;
+    height: 35px;
+    width: 200px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+div.login {
+    color: DarkBlue;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 7px;
+    text-align: center;
+}
+div span.security {
+    background-image: url(images/default.png);
+    background-position: -220px -20px;
+    background-repeat: no-repeat;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+}
+
+a span {
+    background-image: url(images/default.png);
+    background-position: 100px 100px; /* empty */
+    background-repeat: no-repeat;
+    height: 17px;
+    width: 17px;
+    display: block;
+    margin: 0 3px;
+    cursor: pointer;
+}
+td span {
+    background-image: url(images/default.png);
+    background-position: 100px 100px; /* empty */
+    background-repeat: no-repeat;
+    height: 17px;
+    width: 17px;
+    /*display: block;*/
+    margin: 0 3px;
+    cursor: pointer;
+}
+
+a em span.welcome {
+    background-position: -480px 0;
+    height: 17px;
+    position: absolute;
+    top: 2px;
+    left: 1px;
+}
+.selected a em span.welcome {
+    background-position: -140px 0;
+}
+a em span {
+    height: 0px;
+}
+
+/* relative to images/default.png -N x 20px */
+a span.empty {
+    background-position: 100px 100px; /* empty */
+    display: block;
+}
+a span.edit {
+    background-position: -180px 0;
+    display: block;
+}
+a span.download {
+    background-position: -200px 0;
+    display: block;
+}
+a span.delete {
+    background-position: -220px 0;
+    display: block;
+}
+a span.attention, td span.attention {
+    background-position: -680px 0;
+    display: block;
+}
+a span.accept, td span.accept {
+    background-position: -700px 0;
+    display: block;
+}
+
+/* Apply styles to the toggle icon to anchor it to the right side of the header Panel */
+a span.togglePanel {
+    background-position: -500px 0;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+a:hover span.togglePanel {
+    background-position: -520px 0;
+}
+
+/* Apply styles to the close icon to anchor it to the left side of the header Panel */
+a span.editPanel {
+    background-position: -540px 0;
+    position: absolute;
+    top: 5px;
+    right: 8px;
+}
+a span.emptyPanel {
+    background-position: 100px 100px; /* empty */
+}
+
+.numberInput {
+    padding-right: 3px;
+    text-align: right;
+}
+.currencyInput {
+    background-image: url(images/default.png);
+    background-position: -720px 0;
+    background-repeat: no-repeat;
+    background-position: left;
+    height: 16px;
+    width: 12px;
+    padding-left: 1em;
+    text-align: right;
+}
+.percentInput {
+    background-image: url(images/default.png);
+    background-position: -740px 0;
+    background-repeat: no-repeat;
+    background-position: right;
+    height: 16px;
+    width: 12px;
+    padding-right: 1em;
+    text-align: right;
+}
+
+
+/* ========================================================================
+general css
+========================================================================= */
+
+/* Text input/Textarea caret not displayed in Firefox */
+.mask {
+    overflow:visible; /* or overflow:hidden */
+}
+
+/*
+ * Non Data Table
+ */
+.nonDataTable {
+    padding: 0px 0px 0px 0px;
+    margin: 0;
+    width: 99%;
+    *width: 99%;
+}
+.nonDataTable caption {
+    padding: 6px 0 3px 3px;
+    text-align: left;
+    font-size: 110%;
+    font-variant: small-caps;
+    /*font-weight: bold;*/
+}
+.nonDataTable table {
+    border:1px solid #666;
+    width: 99%;
+    *width: 99%;
+}
+.nonDataTable tr {
+    background-color:#fff;
+}
+.nonDataTable th {
+    text-align: left;
+    font-weight:bold;
+    background-color:#ccc;
+    padding: 2px 20px 5px 20px;
+    vertical-align:top;
+}
+.nonDataTable td {
+    vertical-align:top;
+    text-align: left;
+    padding: 5px 10px 2px 10px;
+}
+.nonDataTable .bottomBorder {
+    border-bottom:1px solid #999;
+}
+.nonDataTable th.first, .nonDataTable td.first {
+    padding: 2px 20px 2px 5px;
+    width: 20%;
+}
+.nonDataTable td.indent{
+    padding-left: 15px;
+}
+.nonDataTable td.right{
+    padding-right: 2px;
+}
+.nonDataTable td.yellow {
+    background-color:#ffc
+}
+/** css selector */
+.nonDataTable input[type=text] {
+    width: 100%;
+}
+/** IE fix - add class="text" */
+.nonDataTable input.text {
+    width: 100%;
+}
+.nonDataTable td.bold {
+    width: 20%;
+}
+.nonDataTable textarea {
+    height: 160px;
+    width: 100%;
+}
+
+/*
+ * Data Tables and Pagination
+ * Contains the basic styles that affect all data tables
+ */
+ /* single-pixel border around all cells. */
+.dataTable {
+    border: 1px solid #338BA6;
+    border-collapse: collapse;
+}
+.dataTable caption {
+    padding: 6px 0 3px 3px;
+    text-align: left;
+    font-size: 110%;
+    font-weight: bold;
+}
+.dataTable th {
+    border: 1px solid #338BA6;
+    border-collapse: collapse;
+    background-color: #e3edf7;
+    padding-left:5px;
+    padding-right:5px;
+    padding-top:2px;
+    padding-bottom:2px;
+    vertical-align:top;
+}
+.dataTable td {
+    border-left: 1px solid #65a1d7;/*#cfd6ce; */
+    padding-left:2px;
+    padding-right:2px;
+    padding-top:2px;
+    padding-bottom:2px;
+    vertical-align:top;
+}
+/* IE */    .dataTable table.NB {margin:0;border:0;width:100%;}
+/* other */    html>body .dataTable table.NB {margin-right:1px;border:0;width:100%;}
+/*.dataTable tr {background-color:#fff;}*/
+.dataTable tr.even {
+    background-color: #DFE7F2;
+    color: #000000;
+}
+.dataTable tr:hover, .dataTable tr.hilite {
+    background-color: #80C9FF;
+    color: #000000;
+}
+.dataTable col.odd, .dataTable colgroup.odd {
+    background-color: #80C9FF;
+    color: #000000;
+}
+.dataTable col.even, .dataTable colgroup.even {
+    background-color: #BFE4FF;
+    color: #000000;
+}
+.dataTable .header {padding:5px;background-color:#eee;border-bottom:1px solid #666;vertical-align:bottom;}
+.dataTable .subheader {padding:5px 5px 5px 10px;background-color:#eee;border-top:1px solid #aaa;border-bottom:1px solid #666;vertical-align:bottom;color:#666;font-weight:bold;}
+.dataTable .footer {padding:5px;background-color:#eee;border-top:1px solid #666;vertical-align:bottom;}
+.dataTable .w15 {width:15px;}
+.dataTable .w20 {width:20px;}
+.dataTable .first {border-top:1px solid #ccc;}
+.dataTable .rgtT {border-right:1px solid #ccc;}
+.dataTable .btmT {border-bottom:1px solid #ccc;}
+.dataTable .showHide {background-color:#eee;border:1px solid #666;border-bottom:0;}
+.dataTable .buttonRow {background-color:#eee;border:1px solid #666;border-top:0;}
+.dataTable .subtotalRow {background-color:#fff;border-top:1px solid #666;border-bottom:1px solid #ccc;}
+.dataTable .grandtotalFirstRow {background-color:#fff;border-top:1px solid #666;}
+.dataTable .grandtotalMiddleRow {background-color:#fff;}
+.dataTable .grandtotalLastRow {background-color:#fff;border-bottom:1px solid #ccc;}
+.dataTable .links {border:1px solid #666;border-top:0;}
+.dataTable .linksNB {border:0;border-top:1px solid #666;}
+.dataTable .notFirst {border-top:1px solid #666;}
+
+/* Highlight the focused form field when the user clicks on it or tabs to it */
+.dataTable input {
+    width: 99%;
+    *width: 99%;
+    padding: 0.2em 0.0em 0.2em 0.0em;
+    margin: 0;
+    border: 2px solid #ffffff;
+}
+/** IE fix - add class="text" */
+.dataTable input.text {
+	min-width: 7em;
+    width: 99%;
+    *width: 99%;
+}
+.dataTable textarea {
+    height: auto;
+    width: 99%;
+    *width: 99%;
+    padding: 0.2em 0.4em 0.2em 0.4em;
+    margin: 0;
+    border: 2px solid #ffffff;
+}
+.dataTable input:focus, textarea:focus {
+    border: 1px solid #000000;
+}
+
+.error {
+    color: red;
+}
+.warning {
+    color: red;
+}
+
+fieldset {
+    border: 1px solid #CCCCCC;
+}
+legend {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: black;
+    font-size: 11px;
+    font-weight:bold;
+}
+
+input, select, textarea {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    border: 1px solid #65a1d7;
+}
+
+.button-submit {
+    background-color: #fb9622;
+    border-color: #709AE4 #002E66 #002E66 #709AE4;
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    font-weight: bold;
+}
+.button-cancel {
+    background-color: #fb9622;
+    border-color: #709AE4 #002E66 #002E66 #709AE4;
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    font-weight: bold;
+}
+
+.bordered {
+    border: 1px solid #65a1d7;
+}
+.plain {
+    background-color: #fdfef6;
+}
+
+.box {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    border: 1px solid #CCCCCC;
+    background-color:#FFFFDE;
+    padding:2px;
+}
+
+/* Colors */
+.highlight {background-color: #FFFFCC; color: #B22222;}
+
+/* Fonts */
+.bold {font-weight:bold;}
+.italic {font-style:italic;}
+.normal {font-weight:normal;}
+.smallgrey {color:#666;font-size:.9em;}
+.small {font-size:0.95em !important;}
+.smaller {font-size:0.9em !important;}
+.fixedwidth {font-family:Arial Terminal,Lucida Console,Courier New,Courier;}
+.reallysmall {font-size:0.75em !important;}
+
+.nowrap {white-space: nowrap !important;}
+.noborder {border: none !important;}
+.right {text-align: right !important;}
+.center {text-align: center !important;}
+.right {text-align: right !important;}
+.top {vertical-align: top !important;}
+.middle {vertical-align: middle !important;}
+.bottom {vertical-align: bottom !important;}
+
+/* Style horizontal rule
+Mozilla-based browsers color the rule using background-color,
+while Internet Explorer uses color
+*/
+hr {
+    border: none;
+    background-color: #ADD8E6;
+    color: #ADD8E6;
+    height: 1px;
+    width: 80%;
+}
+
+.indent {
+    padding-left: 3em;
+}
+
+.imgBorder {
+    border: 1px solid #000000;
+}
+.imgNonBorder {
+    border: none;
+}
+
+form div {
+    margin: 0;
+    padding: 0;
+    /*padding-top: 0.6em;*/
+}
+form div label {
+    float: left;
+    /*width: 30%;*/
+    font: bold 0.9em Arial, Helvetica, sans-serif;
+}
+
+div label {
+    float: left;
+    width: 10em;
+    font: bold 0.9em Arial, Helvetica, sans-serif;
+}
+fieldset {
+    border: 1px dotted #61B5CF;
+    margin-top: 1.4em;
+    padding: 0.6em;
+}
+legend {
+    font: bold 0.8em Arial, Helvetica, sans-serif;
+    color: #00008B;
+    background-color: #FFFFFF;
+}
+
+.accesskey {
+    text-decoration: underline;
+}
+
+.floatLeft {
+    float: left;
+    width: 300px;
+    border: 2px solid #000000;
+    margin-right: 20px;
+    margin-bottom: 6px;
+}
+.floatCenter {
+    border: 2px solid #000000;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+.floatRight {
+    float: right;
+    width: 300px;
+    text-align: right;
+    border: 2px solid #000000;
+    margin-right: 20px;
+    margin-bottom: 6px;
+}
+
+.clear {
+    clear: both;
+}
+
+
+.height5 {height: 5em;}
+.height10 {height: 10em;}
+.height15 {height: 15em;}
+.height20 {height: 20em;}
+.height100 {height: 100%;}
+
+.width1em {width: 1em;}
+.width3em {width: 3em;}
+.width5em {width: 5em;}
+.width10em {width: 10em;}
+.width15em {width: 15em;}
+.width20em {width: 20em;}
+.width20 {width: 20%;}
+.width33 {width: 33%;}
+.width50 {width: 50%;}
+.width99 {width: 99%;}
+.width100 {width: 100%;}
+
+
+.top-bar {
+    background-color:#2C318F;
+    color:white;
+    font-family:Verdana,Arial,Helvetica,sans-serif;
+    font-size:11px;
+}
+
+.jms-file-details {
+    padding: 0;
+    width: 100%; /* non-IE */
+    *width: 100%; /* IE */
+}
+
+.jms-view-scroll {
+    height: 15em;
+    overflow: auto;
+}
+
+/*
+CSS is used to set overflow:auto on the body of the panel so that scrollbars
+are displayed if the panel ends up being too small to display it's contents.
+We also provide a default height for the footer to accomodate the resize handle.
+*/
+#editDiv .bd {
+    overflow: auto;
+    background-color: fff;
+    padding: 10px;
+}
+
+#editDiv .ft {
+    height: 35px;
+    padding: 5;
+}
+
+/*
+Some custom CSS is applied to the resize handle to align it
+with the bottom of the panel and increase the default size.
+*/
+#editDiv .yui-resize-handle-br {
+    right: 0;
+    bottom: 0;
+    height: 8px;
+    width: 8px;
+    position: absolute; 
+}
+
+#helpDiv .bd {
+    overflow: auto;
+    background-color: fff;
+    padding: 10px;
+}
+
+#helpDiv .ft {
+    height: 35px;
+    padding: 5;
+}
+
+/*
+Some custom CSS is applied to the resize handle to align it
+with the bottom of the panel and increase the default size.
+*/
+#helpDiv .yui-resize-handle-br {
+    right: 0;
+    bottom: 0;
+    height: 8px;
+    width: 8px;
+    position: absolute; 
+}
+
+
+/* ========================================================================
+tabview.css
+========================================================================= */
+#tab1,
+#tab2,
+#tab3 {
+    position: relative;
+}
+
+#tab1 a,
+#tab2 a,
+#tab3 a {
+    width: auto;
+}
+
+#tab1 a:hover,
+#tab2 a:hover,
+#tab3 a:hover {
+    background: #BFDAFF url(../yui/assets/skins/sam/sprite.png) repeat-x scroll left -1700px;
+}
+
+#tab1 em,
+#tab2 em,
+#tab3 em {
+    font-weight: normal;
+    color: #808080;
+}
+#tab1 em/*,
+#tab2 em,
+#tab3 em*/ {
+    padding-left: 25px;
+}
+
+#tab1.selected em,
+#tab2.selected em,
+#tab3.selected em {
+    font-weight: bold;
+    color: #000;
+}
+
+
+/* ======================================================================== */
+/* menu css                                                                */
+/* ======================================================================== */
+#leftNav {
+    text-align: left;
+    height: 100%;
+}
+
+#folder_list {
+    height: 100%;
+    border: 1px solid #808080;
+    background-color: #fff;
+}
+#folder_list ul li {
+    margin: 6px;
+    position: relative;
+    clear: both;
+    list-style-image: none;
+    list-style-position: none;
+    list-style-type: none;
+}
+#folder_list ul li a {
+    padding: 2px;
+    color: #000;
+}
+#folder_list ul li.selected a {
+    background-color: #B3D4FF;
+    color: #000;
+}
+
+#folder_list ul li.about {
+	list-style-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAANbY1E9YMgAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAONSURBVHjaYvz//z8DMmBKOqDIycYULMrH5sTCyqz8+88/xh+//z3/+PX30Z/ff63+v8jlPLJ6gABihBnAmHiAiZOdKVdXjrfC0lhKAmgIA+f/nwzvvv1juPrqL8PHb38ZHt99/f3d4/ezfv342/h/i+97kD6AAAIbwJh9goWf6U9PhJtSvrQwB8On738YNP88ZDCR4mJgZmdn2PaEi2HJpW8MTEAN7568Y3j14M3uH49fRP4/mfQWIIBYQKZw/vmV5WQkki/Kz8bw4M1Phm/ffjIEqXEx6Olqg133ivkLw5xTnxiYGBkZOET5GcS5OF2ff/g4gdFoRhxAAABBAL7/A4HfPx8vIg6kODIaC+Pu+gDt9PwA6/T+AN/2CAAAAAEAxuH2AJPD7QDx+P0A//4AAPv7/wD+AgMA/fn8Lvnu8soCiIWDnSnURF9C9M3nPwzvgJq//PzH8OfPP4bTj38x7L/9mYGD6T8DGxMjA8N/Zobff/4D8T+Gv3//M7BKiTMwPXqeAhBALKL87M5MTEwMrz79Zvj04x8DJ8NvhnD1fwzGUhwMQAsZuFmZGC69ZmCo2PWZ4S/QAJDmP0D8F+g6Jk4uM4AAYmFmZlT6CrT10/e/QOf9Y/j+h5Fh+Q1mBkFBHoZwI2FwGHxh/Q6U+wTUDLQdaOqfPxAD/jMzSwIEENOv3/+YPgCj6DvQEJDzfgEl73/4x7Dj4nMGoEfBBvz68xfsLbDNUFeA8H9WViaAAGL6/unHs/dffjP8/A1RAMIMwKhlYgSlD0ga+Qey9e9/cBhA1EDU/v/95y1AADF9ff3l6MuH74ACDBAFoID6DbIBHAkQ8B+m+R8Y//0HjAmghv9fPl8GCCCmX38YVn949+07zG8gBcCkC8SIJP4baNs3UOwADQVr/s/I8O/NWwaGHz+XAQQQEzBJnv/w4tOsd0+BrvgP8u8/BimufwwG4kAOML5BQF+Gi8FBiR3ol//gQPz35Qswdb06DrRxKUAAQZKy9yZBduZ/K/jlxNyYhYUY3OV+MaTYSDFwcHKC/QGCT99/Y4hf+Jjh/cvPDAyPHtwHJlf//2fTLwMEECIzWS0UYWFl6uOUlYj5KybG+O0PEyhQgP5iYABb+/0rA8PXTwwMb98eYfjxIweo+SJIH0AAMaJnZ0azOT5M7GyJTLy8psBokgZ5BBjab/5/+XIZqHE5MHQXATX/hKkHCDAARKveh1Y9itIAAAAASUVORK5CYII%3D");
+    *list-style-image: url("images/about.png");
+    cursor: pointer;
+}
+#folder_list ul li.admin {
+    list-style-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAYFBMVEUAAACtrZTOnDH/zmPGxsaEhITv7+8xMQCcYwBjYwD//5z//wCEAAD/AAAAnP8AAP/OzjExAADOnAAAAIRTW+9TW+9TW+9TW+9TW+9TW+9TW+9TW+9TW+9TW+9TW+9TW++blCEvAAAAIHRSTlP/////////////////////////////////////////AFxcG+0AAAABYktHRACIBR1IAAAACXBIWXMAAABIAAAASABGyWs+AAAAgElEQVQY002OWRbEIAgE2yXjguOSHID73zKCPmf6r+oBDZgZOyzBwW0OGPsvnId1e2Wxg8ERXhjW2GuLyR9ngvu1TGPmBGJCnILhrewg5kyIEL70h5QTSEu8RSlfjkRRRG1qCyh0QgJabZKQxz2Q9Gitz4M8+khau4J+Kx/BWMwvbrgMKmokP3MAAAAASUVORK5CYII%3D");
+    *list-style-image: url("images/admin.png");
+    cursor: pointer;
+}
+#folder_list ul li.activation {
+    list-style-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHkSURBVDjL3ZNvT1JhGMafb3G+TQqKECNFRIEDcvgXmB5IPNJmTdbC1SQ0S1xzZKXyT41TdpCOMyYtiXS9aW2uD8EbPsHV87RRmyLrdc92vbt/1/U8930/ZLYxASbpSwgz9SCin2+CHtJJwYoLgbITvvcOeN7a4S6NgTB45+cmCucvu8JMFOZCZQHpr0tYO12Ga9cKwpJz5xvIfH+GR2dxRGp+uSOs8Jxv39GKV+/gYS2OlXoSfNECMnMSRKw+hdS3BLI/Mlho3MPUR88lE+++ozlfjWG1kYJUCcNRsMCWM4NM02vf/hTgwsf+1uLpfTw4mcOtQ0G9aCDINiWmRiAdiAz+HTC6Nfi3QKx6uckjT3Pi0K1c1QPnzojahtsi3Zr2L/rfDGin5fE3o+pVxeYXRmVw3dA0Pddzfwz8Co82LFVERMuTbEyXJjGUMaqBgoBQ0Qfjmq5lWO3n9E/76IK8s4PCYHCytoDZgwhsWXPzosGNdYPszY1jTonBnxVgSuuhe6KhyfRDJGsJ3P0gQSqLDG7RBeE6PeF6Wie7X/MI5N2YLonoX+oFce1ZsXicQOJoHs68FdbNznBbAytaREthSHIE2lQPCF8cgT0/jLHtIQbD8sqEbrBuWYM+mqx93ANN8hp+AQOPtI0tirA3AAAAAElFTkSuQmCC");
+    *list-style-image: url("images/activation.png");
+    cursor: pointer;
+}
+#folder_list ul li.incidentMpf {
+    list-style-image: url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCAAQABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAIH/8QAIxAAAQMDBAIDAAAAAAAAAAAAAgEDEQAFEgQTIUEiUQYUI//EABQBAQAAAAAAAAAAAAAAAAAAAAT/xAAaEQACAgMAAAAAAAAAAAAAAAAAEwEhAjHh/9oADAMBAAIRAxEAPwDWrnd2WCEQN4TA5P8AA8VTuViKu3a9Xijye3SyEm4UBHrn1Rrr8d0OqdF367hOmfkW+aIie1TKKVbrfsLwhMo0WIi3CAQ9cULJrq4MlKq2f//Z");
+    *list-style-image: url("images/incidentMpf.jpg");
+    cursor: pointer;
+}
+#folder_list ul li.incidentPma {
+    list-style-image: url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCAAQABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAgb/xAAjEAABAwMDBQEAAAAAAAAAAAACAQMEBQYRACFBEhMxQlEj/8QAFQEBAQAAAAAAAAAAAAAAAAAAAwT/xAAdEQABAgcAAAAAAAAAAAAAAAAAERIBAhMhIzHB/9oADAMBAAIRAxEAPwCOsewahUhfdqdNIYEqISMS89XaNcKJogqq423250b9spuiNsuNPwWI7EQBQiey5Nc9iEUztvjjxo2Pe0qB3wq1Q6oMWIRMRVTp7riYQQRURF5+8ad/Xo1WmmWmY8B+O/EAkEmf0hOewiSY+Z586gz1r6GkRkXJ0//Z");
+    *list-style-image: url("images/incidentPma.jpg");
+    cursor: pointer;
+}
+#folder_list ul li.a23CommentIssue {
+    list-style-image: url("data:image/gif;base64,R0lGODlhEAAQANUAAEx/GJmZmfX19crJyaPWcIuKiuPj43+yTHt7e+bm5uvr6+jo6I/CXODg4HqtR8PCwoG0TpnMZt7e3oy/WZTHYc/Pz4S3UdLS0oq9V4K1T3WoQo3AWn2wStTU1Ii7VYa5U+3t7f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAACEALAAAAAAQABAAAAZmwJBwSCwaiYAkoBhoOgUAQgQgGAYE2CyUQKFaBSAFVElgKJdXxTVKIGwwn8wBLVgktoyJxwLhOOgJa2RzSiFXBg1aUX9YQgEGA5GRWxpUBUMFmZpjSVVHjlmfTAOXokQBpaZWqqJBADs%3D");
+    *list-style-image: url("images/a23CommentIssue.gif");
+    cursor: pointer;
+}
+#folder_list ul li.awaitingExport {
+    list-style-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACH0lEQVR4nKWSTUhUYRSGnzv33snRdEY0M0dJaSDTzRBkiZhZkNCiTZC1CIQQahFEq9q3aBFRqzZFkUQRuayFEKlZhv0ZGsUw6VD4N5rj5KjT3O9+p4VphCVKZ3PO5nl4Obzwn2M0tLSdBE6vk7vedfvETQDjQOs9qT1Suy66t72XEn8y2Hb51KglIiwk59YlEJHl29paMMPEm4/4sn2rQspOkAi2Exg9TGizQ372/ByAVZSX5tihbYTD4X/C8fkxWp80URZSjA1/JnesGiZ2LSZYS+Svs0MEcjZSWDTNpiKDl11vSXmmioHkqoKekQ4exe4ykorxLT1Dmcpg2x727PXR3Rn90PigouSvAldcLjxrITbXjzdvGl+xy3Y/OMrGMAy8tkFDY8Ds6ZqN/iEQEdJqnrOdzUwuRCktzKK8oA7LtDFNzZDqxDAMDMNDqRlGpC/LAtBa47ouIsKtwatMJL+wu6Se0fQkjwfekevNI60WCFULhqEoZAcPu185rnZLPUsCpRRKKSKJQcr9lbye6qcpeJz7+19wo66D6vydJGc8+N0Kevri5KS21Dw9Ohy3AJRSOI6D1hqfmY3X3sD58DVMLLQStHZIOd+pyjrIwKcogalKiuM1w9DNCsG5qkuICNrVKFForRERzoQucid2hXBuPbOJIBmc3z2IRCJkMhlEZBH+BS1Vdmnvoxl+wHMdWX78omA8SWT8/Vo6tWJ+AquVAo19QSjUAAAAAElFTkSuQmCC");
+    *list-style-image: url("images/awaitingExport.png");
+    cursor: pointer;
+}
+#folder_list ul li.report {
+    list-style-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbBJREFUeNqUUz1O40AU/oAsSpdXIm0zHemYYgtKlzS78gWQrG1XQpY4ADmCD0CRI1jmAPF222Vygjw6UzEukNjK+z0HIkiiwD5pPPNm3ve9Xx90XQeTGGOlqt/xgYjInXPux/rCCGzN5/PuMzKbzbrlclm94gabHhjJPu/w3iOEYJFWFskWwaQo9qZQTCZIkqQnYcrVf6fwVgwz+KhoZVm+09M0facPJKGBc5hm1NTyF+bKPVrO24BN6SOg3UWIL3isDlZMzwdPcudkD4HIpfNyq0ZkwL4T5FBB0ZMHFB4snO+7sEXAu18EHJdT7UPpjV6W04A0BiShhoYEbpJjk2IQQ/jKIvQAe6Q9Wn5ufEAOhUQjdvA1SUoH2ajJ0d+H5hRy8k1kTHADDP/gfFwjq0uMgyIuFM8YYtg0kGdrw8Ua3PCORdTr9vf0C6L+FHqNniB6DEGQ3DOCEeNa8B4tA023UjjkegLCFdwU0YX1OCtWI21lVYLrszMgy3Z0YdTa/pT5DDXzXBDcOqWzDKUnmLrj/Cd5vrMLBxitDo/6WNl82+QZKKe3XYC3wp/p7p8AAwCvgicqUGyg8gAAAABJRU5ErkJggg%3D%3D");
+    *list-style-image: url("images/report.gif");
+    cursor: pointer;
+}
+
+/* ======================================================================== */
+/* calendar css                                                             */
+/* ======================================================================== */
+#calContainer {
+    position: absolute;
+    left: 0px;
+    *left: 1px;
+    bottom: 40px;
+    *bottom: 44px;
+    overflow: hidden;
+    width: 100%;
+}
+#calContainer .yui-calcontainer {
+    border: none;
+    border-top: 1px solid #808080;
+    border-right: 1px solid #808080;
+    background-color: #EDF5FF;
+}
+#calContainer .jms-calendar td.calcell.oom {
+    background-color: #f2f2f2;
+}
+
+#calendars {
+    position: absolute;
+    left: 0px;
+    *left: 1px;
+    bottom: 0px;
+    overflow: hidden;
+    width: 100%;
+}
+#calendars ul li {
+    list-style-image: url("data:image/gif;base64,R0lGODlhEAAQANUzADpszKC00FN+2ZCo8PDw/8k5EICivUB14KCxwJCn0KCowN3f4rDA0HCb4ISEhJCTkPmJYqCepdDh+MPH0KC34NHZ33Ce8JCw0OFJHvVhMvGVfz9Ua2BdU3BtcN7Z1mNlY5Cir4Cs/6owD5C1+D4/Z/Dw8Oro5PX29mOO4//4/yAnIPD4/3CHpYCl8ODo/4Cg04GXvjBIYP///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAADMALAAAAAAQABAAAAaqQJlqMVSZVBOVR1UaRiKyR1TmoMo6so+MUxkMWq1XA0UWmAEHAGDgartHIbDcsv6CLeOy4MAHBGQyL4CCgTIpLysEMX8yMICOjSkrMAQVGwEXMCwvmpwaEBkYnDEIg6YpEDInBS4TpI+PkhkrK6wMpJmbnTAYBQUiowqACYaIBC9tLxK3wpGTBAQwbQbLMQoBBiwUCdrZ2CwJMDEgMeUk5ejp5TPs7e7vM0EAOw%3D%3D");
+    *list-style-image: url("images/calendar.gif");
+    background: transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1300px;
+	margin: 0px;
+	padding-left: 6px;
+    cursor: pointer;
+}
+
+.calDate {
+    font-family: arial;
+    font-size: 8pt;
+    font-style: italic;
+    font-variant: normal;
+    font-weight: bold;
+    height: 15px;
+}
+.calItem {
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color: #FFFFD5;
+    color: black;
+    font-family: tahoma;
+    font-size: 8pt;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+}
+.calItem ul li {
+    list-style-image: url(images/remind.gif);
+    list-style-position: inside;
+    list-style-type: none;
+}
+
+ul {
+    font-weight: bold;
+    text-align: left;
+}
+ul li {
+    list-style-image: none;
+    list-style-position: inside;
+    list-style-type: disc;
+    font-weight: normal;
+}
+
+/*
+    Set the "zoom" property to "normal" since it is set to "1" by the 
+    ".example-container .bd" rule in yui.css and this causes a Menu
+    instance's width to expand to 100% of the browser viewport.
+*/
+div.yuimenu .bd {
+    zoom: normal;
+}
+
+#button-example-form fieldset {
+    border: 2px groove #ccc;
+    margin: .5em;
+    padding: .5em;
+}
+#menubutton3menu, #menubutton5menu {
+    position: absolute;
+    visibility: hidden;
+    border: solid 1px #000;
+    padding: .5em;
+    background-color: #ccc;
+}
+#button-example-form-postdata {
+    border: dashed 1px #666;
+    background-color: #ccc;
+    padding: 1em;
+}
+#button-example-form-postdata h2 {
+    margin: 0 0 .5em 0;
+    padding: 0;
+    border: none;
+}
+
+/* ========================================================================
+toolbar.css
+========================================================================= */
+.jms-toolbar {
+    background-color: #DFE8F6 !important;
+    /*float: right !important;*/
+}
+.jms-toolbar .yui-push-button {
+    background: transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1300px !important;
+}
+.jms-toolbar .yui-push-button-hover {
+    background: transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1700px !important;
+}
+.jms-toolbar .yui-button {
+    width: 120px !important;
+    height: 25px !important;
+    position: relative !important;
+    overflow: visible !important;
+    color: #000 !important;
+    float: left !important;
+}
+.jms-toolbar .yui-button .yui-push-button .yui-toolbar-saveClose {
+    width: 130px !important;
+}
+.jms-toolbar .yui-toolbar-icon {
+    background-image: url(images/default.png) !important;
+    background-position: 0 0 !important;
+    height: 20px !important;
+    width: 20px !important;
+    top: 5px !important;
+    left: 4px !important;
+}
+.jms-toolbar .yui-toolbar-filter .yui-toolbar-icon {
+    background-position: -320px 0 !important;
+}
+.jms-toolbar .yui-toolbar-reset .yui-toolbar-icon {
+    background-position: -200px 0 !important;
+}
+.jms-toolbar .yui-toolbar-print .yui-toolbar-icon {
+    background-position: -300px 0 !important;
+}
+.jms-toolbar .yui-toolbar-export .yui-toolbar-icon {
+    background-image: url(images/ext/xls.gif) !important;
+}
+.jms-toolbar .yui-toolbar-new .yui-toolbar-icon {
+    background-position: -460px 0 !important;
+}
+.jms-toolbar .yui-toolbar-cancel .yui-toolbar-icon {
+    background-position: -420px 0 !important;
+}
+.jms-toolbar .yui-toolbar-edit .yui-toolbar-icon {
+    background-position: -80px 0 !important;
+}
+.jms-toolbar .yui-toolbar-save .yui-toolbar-icon {
+    background-position: -380px 0 !important;
+}
+.jms-toolbar .yui-toolbar-saveClose .yui-toolbar-icon {
+    background-position: -380px 0 !important;
+}
+.jms-toolbar .yui-toolbar-help .yui-toolbar-icon {
+    background-position: -160px 0 !important;
+}
+.jms-toolbar .yui-button .first-child a {
+    /*padding-left: 22px !important;*/
+    font-size: 12px !important;
+}
+.jms-toolbar .yui-toolbar-subcont {
+    border-bottom: 0px solid #808080 !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    background-color: #DFE8F6 !important;
+}
+
+/* ========================================================================
+dataToolbar.css
+========================================================================= */
+#dataToolbarDiv {
+    border: none;
+    background-color: #2647A0;
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1700px;
+}
+#dataToolbarDiv .yui-push-button {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1300px;
+}
+
+#dataToolbarDiv .yui-push-button-hover {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1700px;
+}
+
+#dataToolbarDiv .yui-button {
+    width: 88px;
+    height: 25px;
+    position: relative;
+    overflow: visible;
+    color: #000;
+    float: left;
+}
+#dataToolbarDiv .yui-toolbar-icon {
+    background-image: url(images/default.png);
+    height: 20px;
+    width: 20px;
+    top: 6px;
+    left: 4px;
+}
+#dataToolbarDiv .yui-toolbar-delete {
+    width: 82px;
+}
+
+#dataToolbarDiv .yui-toolbar-filter .yui-toolbar-icon {
+    background-position: -0px 0;
+}
+#dataToolbarDiv .yui-toolbar-new .yui-toolbar-icon {
+    background-position: -460px 0;
+}
+#dataToolbarDiv .yui-toolbar-edit .yui-toolbar-icon {
+    background-position: -80px 0;
+}
+#dataToolbarDiv .yui-toolbar-delete .yui-toolbar-icon {
+    background-position: -400px 0;
+}
+#dataToolbarDiv .yui-toolbar-print .yui-toolbar-icon {
+    background-position: -300px 0;
+    top: 3px;
+}
+#dataToolbarDiv .yui-toolbar-export .yui-toolbar-icon {
+    background-position: -320px 0;
+    top: 3px;
+}
+#dataToolbarDiv .yui-toolbar-help .yui-toolbar-icon {
+    background-position: -160px 0;
+    top: 5px;
+}
+#dataToolbarDiv .yui-button .first-child a {
+    padding-left: 22px;
+    font-size: 13px;
+}
+
+#dataToolbarDiv .yui-toolbar-subcont {
+    margin: 0;
+    padding: 4px;
+}
+
+
+/* ========================================================================
+yui-ext.css
+========================================================================= */
+/*
+Copyright (c) 2008, ApolloSoft Pty Ltd. All rights reserved.
+version: 1.0.0
+*/
+
+/*
+margin and padding on body element can introduce errors
+in determining element position and are not recommended;
+we turn them off as a foundation for YUI CSS treatments.
+*/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+/* to expand body main area to fill the screen */
+#yui-main {
+    /*height: 88%;*/
+}
+
+.yui-skin-sam .yui-dt table {
+    width: 100%;
+    *width: 100%;
+}
+
+input.yui-dt-checkbox {
+    border: 0px;
+}
+input.yui-dt-radio {
+    border: 0px;
+}
+
+.yui-skin-sam .yui-layout {
+    /*background-color: #DFE8F6;*/
+}
+
+.yui-skin-sam .yui-panel .hd {
+    padding: 0px 0px 0px 0px;
+}
+.yui-skin-sam .yui-dialog .ft {
+    padding: 5px 0px 5px 0px;
+}
+
+/* custom styles for inline instances */
+.yui-skin-sam .yui-ac-input,
+.yui-ac input[type=text], .yui-ac input.text {
+	position: static;
+    width: 20em;
+}
+.yui-skin-sam .yui-ac-container {
+    left: 0px;
+}
+
+/* styles for header/body/footer wrapper within container */
+.yui-skin-sam .yui-ac-content {
+    position:absolute;width:100%;border:1px solid #808080;background:#fff;overflow:hidden;z-index:9050;
+}
+/* styles for container shadow */
+.yui-skin-sam .yui-ac-shadow {
+    position:absolute;margin:.3em;width:100%;background:#000;-moz-opacity: 0.10;opacity:.10;filter:alpha(opacity=10);z-index:9049;
+}
+/* styles for results list */
+.yui-skin-sam .yui-ac-content ul{
+    margin:0;padding:0;width:100%;
+}
+/* styles for result item */
+.yui-skin-sam .yui-ac-content li {
+    margin:0;padding:2px 5px;cursor:default;white-space:nowrap;
+}
+/* styles for prehighlighted result item */
+.yui-skin-sam .yui-ac-content li.yui-ac-prehighlight {
+    background:#B3D4FF;
+}
+/* styles for highlighted result item */
+.yui-skin-sam .yui-ac-content li.yui-ac-highlight {
+    background:#426FD9;color:#FFF;
+}
+
+.yui-skin-sam .yui-dt tr td {
+    vertical-align: top;
+}
+
+.filter {
+    padding: 5px 10px 10px 5px;
+} 
+.filterLabel {
+    /*text-align: right;*/
+    /*vertical-align: top;*/
+    font-weight: bold;
+    font-size: 1.0em;
+    /*white-space: nowrap;*/
+}
+.filterInput {
+
+}
+.filterToggle {
+
+}
+.filterContainer {
+
+}
+/* needed for stacked instances for ie & sf z-index bug of absolute inside relative els */
+#filter0 { z-index:9009; } 
+#filter1 { z-index:9008; } 
+#filter2 { z-index:9007; } 
+#filter3 { z-index:9006; } 
+#filter4 { z-index:9005; } 
+#filter5 { z-index:9004; } 
+#filter6 { z-index:9003; } 
+#filter7 { z-index:9002; } 
+#filter8 { z-index:9001; } 
+#filter9 { z-index:9000; } 
+
+/* buttons */
+.yui-ac .yui-button {
+    margin: auto 0.1em;
+    vertical-align: middle;
+}
+.yui-ac .yui-button button {
+    background: url(images/ac-arrow-dn.png) center center no-repeat;
+    padding: 0 7px;
+}
+.yui-ac .open .yui-button button {
+    background: url(images/ac-arrow-dn.png) center center no-repeat;
+    padding: 0 7px;
+}
+
+.yui-skin-sam .yui-panel .hd {
+    padding-left: 0;
+    padding-right: 0;
+}
+.yui-skin-sam .yui-panel .bd {
+    padding-left: 0;
+    padding-right: 0;
+}
+.yui-skin-sam .yui-panel .ft {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+/* ========================================================================
+default.css
+========================================================================= */
+body {
+    background-color: #EDF5FF;
+    visibility: hidden;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+    border: none;
+}
+
+a {text-decoration: none; color: #0066CC;}
+a:link, a:visited {color:#990000;}
+a:hover {color:red;}
+a:active {color:#cc0000;}
+a.inactiveLink {color:#808080;}
+
+#searchBox {
+    position: absolute;
+    /*position: fixed;*/
+    right: 5px;
+    top: 5px;
+    width: 460px;
+    height: 30px;
+    padding-top: 5px;
+}
+#searchBox input {
+    border: 1px solid #C0C0C0;
+    color: #A6A6A6;
+    height: 24px;
+    position: absolute;
+    top: 0px;
+    right: 64px;
+    width: 180px;
+}
+#search {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#searchBox span.links {
+    padding: 5px;
+}
+#info {
+    width: 193px;
+    position: absolute;
+    top: 7px;
+    left: 220px;
+    font-size: 85%;
+    text-align: left;
+}
+
+#info strong {
+    font-weight: bold;
+}
+
+#info span.links {
+    display: block;
+}
+
+#top2 .yui-toolbar-container .yui-toolbar-subcont {
+    border: none;
+}
+
+#center2 .yui-toolbar-container .yui-toolbar-subcont {
+    border: none;
+}
+
+#bottom2 div.yui-layout-hd {
+    color: #000;
+    background-color: #EDF5FF;
+    border-left: none;
+    border-right: none;
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1300px;
+}
+#bottom2 div.yui-layout-hd h2 {
+    color: #000;
+}
+#bottom2 .yui-layout-bd {
+    background-color: #fff;
+    text-align: left;
+}
+#bottom2 .yui-layout-bd p {
+    margin: 1em;
+}
+#bottom2 .yui-layout-bd strong {
+    font-weight: bold;
+}
+
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+    text-align: left;
+}
+.yui-skin-sam .yui-navset .loading {
+    background-image: url(images/busybar_1.gif );
+    background-repeat: no-repeat;
+    background-position: top right;
+}
+.yui-layout .yui-layout-unit .yui-content {
+    padding: 0;
+    background-color: #fff;
+    text-align: left;
+    position: relative;
+}
+.yui-layout .yui-layout-unit .yui-content p {
+    margin: 2em;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+    background-color: #EDF5FF;
+}
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+    border-color:#808080;
+}
+
+#compose {
+    visibility: hidden;
+}
+.yui-skin-sam .yui-editor-container {
+    border: none;
+}
+#composeViewEl {
+    /*display: none;*/
+}
+#composeBarWrap {
+    background-color: #EDF5FF;
+}
+#composeAddr span {
+    display: block;
+    width: 99%;
+    padding: .25em;
+}
+#composeAddr label {
+    display: block;
+    float: left;
+    width: 4em;
+    
+}
+#composeAddr input {
+    border: 1px solid #808080;
+    width: 90%;
+}
+
+#news {
+    position: relative;
+    top: 55px;
+    left: 5px;
+    width: 460px;
+}
+#news h3 {
+    font-weight: bold;
+}
+#news .yui-content ul {
+    margin-left: 20px;
+}
+#news .yui-content ul li {
+    list-style-type: disc;
+}
+
+#news p {
+    margin: 0;
+    font-size: 85%;
+}
+#news img {
+    padding: 8px;
+}
+#news .yui-nav li {
+    margin: 0;
+    padding: 0;
+    margin-left: 1px;
+    text-align: center;
+}
+#newsTop {
+    margin-left: 0;
+}
+#newsTop a {
+    width: 145px
+}
+#newsWorld a {
+    width: 70px;
+}
+#newsEnt a {
+    width: 160px;
+}
+#newsSports a {
+    width: 72px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a:focus, .yui-skin-sam .yui-navset .yui-nav .selected a:hover {
+    background: #B3D4FF url(../yui/assets/skins/sam/sprite.png) repeat-x scroll left -1300px;
+    color:#000;
+}
+.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+    border-width: 0;
+}
+.yui-skin-sam .yui-navset .yui-nav .selected a em {
+    padding: 0.25em 0.75em;
+}
+
+
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-b {
+    background-color: #f2f2f2;
+    border-top: 1px solid #808080;
+}
+
+
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-r {
+    background-color: transparent;
+}
+
+#welcomeWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 100%;
+    color: #000;
+    background: #B3D4FF url(../yui/assets/skins/sam/sprite.png) repeat-x scroll left -1300px;
+    border-bottom: 1px solid #2647A0;
+}
+#welcomeWrapper h2 {
+    font-size: 120%;
+    font-weight: bold;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+}
+
+#checkButton, #newButton {
+    background:#7D98B8 url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1300px;
+    position: relative;
+    display: block;
+    float: left;
+}
+#checkButton.yui-button-hover, #newButton.yui-button-hover {
+    background:#7D98B8 url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1700px;
+}
+
+#checkButton .icon, #newButton .icon {
+    display: block;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: 6px;
+    left: 4px;
+    background-image: url(images/default.png );
+    background-repeat: no-repeat;
+}
+#checkButton button, #newButton button {
+    padding: 0 2px 0 23px;
+}
+#checkButton .icon {
+    background-position: -200px 0;
+}
+#newButton .icon {
+    background-position: -180px 0;
+}
+
+#composeTo {
+    position: static;
+}
+#autoTo {
+    width: 90%;
+    left: 55px;
+    top: 52px;
+    *top: 55px;
+}
+
+#datetime {
+    position: absolute;
+    bottom: 2px;
+    right: 205px;
+    font-size: 85%;
+}
+
+.yui-skin-sam .yui-toolbar-container {
+    background-color: #EDF5FF;
+}
+.yui-skin-sam .yui-toolbar-container .yui-push-button,
+.yui-skin-sam .yui-toolbar-container .yui-color-button,
+.yui-skin-sam .yui-toolbar-container .yui-menu-button {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1300px;
+}
+
+.yui-skin-sam .yui-toolbar-container .yui-button-hover {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1700px;
+}
+.yui-skin-sam .yui-toolbar-container .yui-push-button span.yui-toolbar-icon,
+.yui-skin-sam .yui-toolbar-container .yui-color-button span.yui-toolbar-icon,
+.yui-skin-sam .yui-toolbar-container .yui-menu-button span.yui-toolbar-icon {
+}
+
+/* Swap out the image to an active image */
+.yui-skin-sam .yui-toolbar-container .yui-button-selected span.yui-toolbar-icon, .yui-skin-sam .yui-toolbar-container .yui-button-hover span.yui-toolbar-icon {
+}
+.yui-skin-sam .yui-dt-scrollable .yui-dt-hd,
+.yui-skin-sam .yui-dt-scrollable .yui-dt-bd {
+    border: none;
+}
+#compose_editor {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+.yui-skin-sam .yui-dt-scrollable .yui-dt-hd {
+    border-top: 1px solid #808080;
+}
+.yui-skin-sam .yui-editor-panel .bd {
+    background-color: #EDF5FF;
+}
+.yui-skin-sam .yui-editor-panel .hd h3 {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1300px;
+}
+.yui-skin-sam .yui-dt th {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -1300px;
+}
+
+#standard {
+    font-size: 85%;
+}
+
+.yui-skin-sam .yui-panel .hd {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1300px;
+}
+.yui-skin-sam .yui-dialog .ft span.default {
+    background:transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1300px;
+}
+.yui-skin-sam .yui-dialog .ft span.default button {
+    color: #000;
+}
+.yui-skin-sam .yui-ac-content li.yui-ac-highlight {
+    background: #EDF5FF none repeat scroll 0%;
+    color: #000;
+}
+
+.yui-skin-sam .yui-log {
+    margin: 0;
+    padding: 0;
+}
+.yui-skin-sam .yui-log .yui-log-bd {
+    border: none;
+}
+
+.yui-skin-sam .yui-log .yui-log-btns,
+.yui-skin-sam .yui-log .yui-log-hd,
+.yui-skin-sam .yui-log .yui-log-ft {
+    display: none;
+}
+.yui-skin-sam .yui-log .info {
+    background-color: #B3D4FF;
+    color: #000;
+}
+
+.yui-skin-sam .yui-log pre.yui-log-verbose {
+    font-family: arial,helvetica,clean,sans-serif;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit-right div.yui-layout-bd {
+    border-left: 1px solid #808080;
+    border-right: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+}
+.yui-skin-sam .yui-layout .yui-layout-hd {
+    background: #EDF5FF url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0pt -1300px;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-hd h2 {
+    color: #000;
+}

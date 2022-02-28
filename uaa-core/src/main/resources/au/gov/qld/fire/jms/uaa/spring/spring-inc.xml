@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- ========================= JPA DEFINITIONS ========================= -->
+    <import resource="classpath:au/gov/qld/fire/jms/uaa/spring/spring-inc-jpa.xml"/>
+
+    <!-- ========================= DAO DEFINITIONS ========================= -->
+    <import resource="classpath:au/gov/qld/fire/jms/uaa/spring/spring-inc-dao.xml"/>
+
+    <!-- ========================= SERVICE DEFINITIONS ===================== -->
+    <import resource="classpath:au/gov/qld/fire/jms/uaa/spring/spring-inc-service.xml"/>
+
+    <!-- ========================= RULE DEFINITIONS ======================== -->
+
+    <!-- ========================= JAAS DEFINITIONS ======================== -->
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-jaas.xml"/>
+
+    <!-- =======================================================================
+        Scheduled Task(s)
+    ======================================================================== -->
+    <!--import resource="classpath:au/gov/qld/fire/jms/uaa/spring/spring-inc-task.xml"/-->
+
+</beans>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>JMS Unwanted Alarm Activation</display-name>
+
+    <!--
+      - Key of the system property that should specify the root directory of this web app.
+      - Applied by WebAppRootListener or Log4jConfigListener.
+      -->
+    <context-param>
+        <param-name>webAppRootKey</param-name>
+        <param-value>jms-uaa.root</param-value>
+    </context-param>
+    <!--
+      - Location of the XML file that defines the root application context.
+      - Applied by ContextLoaderServlet.
+      -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>SessionExpiryFilter</filter-name>
+        <filter-class>au.gov.qld.fire.web.servlet.SessionExpiryFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>TransactionFilter</filter-name>
+        <filter-class>au.gov.qld.fire.web.servlet.TransactionFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>DoAsPrivilegedFilter</filter-name>
+        <filter-class>au.gov.qld.fire.web.servlet.DoAsPrivilegedFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>SitemeshPageFilter</filter-name>
+        <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+        <init-param>
+            <param-name>debug.pagewriter</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <!-- Filters are executed in this order -->
+    <filter-mapping>
+        <filter-name>SessionExpiryFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>DoAsPrivilegedFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SitemeshPageFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <description>Setup Context Listener</description>
+        <display-name>Spring</display-name>
+        <listener-class>au.gov.qld.fire.jms.uaa.web.servlet.SetupContextListener</listener-class>
+    </listener>
+    <listener>
+        <description>Session Listener (created/destroyed)</description>
+        <display-name>Session Listener</display-name>
+        <listener-class>au.gov.qld.fire.jms.uaa.web.servlet.SessionListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>uaa</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>uaa</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>240</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- http://www.jboss.org/file-access/default/members/jbossweb/freezone/docs/latest/jndi-resources-howto.html -->
+    <resource-env-ref>
+        <description>JMS UAA DataSource (java:comp/env)</description>
+        <resource-env-ref-name>${uaa.dataSource}</resource-env-ref-name>
+        <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+    </resource-env-ref>
+
+    <!--
+        !!!DO NOT USE security-constraint - it is done in java code!!!
+        This is the jsp that a 'login' link uses.
+        '*' for a <role-name> means "authenticated user with any role".
+        The user must be logged in with some kind of role to access the home page.    
+    -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>SecuredApp</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <description>SSL required</description>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>SecuredApp</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <description>SSL not required</description>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>uaaRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page> 
+            <form-error-page>/login.jsp?error=true</form-error-page>
+        </form-login-config>
+    </login-config>
+
+</web-app>

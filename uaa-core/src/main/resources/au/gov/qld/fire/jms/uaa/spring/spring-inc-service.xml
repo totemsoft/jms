@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-service.xml"/>
+
+    <bean id="documentService" class="au.gov.qld.fire.jms.uaa.service.impl.DocumentServiceImpl" />
+    <bean id="entityService" class="au.gov.qld.fire.jms.uaa.service.impl.EntityServiceImpl">
+        <property name="dbVersion" value="${uaa.db.version}" />
+    </bean>
+    <bean id="firuImportService" class="au.gov.qld.fire.jms.uaa.service.impl.FiruImportServiceImpl" />
+    <bean id="injuryService" class="au.gov.qld.fire.jms.uaa.service.impl.InjuryServiceImpl" />
+
+</beans>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+        http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+
+    <description>
+        The Permission Tag Library (ApolloSoft)
+    </description>    
+    <display-name>The Permission Tag Library (ApolloSoft)</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>argus-perm</short-name>
+    <uri>/WEB-INF/tld/argus-perm.tld</uri>
+
+    <tag>
+        <name>present</name>
+        <tag-class>au.gov.qld.fire.web.taglib.PresentTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>role</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>module</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>path</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>notPresent</name>
+        <tag-class>au.gov.qld.fire.web.taglib.NotPresentTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>role</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>module</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>path</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>granted</name>
+        <tag-class>au.gov.qld.fire.web.taglib.GrantedPermissionTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>type</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>actions</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>notGranted</name>
+        <tag-class>au.gov.qld.fire.web.taglib.NotGrantedPermissionTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>type</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>name</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>actions</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+</taglib>

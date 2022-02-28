@@ -1,0 +1,10 @@
+USE [master]
+GO
+CREATE LOGIN [ORPUWeb] WITH PASSWORD=N't0infinity', DEFAULT_DATABASE=[qfrsfiru], CHECK_EXPIRATION=OFF, CHECK_POLICY=ON
+GO
+USE [qfrsfiru]
+GO
+CREATE USER [ORPUWeb] FOR LOGIN [ORPUWeb]
+GO
+EXEC sp_addrolemember N'db_owner', N'ORPUWeb'
+GO

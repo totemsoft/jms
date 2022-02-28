@@ -1,0 +1,7 @@
+>sqlcmd
+
+RESTORE DATABASE qfrsfiru FROM DISK = 'D:\qfrsfiru.bak' WITH REPLACE,
+MOVE 'qfrsfiru' TO 'C:\database\mssql\qfrs\qfrsfiru.mdf',
+MOVE 'qfrsfiru_log' TO 'C:\database\mssql\qfrs\qfrsfiru_log.ldf', SIZE = 1GB , FILEGROWTH = 10%
+GO
+

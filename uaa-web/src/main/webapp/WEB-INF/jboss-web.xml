@@ -1,0 +1,22 @@
+<!DOCTYPE jboss-web
+    PUBLIC "-//JBoss//DTD Web Application 2.4//EN"
+    "http://www.jboss.org/j2ee/dtd/jboss-web_5_0.dtd">
+<jboss-web>
+
+    <!--
+    The security-domain to enable security.
+    You will need to edit the "configuration/standalone.xml" login configuration
+    to setup the login modules used to authentication users.
+    -->
+    <security-domain>java:/jaas/qfrsLogin</security-domain>
+
+    <context-root>/${uaa.context.root}</context-root>
+
+    <!--use-session-cookies>true</use-session-cookies-->
+
+    <resource-env-ref>
+        <resource-env-ref-name>${uaa.dataSource}</resource-env-ref-name>
+        <jndi-name>${uaa.jta-data-source}</jndi-name>
+    </resource-env-ref>
+
+</jboss-web>

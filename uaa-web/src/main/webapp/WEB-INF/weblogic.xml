@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/90         http://www.bea.com/ns/weblogic/90/weblogic-web-app.xsd">
+
+    <!-- 
+    The security-role-assigment declares a mapping between an WebApp
+    security role and one or more principals in the WebLogic server.
+    -->
+    <!--security-role-assignment>
+        <role-name>Administrator</role-name>
+        <principal-name>Administrator</principal-name>
+    </security-role-assignment-->
+
+    <resource-env-description>
+        <resource-env-ref-name>${uaa.dataSource}</resource-env-ref-name>
+        <jndi-name>${uaa.jta-data-source}</jndi-name>
+    </resource-env-description>
+
+    <session-descriptor>
+        <tracking-enabled>true</tracking-enabled>
+        <!--cookie-path>/jms_uaa</cookie-path-->
+    </session-descriptor>
+
+    <jsp-descriptor>
+        <page-check-seconds>-1</page-check-seconds>
+        <precompile>true</precompile>
+        <precompile-continue>true</precompile-continue>
+    </jsp-descriptor>
+
+    <container-descriptor>
+        <!--servlet-reload-check-secs>-1</servlet-reload-check-secs-->
+        <prefer-web-inf-classes>true</prefer-web-inf-classes>
+    </container-descriptor>
+
+    <context-root>/${uaa.context.root}</context-root>
+
+</weblogic-web-app>

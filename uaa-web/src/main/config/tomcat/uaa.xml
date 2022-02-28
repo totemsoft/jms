@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context
+    path="/uaa"
+    reloadable="false"
+    docBase="C:\dev\workspace-3.7\jms\uaa-web\target\uaa-web"
+    workDir="C:\dev\workspace-3.7\jms\uaa-web\work">
+
+<Resource
+    name="jdbc/DataSource_jms_uaa"
+    auth="Container"
+    type="javax.sql.DataSource"
+    maxActive="5" 
+    maxIdle="1" 
+    maxWait="5000"
+    removeAbandoned="true"
+    removeAbandonedTimeout="60"
+    logAbandoned="true"
+    username="jms"
+    password="Passw0rd" 
+    driverClassName="net.sourceforge.jtds.jdbc.Driver"
+    url="jdbc:jtds:sqlserver://localhost:1433/JMS" />
+
+</Context>

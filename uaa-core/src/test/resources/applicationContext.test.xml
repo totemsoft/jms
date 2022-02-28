@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- ========================= PROPERTY DEFINITIONS ==================== -->
+    <bean id="testPropertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:spring/jdbc.test.properties</value>
+            </list>
+        </property>
+        <property name="placeholderPrefix" value="$jdbc{" />
+    </bean>
+
+    <bean id="dataSource"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        p:driverClassName="$jdbc{dataSource.driverClassName}"
+        p:url="$jdbc{dataSource.url}"
+        p:username="$jdbc{dataSource.username}"
+        p:password="$jdbc{dataSource.password}" />
+
+    <!-- ========================= CORE DEFINITIONS ======================== -->
+    <import resource="classpath:au/gov/qld/fire/jms/uaa/spring/spring-inc.xml"/>
+
+</beans>
