@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <form-beans>
+        <form-bean name="jobForm" type="au.gov.qld.fire.jms.web.module.job.JobForm" />
+        <form-bean name="jobDocForm" type="au.gov.qld.fire.jms.web.module.job.JobDocForm" />
+        <form-bean name="jobRequestForm" type="au.gov.qld.fire.jms.web.module.job.JobRequestForm" />
+        <form-bean name="fileActionForm" type="au.gov.qld.fire.jms.web.module.file.FileActionForm" />
+    </form-beans>
+
+    <global-forwards>
+
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/findJob"
+            type="au.gov.qld.fire.jms.web.module.job.JobAction"
+            input="/WEB-INF/module/job/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewJob"
+            name="jobForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobAction"
+            input="/WEB-INF/module/job/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/newJob"
+            name="jobForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobAction"
+            input="/WEB-INF/module/job/new.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editJob"
+            name="jobForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobAction"
+            input="/WEB-INF/module/job/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editJobDetails"
+            name="jobForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobAction"
+            input="/WEB-INF/module/job/jobDetails/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editJobDoc"
+            name="jobForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobDocAction"
+            input="/WEB-INF/module/job/jobDoc/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="jobForm.jobDoc" />
+        </action>
+        <action path="/moveJobDoc"
+            name="jobDocForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobDocAction"
+            input="/WEB-INF/module/job/jobDoc/move.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="moveJobDoc" />
+            <set-property key="validationKey" value="jobDocForm.moveJobDoc" />
+        </action>
+
+        <action path="/editDiary"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/editDiary.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.diary" />
+        </action>
+        <action path="/editCall"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/editCall.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.call" />
+        </action>
+        <action path="/editLetter"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/editLetter.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.letter" />
+        </action>
+        <action path="/editEmail"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/editEmail.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.email" />
+        </action>
+        <action path="/editSMS"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/editSMS.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.sms" />
+        </action>
+        <action path="/editRFI"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/editRFI.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.rfi" />
+        </action>
+        <action path="/closeJob"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/closeJob.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.closeJob" />
+        </action>
+
+        <action path="/addJobAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobActionAction"
+            input="/WEB-INF/module/job/action/addJobAction.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.addJobAction" />
+            <forward name="call" path="/job/editCall.do" redirect="true" />
+            <forward name="diary" path="/job/editDiary.do" redirect="true" />
+            <forward name="email" path="/job/editEmail.do" redirect="true" />
+            <forward name="letter" path="/job/editLetter.do" redirect="true" />
+            <forward name="message" path="/job/editMessage.do" redirect="true" />
+            <forward name="rfi" path="/job/editRFI.do" redirect="true" />
+            <forward name="sms" path="/job/editSMS.do" redirect="true" />
+        </action>
+        <action path="/viewJobAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/viewJobAction.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editJobAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editJobAction.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.completeJobAction" />
+        </action>
+        <action path="/deleteJobAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/deleteJobAction.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/downloadJobAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/findJobRequest"
+            type="au.gov.qld.fire.jms.web.module.job.JobRequestAction"
+            input="/WEB-INF/module/job/request/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewJobRequest"
+            name="jobRequestForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobRequestAction"
+            input="/WEB-INF/module/job/request/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editJobRequest"
+            name="jobRequestForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobRequestAction"
+            input="/WEB-INF/module/job/request/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/acceptJobRequest"
+            name="jobRequestForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobRequestAction"
+            input="/WEB-INF/module/job/request/accept.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="view" />
+        </action>
+        <action path="/rejectJobRequest"
+            name="jobRequestForm"
+            type="au.gov.qld.fire.jms.web.module.job.JobRequestAction"
+            input="/WEB-INF/module/job/request/reject.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="edit" />
+            <set-property key="validationKey" value="jobRequestForm.reject" />
+        </action>
+
+        <action path="/calendarJobAction"
+            type="au.gov.qld.fire.jms.web.module.job.JobCalendarAction"
+            input="/WEB-INF/module/file/jobActionsToDo/calendar.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+    </action-mappings>
+
+    <!-- ======================= RequestProcessor ========================== -->
+    <!-- http://www.jajakarta.org/struts/struts1.2/documentation/ja/src/share/org/apache/struts/config/ControllerConfig.java -->
+    <controller>
+        <set-property property="processorClass"
+            value="au.gov.qld.fire.jms.web.RequestProcessor" />
+        <set-property property="forwardPattern" value="$P" />
+        <!--set-property property="pagePattern" value="$M$P" /-->
+    </controller>
+
+    <!-- ============= Declare applicationResources for this module ======== -->
+    <message-resources key="job" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.job.applicationResources" />
+    <message-resources key="file" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.file.applicationResources" />
+
+    <!-- ============= Declare Validator plugin for this module ============ -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="
+            /org/apache/struts/validator/validator-rules.xml,
+            /WEB-INF/validation/validator-rules.xml,
+            /WEB-INF/module/job/validation/validation.xml" />
+        <set-property property="stopOnFirstError" value="false"/>
+    </plug-in>
+
+</struts-config>

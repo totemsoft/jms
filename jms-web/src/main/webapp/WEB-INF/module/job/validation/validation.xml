@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+    "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+<form-validation>
+
+    <global>
+        <constant>
+            <constant-name>bundle</constant-name>
+            <constant-value>job</constant-value>
+        </constant>
+    </global>
+
+    <formset>
+        <!-- JOB -->
+        <form name="jobForm">
+            <field property="entity.description" depends="required">
+                <arg key="label.job.description" bundle="job" />
+            </field>
+            <field property="entity.jobType.jobTypeId" depends="required">
+                <arg key="label.jobType" />
+            </field>
+            <field property="entity.file.fileId" depends="required">
+                <arg key="label.file" />
+            </field>
+            <field property="entity.requestedEmail" depends="email">
+                <arg key="label.job.requestedEmail" bundle="job" />
+            </field>
+            <field property="entity.link" depends="url">
+                <arg key="label.job.link" bundle="job" />
+            </field>
+        </form>
+
+        <form name="jobForm.jobDoc">
+            <field indexedListProperty="entity.jobDocs" property="docType.docTypeId" depends="required">
+                <arg key="label.jobDoc.docType" bundle="job" />
+            </field>
+            <field indexedListProperty="entity.jobDocs" property="description" depends="required">
+                <arg key="label.jobDoc.description" bundle="job" />
+            </field>
+            <field indexedListProperty="entity.jobDocs" property="location" depends="required">
+                <arg key="label.jobDoc.location" bundle="job" />
+            </field>
+        </form>
+
+        <form name="jobDocForm.moveJobDoc">
+            <field property="moveJobId" depends="validwhen">
+                <arg key="label.jobDoc.moveId" bundle="job" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(moveJobId &gt; 0)</var-value>
+                </var>
+            </field>
+        </form>
+
+
+        <!-- JobAction -->
+        <form name="fileActionForm.completeJobAction" extends="baseActionForm">
+            <field property="jobAction.notation" depends="required">
+                <arg key="label.fileAction.notation" bundle="file" />
+            </field>
+        </form>
+
+
+        <!-- PAGETOOLS -->
+        <form name="baseActionForm">
+            <field indexedListProperty="defaultActions" property="actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <field indexedListProperty="defaultActions" property="dueDate" depends="required">
+                <arg key="label.fileAction.dueDate" bundle="file" />
+            </field>
+            <field indexedListProperty="nextActions" property="actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <field indexedListProperty="nextActions" property="dueDate" depends="required">
+                <arg key="label.fileAction.dueDate" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm" extends="baseActionForm">
+            <field property="jobAction.actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <!--field property="jobAction.notation" depends="required">
+                <arg key="label.fileAction.notation" bundle="file" />
+            </field-->
+        </form>
+
+        <form name="fileActionForm.diary" extends="fileActionForm">
+            <field property="jobAction.notation" depends="required">
+                <arg key="label.fileAction.notation" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.call" extends="fileActionForm">
+            <field property="jobAction.destination" depends="required">
+                <arg key="label.fileAction.destination" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.letter" extends="fileActionForm">
+
+        </form>
+
+        <form name="fileActionForm.email" extends="fileActionForm">
+            <field property="jobAction.subject" depends="required">
+                <arg key="label.fileAction.subject" bundle="file" />
+            </field>
+            <field property="jobAction.destination" depends="required, email">
+                <arg key="label.fileAction.destination" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.sms" extends="fileActionForm">
+            <field property="jobAction.destination" depends="required">
+                <arg key="label.fileAction.destination" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.rfi" extends="fileActionForm">
+
+        </form>
+
+        <form name="fileActionForm.closeJob" extends="fileActionForm">
+
+        </form>
+
+
+        <!-- JOB REQUEST -->
+        <form name="jobRequestForm">
+            <field property="entity.description" depends="required">
+                <arg key="label.jobRequest.description" bundle="job" />
+            </field>
+            <field property="entity.jobType.jobTypeId" depends="required">
+                <arg key="label.jobType" />
+            </field>
+            <field property="entity.fca.fcaId" depends="required">
+                <arg key="label.fca" />
+            </field>
+            <field property="entity.requestedEmail" depends="required, email">
+                <arg key="label.jobRequest.requestedEmail" bundle="job" />
+            </field>
+            <field property="entity.link" depends="url">
+                <arg key="label.jobRequest.link" bundle="job" />
+            </field>
+        </form>
+        <form name="jobRequestForm.reject">
+            <field property="entity.rejectReason" depends="required">
+                <arg key="label.jobRequest.rejectReason" bundle="job" />
+            </field>
+        </form>
+
+    </formset>
+
+</form-validation>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+    "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+<form-validation>
+
+    <global>
+        <constant>
+            <constant-name>bundle</constant-name>
+            <constant-value>user</constant-value>
+        </constant>
+    </global>
+
+    <formset>
+        <form name="userForm" extends="contactForm">
+            <field property="entity.login" depends="required">
+                <arg key="label.user.login" />
+            </field>
+            <field property="entity.userType.userTypeId" depends="required">
+                <arg key="label.user.userType" />
+            </field>
+            <field property="entity.securityGroup.securityGroupId" depends="required">
+                <arg key="label.user.securityGroup" />
+            </field>
+        </form>
+
+        <form name="userForm.changePassword" extends="contactForm">
+
+        </form>
+
+        <form name="staffCalendarForm">
+
+        </form>
+    </formset>
+
+</form-validation>

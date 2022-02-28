@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <form-beans>
+        <form-bean name="archiveForm" type="au.gov.qld.fire.jms.web.module.file.ArchiveForm" />
+        <form-bean name="aseKeyForm" type="au.gov.qld.fire.jms.web.module.file.AseKeyForm" />
+        <form-bean name="aseKeyOrderForm" type="au.gov.qld.fire.jms.web.module.file.AseKeyOrderForm" />
+        <form-bean name="fileForm" type="au.gov.qld.fire.jms.web.module.file.FileForm" />
+        <form-bean name="fileActionForm" type="au.gov.qld.fire.jms.web.module.file.FileActionForm" />
+        <form-bean name="fileAuditForm" type="au.gov.qld.fire.jms.web.module.file.FileAuditForm" />
+        <form-bean name="fileDocForm" type="au.gov.qld.fire.jms.web.module.file.FileDocForm" />
+        <form-bean name="isolationHistoryForm" type="au.gov.qld.fire.jms.web.module.file.IsolationHistoryForm" />
+        <form-bean name="mailInOutForm" type="au.gov.qld.fire.jms.web.module.file.MailForm" />
+        <form-bean name="mailRegisterForm" type="au.gov.qld.fire.jms.web.module.file.MailRegisterForm" />
+        <form-bean name="uaaIncidentForm" type="au.gov.qld.fire.jms.web.module.uaa.UaaIncidentForm" />
+        <form-bean name="uaaInvoiceForm" type="au.gov.qld.fire.jms.web.module.uaa.UaaInvoiceForm" />
+    </form-beans>
+
+    <global-forwards>
+
+    </global-forwards>
+
+    <action-mappings>
+
+        <action path="/error" forward="/WEB-INF/entity/error.jsp" />
+
+        <action path="/findFile"
+            type="au.gov.qld.fire.jms.web.module.file.FileAction"
+            input="/WEB-INF/module/file/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/newFile"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileAction"
+            input="/WEB-INF/module/file/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editFile"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileAction"
+            input="/WEB-INF/module/file/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <forward name="viewFcaDocs" path="/WEB-INF/module/file/fcaDoc/viewFcaDocs.jsp" redirect="false" />
+            <forward name="uploadFile" path="/WEB-INF/module/file/fcaDoc/uploadFile.jsp" redirect="false" />
+        </action>
+
+        <action path="/fileArchive"
+            name="archiveForm"
+            type="au.gov.qld.fire.jms.web.module.file.ArchiveAction"
+            input="/WEB-INF/module/file/archive/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.archiveForm" />
+            <forward name="view" path="/WEB-INF/module/file/archive/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/archive/edit.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/addFileAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/addFileAction.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.addFileAction" />
+            <forward name="call" path="/file/editCall.do?completed=false" redirect="true" />
+            <forward name="diary" path="/file/editDiary.do?completed=false" redirect="true" />
+            <forward name="email" path="/file/editEmail.do?completed=false" redirect="true" />
+            <forward name="letter" path="/file/editLetter.do?completed=false" redirect="true" />
+            <forward name="message" path="/file/editMessage.do?completed=false" redirect="true" />
+            <forward name="rfi" path="/file/editRFI.do?completed=false" redirect="true" />
+            <forward name="sms" path="/file/editSMS.do?completed=false" redirect="true" />
+        </action>
+        <action path="/viewFileAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/viewFileAction.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editFileAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editFileAction.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.completeFileAction" />
+        </action>
+        <action path="/deleteFileAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/deleteFileAction.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/downloadFileAction"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/editBuilding"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.BuildingAction"
+            input="/WEB-INF/module/file/building/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.building" />
+        </action>
+
+        <action path="/editFcaAse"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.FcaAseAction"
+            input="/WEB-INF/module/file/fcaAse/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.fcaAse" />
+        </action>
+
+        <action path="/aseKey"
+            name="aseKeyForm"
+            type="au.gov.qld.fire.jms.web.module.file.AseKeyAction"
+            input="/WEB-INF/module/file/aseKey/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.aseKeyForm" />
+            <forward name="view" path="/WEB-INF/module/file/aseKey/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/aseKey/edit.jsp" redirect="false" />
+            <forward name="detailView" path="/WEB-INF/module/file/aseKey/detailView.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/aseKeyOrder"
+            name="aseKeyOrderForm"
+            type="au.gov.qld.fire.jms.web.module.file.AseKeyOrderAction"
+            input="/WEB-INF/module/file/aseKeyOrder/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.aseKeyOrderForm" />
+            <forward name="view" path="/WEB-INF/module/file/aseKeyOrder/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/aseKeyOrder/edit.jsp" redirect="false" />
+            <forward name="detailView" path="/WEB-INF/module/file/aseKeyOrder/detailView.jsp" redirect="false" />
+            <forward name="editAseKey" path="/WEB-INF/module/file/aseKeyOrder/editAseKey.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/findAseChange"
+            type="au.gov.qld.fire.jms.web.module.file.AseChangeAction"
+            input="/WEB-INF/module/file/aseChange/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewAseChange"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.AseChangeAction"
+            input="/WEB-INF/module/file/aseChange/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editAseChange"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.AseChangeAction"
+            input="/WEB-INF/module/file/aseChange/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.aseChange" />
+        </action>
+        <action path="/calendarAseChange"
+            type="au.gov.qld.fire.jms.web.module.file.AseChangeCalendarAction"
+            input="/WEB-INF/module/file/aseChange/calendar.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/isolation"
+            name="isolationHistoryForm"
+            type="au.gov.qld.fire.jms.web.module.file.IsolationHistoryAction"
+            input="/WEB-INF/module/file/isolation/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.isolationHistoryForm" />
+            <forward name="view" path="/WEB-INF/module/file/isolation/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/isolation/edit.jsp" redirect="false" />
+            <forward name="importData" path="/WEB-INF/module/file/isolation/importData.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/mailOut"
+            name="mailInOutForm"
+            type="au.gov.qld.fire.jms.web.module.file.MailOutAction"
+            input="/WEB-INF/module/file/mailOut/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.mailInOutForm" />
+            <forward name="find" path="/WEB-INF/module/file/mailOut/find.jsp" redirect="false" />
+            <forward name="findBatch" path="/WEB-INF/module/file/mailOut/findBatch.jsp" redirect="false" />
+            <forward name="findBatchFiles" path="/WEB-INF/module/file/mailOut/findBatchFiles.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/mailIn"
+            name="mailInOutForm"
+            type="au.gov.qld.fire.jms.web.module.file.MailInAction"
+            input="/WEB-INF/module/file/mailIn/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.mailInOutForm" />
+            <forward name="find" path="/WEB-INF/module/file/mailIn/find.jsp" redirect="false" />
+            <forward name="findBatchFiles" path="/WEB-INF/module/file/mailIn/findBatchFiles.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/mailRegister"
+            name="mailRegisterForm"
+            type="au.gov.qld.fire.jms.web.module.file.MailRegisterAction"
+            input="/WEB-INF/module/file/mail/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.mailRegisterForm" />
+            <forward name="view" path="/WEB-INF/module/file/mail/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/mail/edit.jsp" redirect="false" />
+            <forward name="editMailOut" path="/WEB-INF/module/file/mail/editMailOut.jsp" redirect="false" />
+            <forward name="editMailIn" path="/WEB-INF/module/file/mail/editMailIn.jsp" redirect="false" />
+            <forward name="editJob" path="/file/editJob.do?dispatch=editJob&amp;todoAction=false" redirect="true" />
+            <forward name="detailView" path="/WEB-INF/module/file/mail/detailView.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/editStationKey"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.StationKeyAction"
+            input="/WEB-INF/module/file/stationKey/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.stationKey" />
+        </action>
+
+        <action path="/editEmergencyContact"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.EmergencyContactAction"
+            input="/WEB-INF/module/file/emergencyContact/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.emergencyContact" />
+        </action>
+
+        <action path="/editAlarmPanel"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.AlarmPanelAction"
+            input="/WEB-INF/module/file/alarmPanel/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.alarmPanel" />
+        </action>
+
+        <action path="/editOwner"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.OwnerAction"
+            input="/WEB-INF/module/file/owner/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.editOwner" />
+        </action>
+
+        <action path="/editMultiSite"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.MultiSiteAction"
+            input="/WEB-INF/module/file/multiSite/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.multiSite" />
+        </action>
+
+        <action path="/editFileDocChkList"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileDocChkListAction"
+            input="/WEB-INF/module/file/fileDocChkList/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.fileDocChkList" />
+        </action>
+
+        <action path="/editFileDoc"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileDocAction"
+            input="/WEB-INF/module/file/fileDoc/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.fileDoc" />
+        </action>
+        <action path="/moveFileDoc"
+            name="fileDocForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileDocAction"
+            input="/WEB-INF/module/file/fileDoc/move.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="moveFileDoc" />
+            <set-property key="validationKey" value="fileDocForm.moveFileDoc" />
+        </action>
+        <action path="/downloadFileDoc"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileDocAction"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/editSapBilling"
+            name="fileForm"
+            type="au.gov.qld.fire.jms.web.module.file.SapBillingAction"
+            input="/WEB-INF/module/file/sapBilling/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.sapBilling" />
+        </action>
+
+        <action path="/findCall"
+            type="au.gov.qld.fire.jms.web.module.file.CallAction"
+            input="/WEB-INF/module/file/call/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/enquiry"
+            type="au.gov.qld.fire.jms.web.module.file.EnquiryAction"
+            input="/WEB-INF/module/file/enquiry/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/editDiary"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editDiary.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editDiary" />
+            <set-property key="validationKey" value="fileActionForm.diary" />
+        </action>
+        <action path="/editCall"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editCall.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editCall" />
+            <set-property key="validationKey" value="fileActionForm.call" />
+        </action>
+        <action path="/editLetter"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editLetter.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editLetter" />
+            <set-property key="validationKey" value="fileActionForm.letter" />
+        </action>
+        <action path="/editEmail"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editEmail.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editEmail" />
+            <set-property key="validationKey" value="fileActionForm.email" />
+            <!-- explicit error.jsp required for miltipart upload handler (to identify error condition) -->
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/editSMS"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editSMS.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editSMS" />
+            <set-property key="validationKey" value="fileActionForm.sms" />
+        </action>
+        <action path="/editRFI"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editRFI.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editRFI" />
+            <set-property key="validationKey" value="fileActionForm.rfi" />
+        </action>
+        <action path="/editFileStatus"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editFileStatus.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="editFileStatus" />
+            <set-property key="validationKey" value="fileActionForm.fileStatus" />
+        </action>
+
+        <action path="/editJob"
+            name="fileActionForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileActionAction"
+            input="/WEB-INF/module/file/action/editJob.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileActionForm.job" />
+        </action>
+
+        <action path="/fileAudit"
+            name="fileAuditForm"
+            type="au.gov.qld.fire.jms.web.module.file.FileAuditAction"
+            input="/WEB-INF/module/file/audit/main.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileAuditForm" />
+        </action>
+
+        <action path="/uaaIncident"
+            name="uaaIncidentForm"
+            type="au.gov.qld.fire.jms.web.module.uaa.UaaIncidentAction"
+            input="/WEB-INF/module/file/uaa/incident/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.uaaIncidentForm" />
+            <forward name="view" path="/WEB-INF/module/file/uaa/incident/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/uaa/incident/edit.jsp" redirect="false" />
+            <forward name="importData" path="/WEB-INF/module/file/uaa/incident/importData.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/uaaInvoice"
+            name="uaaInvoiceForm"
+            type="au.gov.qld.fire.jms.web.module.uaa.UaaInvoiceAction"
+            input="/WEB-INF/module/file/uaa/invoice/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="fileForm.uaaInvoiceForm" />
+            <forward name="view" path="/WEB-INF/module/file/uaa/invoice/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/file/uaa/invoice/edit.jsp" redirect="false" />
+            <forward name="importData" path="/WEB-INF/module/file/uaa/invoice/importData.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+    </action-mappings>
+
+    <!-- ======================= RequestProcessor ========================== -->
+    <!-- http://www.jajakarta.org/struts/struts1.2/documentation/ja/src/share/org/apache/struts/config/ControllerConfig.java -->
+    <controller>
+        <set-property property="processorClass"
+            value="au.gov.qld.fire.jms.web.RequestProcessor" />
+        <set-property property="forwardPattern" value="$P" />
+        <!--set-property property="pagePattern" value="$M$P" /-->
+    </controller>
+
+    <!-- ============= Declare applicationResources for this module ======== -->
+    <message-resources key="file" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.file.applicationResources" />
+    <message-resources key="finance" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.finance.applicationResources" />
+    <message-resources key="fca" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.fca.applicationResources" />
+
+    <!-- ============= Declare Validator plugin for this module ============ -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="
+            /org/apache/struts/validator/validator-rules.xml,
+            /WEB-INF/validation/validator-rules.xml,
+            /WEB-INF/module/file/validation/validation.xml" />
+        <set-property property="stopOnFirstError" value="false"/>
+    </plug-in>
+
+</struts-config>

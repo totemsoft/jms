@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+    "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+<form-validation>
+
+    <global>
+        <constant>
+            <constant-name>bundle</constant-name>
+            <constant-value>user</constant-value>
+        </constant>
+    </global>
+
+    <formset>
+        <form name="userForm.login">
+            <field property="j_username" depends="required">
+                <arg key="label.user.login" />
+            </field>
+            <field property="password" depends="required">
+                <arg key="label.user.password" />
+            </field>
+        </form>
+
+        <form name="contactForm">
+            <field property="contact.salutation.id" depends="required">
+                <arg key="label.contact.salutation" />
+            </field>
+            <field property="contact.firstName" depends="required">
+                <arg key="label.contact.firstName" />
+            </field>
+            <field property="contact.surname" depends="required">
+                <arg key="label.contact.surname" />
+            </field>
+            <field property="contact.email" depends="required, email">
+                <arg key="label.contact.email" />
+            </field>
+            <!--field property="contact.emailConfirm" depends="validwhen">
+                <arg key="label.contact.emailConfirm" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == contact.email)</var-value>
+                </var>
+            </field-->
+        </form>
+        <form name="entityContactForm">
+            <field property="entity.contact.salutation.id" depends="required">
+                <arg key="label.contact.salutation" />
+            </field>
+            <field property="entity.contact.firstName" depends="required">
+                <arg key="label.contact.firstName" />
+            </field>
+            <field property="entity.contact.surname" depends="required">
+                <arg key="label.contact.surname" />
+            </field>
+            <field property="entity.contact.email" depends="required, email">
+                <arg key="label.contact.email" />
+            </field>
+            <!--field property="entity.contact.emailConfirm" depends="validwhen">
+                <arg key="label.contact.emailConfirm" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == contact.email)</var-value>
+                </var>
+            </field-->
+        </form>
+
+        <form name="addressForm">
+            <field property="address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+        </form>
+        <form name="entityAddressForm">
+            <field property="entity.address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="entity.address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="entity.address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+        </form>
+
+        <form name="contactAddressForm" extends="entityContactForm">
+            <field property="address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+        </form>
+        <form name="entityContactAddressForm" extends="entityContactForm">
+            <field property="entity.address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="entity.address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="entity.address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+        </form>
+
+    </formset>
+
+</form-validation>

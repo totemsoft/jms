@@ -1,0 +1,7 @@
+
+  <application-policy name="qfrsLogin">
+    <authentication>
+      <login-module code="au.gov.qld.fire.security.auth.JdbcLoginModule" flag="required">
+      </login-module>
+    </authentication>
+  </application-policy>

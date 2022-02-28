@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+    "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+<form-validation>
+
+    <global>
+        <constant>
+            <constant-name>bundle</constant-name>
+            <constant-value>supplier</constant-value>
+        </constant>
+    </global>
+
+    <formset>
+        <form name="supplierForm">
+            <field property="entity.supplierType.supplierTypeId" depends="required">
+                <arg key="label.supplier.supplierType" bundle="supplier" />
+            </field>
+            <field property="entity.name" depends="required">
+                <arg key="label.supplier.name" bundle="supplier" />
+            </field>
+            <field property="entity.legalName" depends="required">
+                <arg key="label.supplier.legalName" bundle="supplier" />
+            </field>
+            <field property="entity.abn" depends="required">
+                <arg key="label.supplier.abn" bundle="supplier" />
+            </field>
+            <field property="entity.serviceDescription" depends="required">
+                <arg key="label.supplier.serviceDescription" bundle="supplier" />
+            </field>
+
+            <field property="address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+
+            <field property="postAddress.addrLine1" depends="required">
+                <arg key="label.postAddress.addrLine1" />
+            </field>
+            <field property="postAddress.suburb" depends="required">
+                <arg key="label.postAddress.suburb" />
+            </field>
+            <field property="postAddress.state.state" depends="required">
+                <arg key="label.postAddress.state" />
+            </field>
+
+            <field property="contact.salutation.id" depends="required">
+                <arg key="label.contact.salutation" />
+            </field>
+            <field property="contact.firstName" depends="required">
+                <arg key="label.contact.firstName" />
+            </field>
+            <field property="contact.surname" depends="required">
+                <arg key="label.contact.surname" />
+            </field>
+            <field property="contact.email" depends="required, email">
+                <arg key="label.contact.email" />
+            </field>
+            <!--field property="contact.emailConfirm" depends="validwhen">
+                <arg key="label.contact.emailConfirm" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == contact.email)</var-value>
+                </var>
+            </field-->
+
+        </form>
+
+    </formset>
+
+</form-validation>

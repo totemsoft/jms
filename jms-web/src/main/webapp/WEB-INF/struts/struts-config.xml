@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <form-beans>
+        <form-bean name="userForm"
+            type="au.gov.qld.fire.jms.web.module.user.UserForm" />
+        <form-bean name="homepageForm"
+            type="au.gov.qld.fire.jms.web.module.HomepageForm" />
+    </form-beans>
+
+    <global-exceptions>
+    
+    </global-exceptions>
+
+    <global-forwards>
+        <forward name="login" path="/j_security_check.do" />
+        <forward name="homepage" path="/homepage.do" />
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/login" forward="/j_security_check.do" />
+
+        <action path="/error" forward="/WEB-INF/entity/error.jsp" />
+
+        <action path="/j_security_check"
+            name="userForm"
+            type="au.gov.qld.fire.jms.web.LoginAction"
+            input="/login.jsp"
+            scope="request"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="userForm.login" />
+            <forward name="success" path="/homepage.do" redirect="true" />
+            <forward name="changePassword" path="/changePassword.do" redirect="true" />
+        </action>
+
+        <action path="/changePassword"
+            name="userForm"
+            type="au.gov.qld.fire.jms.web.LoginAction"
+            input="/WEB-INF/module/changePassword.jsp"
+            scope="request"
+            validate="false"
+            parameter="dispatch">
+            <forward name="changePassword" path="/user/changePassword.do" redirect="true" />
+        </action>
+
+        <action path="/logout"
+            type="au.gov.qld.fire.jms.web.LoginAction"
+            parameter="dispatch">
+            <forward name="success" path="/j_security_check.do" redirect="true" />
+        </action>
+
+        <action path="/homepage"
+            name="homepageForm"
+            type="au.gov.qld.fire.jms.web.module.HomepageAction"
+            input="/WEB-INF/module/homepage.jsp"
+            scope="request"
+            validate="false">
+        </action>
+
+        <action path="/getHomepage"
+            name="homepageForm"
+            type="au.gov.qld.fire.jms.web.module.HomepageAction"
+            input="/WEB-INF/module/homepage.jsp"
+            scope="request"
+            validate="false">
+        </action>
+
+        <action path="/findFilter"
+            type="au.gov.qld.fire.jms.web.module.FindAction"
+            input="/WEB-INF/entity/findEntityCode.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="labelValue" path="/WEB-INF/entity/labelValue.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+    </action-mappings>
+
+    <!-- ======================= RequestProcessor ========================== -->
+    <controller>
+        <set-property property="processorClass"
+            value="au.gov.qld.fire.jms.web.RequestProcessor" />
+        <!--set-property property="forwardPattern" value="$P" /-->
+        <!--set-property property="pagePattern" value="$M$P" /-->
+    </controller>
+
+    <!-- ===================== Declare applicationResources ================ -->
+    <message-resources null="false"
+        parameter="au.gov.qld.fire.jms.web.applicationResources" />
+
+    <!-- ============= Declare Validator plugin for this module ============ -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="
+            /org/apache/struts/validator/validator-rules.xml,
+            /WEB-INF/validation/validation.xml" />
+        <set-property property="stopOnFirstError" value="false"/>
+    </plug-in>
+
+    <!-- ======================= Spring plugin ========================== -->
+    <!--plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+        <set-property property="contextConfigLocation" value="/WEB-INF/struts/spring-inc-struts.xml" />
+    </plug-in-->
+
+</struts-config>

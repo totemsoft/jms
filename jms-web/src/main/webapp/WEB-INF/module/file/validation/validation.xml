@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+    "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+<form-validation>
+
+    <global>
+        <constant>
+            <constant-name>bundle</constant-name>
+            <constant-value>file</constant-value>
+        </constant>
+        <constant>
+            <constant-name>DESCRIPTION</constant-name>
+            <constant-value>1024</constant-value>
+        </constant>
+        <constant>
+            <constant-name>USAGE</constant-name>
+            <constant-value>1024</constant-value>
+        </constant>
+        <constant>
+            <constant-name>CONTENT_LENGTH</constant-name>
+            <constant-value>1024</constant-value>
+        </constant>
+    </global>
+
+    <formset>
+        <form name="fileForm" extends="contactForm">
+
+        </form>
+
+        <form name="fileForm.building">
+            <field property="building.address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="building.address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="building.address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+            <field property="building.description" depends="maxlength">
+                <arg key="label.building.description" bundle="file" />
+                <arg key="${var:maxlength}" name="maxlength" resource="false" />
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>${DESCRIPTION}</var-value>
+                </var>
+            </field>
+            <field property="building.usage" depends="maxlength">
+                <arg key="label.building.usage" bundle="file" />
+                <arg key="${var:maxlength}" name="maxlength" resource="false" />
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>${USAGE}</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="fileForm.editOwner">
+            <field property="editOwner.contact.salutation.id" depends="required">
+                <arg key="label.contact.salutation" />
+            </field>
+            <field property="editOwner.contact.firstName" depends="required">
+                <arg key="label.contact.firstName" />
+            </field>
+            <field property="editOwner.contact.surname" depends="required">
+                <arg key="label.contact.surname" />
+            </field>
+            <field property="editOwner.contact.email" depends="required, email">
+                <arg key="label.contact.email" />
+            </field>
+            <!--field property="editOwner.contact.emailConfirm" depends="validwhen">
+                <arg key="label.contact.emailConfirm" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* == editOwner.contact.email)</var-value>
+                </var>
+            </field-->
+            <field property="editOwner.address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="editOwner.address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="editOwner.address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+        </form>
+
+        <form name="fileForm.multiSite">
+            <field property="parent.value" depends="validwhen">
+                <arg key="label.file.parent" bundle="file" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* != entity.fca.id)</var-value>
+                </var>
+            </field>
+            <field indexedListProperty="children" property="value" depends="required, validwhen">
+                <arg key="label.file.children" bundle="file" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(*this* != entity.fca.id)</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="fileForm.fcaAse">
+            <field property="entity.aseFile.aseSerialNo" depends="required">
+                <arg key="label.aseFile.aseSerialNo" bundle="file" />
+            </field>
+            <field property="entity.aseFile.aseType.aseTypeId" depends="required">
+                <arg key="label.aseFile.aseType" bundle="file" />
+            </field>
+            <field property="entity.aseFile.aseConn.aseConnType.aseConnTypeId" depends="required">
+                <arg key="label.aseConn.primary" bundle="file" />
+            </field>
+            <field property="entity.aseFile.aseConn.priRef" depends="required">
+                <arg key="label.aseConn.primary" bundle="file" />
+            </field>
+            <field property="entity.aseFile.aseConn.secAseConnType.aseConnTypeId" depends="required">
+                <arg key="label.aseConn.secondary" bundle="file" />
+            </field>
+            <field property="entity.aseFile.aseConn.secRef" depends="required">
+                <arg key="label.aseConn.secondary" bundle="file" />
+            </field>
+            <!--field property="entity.aseFile.supplier.supplierId" depends="required">
+                <arg key="label.aseFile.supplier" bundle="file" />
+            </field-->
+        </form>
+
+        <form name="fileForm.aseChange">
+            <field property="entity.aseFile.createdDate" depends="required">
+                <arg key="label.aseFile" bundle="file" />
+            </field>
+            <field property="aseDateChange" depends="required">
+                <arg key="label.date" />
+            </field>
+            <field property="aseTimeChange" depends="required">
+                <arg key="label.time" />
+            </field>
+            <field indexedListProperty="aseInstallationAseChangeSuppliers" property="supplier.supplierId" depends="required">
+                <arg key="label.supplier" />
+            </field>
+            <field indexedListProperty="aseInstallationAseChangeSuppliers" property="aseConnType.aseConnTypeId" depends="required">
+                <arg key="label.aseConnType" />
+            </field>
+            <field indexedListProperty="aseInstallationAseChangeSuppliers" property="notation" depends="required">
+                <arg key="label.aseChangeSupplier.notation" bundle="file" />
+            </field>
+            <field indexedListProperty="telcoAseChangeSuppliers" property="supplier.supplierId" depends="required">
+                <arg key="label.supplier" />
+            </field>
+            <field indexedListProperty="telcoAseChangeSuppliers" property="aseConnType.aseConnTypeId" depends="required">
+                <arg key="label.aseConnType" />
+            </field>
+            <field indexedListProperty="telcoAseChangeSuppliers" property="notation" depends="required">
+                <arg key="label.aseChangeSupplier.notation" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileForm.aseKeyForm">
+            <field property="entity.aseKeyNo" depends="required">
+                <arg key="label.aseKey.aseKeyNo" bundle="file" />
+            </field>
+            <field property="entity.supplier.supplierId" depends="required">
+                <arg key="label.aseKey.supplier" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileForm.aseKeyOrderForm">
+            <field property="entity.supplier.supplierId" depends="required">
+                <arg key="label.aseKeyOrder.supplier" bundle="file" />
+            </field>
+
+            <field property="entity.contact.firstName" depends="required">
+                <arg key="label.contact.firstName" />
+            </field>
+            <field property="entity.contact.surname" depends="required">
+                <arg key="label.contact.surname" />
+            </field>
+
+            <field property="entity.address.addrLine1" depends="required">
+                <arg key="label.address.addrLine1" />
+            </field>
+            <field property="entity.address.suburb" depends="required">
+                <arg key="label.address.suburb" />
+            </field>
+            <field property="entity.address.state.state" depends="required">
+                <arg key="label.address.state" />
+            </field>
+        </form>
+
+        <form name="fileForm.mailRegisterForm">
+            <field property="entity.mailType.mailTypeId" depends="required">
+                <arg key="label.mail.mailType" bundle="file" />
+            </field>
+
+            <field property="entity.contact.salutation.id" depends="validwhen">
+                <arg key="label.contact.salutation" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+            <field property="entity.contact.salutation.id" depends="validwhen">
+                <arg key="label.contact.salutation" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+            <field property="entity.contact.firstName" depends="validwhen">
+                <arg key="label.contact.firstName" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+            <field property="entity.contact.surname" depends="validwhen">
+                <arg key="label.contact.surname" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+
+            <field property="entity.address.addrLine1" depends="validwhen">
+                <arg key="label.address.addrLine1" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+            <field property="entity.address.suburb" depends="validwhen">
+                <arg key="label.address.suburb" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+            <field property="entity.address.state.state" depends="validwhen">
+                <arg key="label.address.state" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or ((entity.mailIn == 'false') and (fileOwner == 'true')))</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="fileForm.stationKey">
+            <field property="entity.building.id" depends="required">
+                <arg key="label.building" bundle="file" />
+            </field>
+            <field property="entity.keyReceipt.keyReceiptNo" depends="required">
+                <arg key="label.keyReceipt" bundle="file" />
+            </field>
+
+            <field indexedListProperty="entity.keyRegs" property="keyNo" depends="required">
+                <arg key="label.keyReg.keyNo" bundle="file" />
+            </field>
+            <field indexedListProperty="entity.keyRegs" property="ownerKeyId" depends="required">
+                <arg key="label.keyReg.ownerKeyId" bundle="file" />
+            </field>
+            <field indexedListProperty="entity.keyRegs" property="lockType" depends="required">
+                <arg key="label.keyReg.lockType" bundle="file" />
+            </field>
+            <field indexedListProperty="entity.keyRegs" property="lockLocation" depends="required">
+                <arg key="label.keyReg.lockLocation" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileForm.emergencyContact">
+            <field indexedListProperty="ownerBuildingContacts" property="contact.salutationTitle" depends="required">
+                <arg key="label.contact.salutation" />
+            </field>
+            <field indexedListProperty="ownerBuildingContacts" property="contact.firstName" depends="required">
+                <arg key="label.contact.firstName" />
+            </field>
+            <field indexedListProperty="ownerBuildingContacts" property="contact.surname" depends="required">
+                <arg key="label.contact.surname" />
+            </field>
+            <!--field indexedListProperty="ownerBuildingContacts" property="contact.phone" depends="required">
+                <arg key="label.contact.phone" />
+            </field>
+            <field indexedListProperty="ownerBuildingContacts" property="contact.mobile" depends="required">
+                <arg key="label.contact.phone" />
+            </field-->
+            <!--field indexedListProperty="ownerBuildingContacts" property="contact.mobile" depends="validwhen">
+                <arg key="label.contact.mobile" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (this.active == 'false'))</var-value>
+                </var>
+            </field-->
+        </form>
+
+        <form name="fileForm.alarmPanel">
+            <field property="entity.alarmPanel.supplier.supplierId" depends="required">
+                <arg key="label.alarmPanel.supplier" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileForm.fileDocChkList">
+
+        </form>
+
+        <form name="fileForm.fileDoc">
+            <field indexedListProperty="entity.fileDocs" property="docType.docTypeId" depends="required">
+                <arg key="label.fileDoc.docType" bundle="file" />
+            </field>
+            <field indexedListProperty="entity.fileDocs" property="description" depends="required">
+                <arg key="label.fileDoc.description" bundle="file" />
+            </field>
+            <field indexedListProperty="entity.fileDocs" property="location" depends="required">
+                <arg key="label.fileDoc.location" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileDocForm.moveFileDoc">
+            <field property="moveFileId" depends="validwhen">
+                <arg key="label.fileDoc.moveId" bundle="file" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* &gt; 0) or (moveFcaId &gt; 0))</var-value>
+                </var>
+            </field>
+        </form>
+
+
+        <!-- FileAction -->
+        <form name="fileActionForm.completeFileAction" extends="baseActionForm">
+            <field property="entity.notation" depends="required">
+                <arg key="label.fileAction.notation" bundle="file" />
+            </field>
+            <field property="entity.subject" depends="validwhen">
+                <arg key="label.fileAction.subject" bundle="file" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (entity.actionCode.actionType.email == 'false'))</var-value>
+                </var>
+            </field>
+            <field property="entity.destination" depends="validwhen">
+                <arg key="label.fileAction.destination" bundle="file" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (entity.actionCode.actionType.email == 'false'))</var-value>
+                </var>
+            </field>
+        </form>
+
+
+        <!-- PAGETOOLS -->
+        <form name="baseActionForm">
+            <field property="fileId" depends="required">
+                <arg key="label.file" />
+            </field>
+            <!--field property="entity.file.fileId" depends="required">
+                <arg key="label.file" />
+            </field-->
+            <field indexedListProperty="defaultActions" property="actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <field indexedListProperty="defaultActions" property="dueDate" depends="required">
+                <arg key="label.fileAction.dueDate" bundle="file" />
+            </field>
+            <field indexedListProperty="nextActions" property="actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <field indexedListProperty="nextActions" property="dueDate" depends="required">
+                <arg key="label.fileAction.dueDate" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm" extends="baseActionForm">
+            <field property="entity.actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <!--field property="entity.notation" depends="required">
+                <arg key="label.fileAction.notation" bundle="file" />
+            </field-->
+        </form>
+
+        <form name="fileActionForm.diary" extends="fileActionForm">
+            <field property="entity.notation" depends="required">
+                <arg key="label.fileAction.notation" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.call" extends="fileActionForm">
+            <field property="entity.destination" depends="required">
+                <arg key="label.fileAction.destination" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.letter" extends="fileActionForm">
+
+        </form>
+
+        <form name="fileActionForm.email" extends="fileActionForm">
+            <field property="entity.subject" depends="required">
+                <arg key="label.fileAction.subject" bundle="file" />
+            </field>
+            <field property="entity.destination" depends="required, email">
+                <arg key="label.fileAction.destination" bundle="file" />
+            </field>
+            <field indexedListProperty="attachments" property="contentLength" depends="maxlength">
+                <arg key="label.attachment.contentLength" />
+                <arg key="${var:maxlength}" name="maxlength" resource="false" />
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>${CONTENT_LENGTH}</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="fileActionForm.sms" extends="fileActionForm">
+            <field property="entity.destination" depends="required">
+                <arg key="label.fileAction.destination" bundle="file" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.rfi" extends="fileActionForm">
+
+        </form>
+
+        <form name="fileActionForm.fileStatus" extends="fileActionForm">
+            <field property="entity.file.fileStatus.fileStatusId" depends="required">
+                <arg key="label.fileStatus" />
+            </field>
+        </form>
+
+        <form name="fileActionForm.job" extends="baseActionForm">
+            <field property="jobAction.actionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" />
+            </field>
+            <field property="jobAction.job.jobType.jobTypeId" depends="required">
+                <arg key="label.jobType" />
+            </field>
+            <field property="jobAction.job.description" depends="required">
+                <arg key="label.job.description" bundle="file" />
+            </field>
+            <field property="jobAction.job.fca" depends="validwhen">
+                <arg key="label.fca.id" bundle="fca" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (file.fca.fcaId != null))</var-value>
+                </var>
+            </field>
+            <!--field property="jobAction.notation" depends="required">
+                <arg key="label.jobAction.notation" bundle="file" />
+            </field-->
+        </form>
+
+    </formset>
+
+</form-validation>

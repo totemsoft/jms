@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <form-beans>
+        <form-bean name="actionCodeForm" type="au.gov.qld.fire.jms.web.module.setup.ActionCodeForm" />
+        <form-bean name="actionOutcomeForm" type="au.gov.qld.fire.jms.web.module.setup.ActionOutcomeForm" />
+        <form-bean name="actionWorkflowForm" type="au.gov.qld.fire.jms.web.module.setup.ActionWorkflowForm" />
+        <form-bean name="areaForm" type="au.gov.qld.fire.jms.web.module.setup.AreaForm" />
+        <form-bean name="buildingClassificationForm" type="au.gov.qld.fire.jms.web.module.setup.BuildingClassificationForm" />
+        <form-bean name="cacheForm" type="au.gov.qld.fire.jms.web.module.setup.CacheForm" />
+        <form-bean name="databaseForm" type="au.gov.qld.fire.jms.web.module.setup.DatabaseForm" />
+        <form-bean name="docChkListForm" type="au.gov.qld.fire.jms.web.module.setup.DocChkListForm" />
+        <form-bean name="docTypeForm" type="au.gov.qld.fire.jms.web.module.setup.DocTypeForm" />
+        <form-bean name="fileStatusForm" type="au.gov.qld.fire.jms.web.module.setup.FileStatusForm" />
+        <form-bean name="jobTypeForm" type="au.gov.qld.fire.jms.web.module.setup.JobTypeForm" />
+        <form-bean name="aseTypeForm" type="au.gov.qld.fire.jms.web.module.setup.AseTypeForm" />
+        <form-bean name="aseConnTypeForm" type="au.gov.qld.fire.jms.web.module.setup.AseConnTypeForm" />
+        <form-bean name="mailTypeForm" type="au.gov.qld.fire.jms.web.module.setup.MailTypeForm" />
+        <form-bean name="regionForm" type="au.gov.qld.fire.jms.web.module.setup.RegionForm" />
+        <form-bean name="salutationForm" type="au.gov.qld.fire.jms.web.module.setup.SalutationForm" />
+        <form-bean name="scheduledTaskForm" type="au.gov.qld.fire.jms.web.module.setup.ScheduledTaskForm" />
+        <form-bean name="securityGroupForm" type="au.gov.qld.fire.jms.web.module.setup.SecurityGroupForm" />
+        <form-bean name="systemFunctionForm" type="au.gov.qld.fire.jms.web.module.setup.SystemFunctionForm" />
+        <form-bean name="siteTypeForm" type="au.gov.qld.fire.jms.web.module.setup.SiteTypeForm" />
+        <form-bean name="stakeholderForm" type="au.gov.qld.fire.jms.web.module.setup.StakeholderForm" />
+        <form-bean name="stakeholderTypeForm" type="au.gov.qld.fire.jms.web.module.setup.StakeholderTypeForm" />
+        <form-bean name="stateForm" type="au.gov.qld.fire.jms.web.module.setup.StateForm" />
+        <form-bean name="stationForm" type="au.gov.qld.fire.jms.web.module.setup.StationForm" />
+        <form-bean name="supplierTypeForm" type="au.gov.qld.fire.jms.web.module.setup.SupplierTypeForm" />
+        <form-bean name="templateForm" type="au.gov.qld.fire.jms.web.module.setup.TemplateForm" />
+        <form-bean name="userTypeForm" type="au.gov.qld.fire.jms.web.module.setup.UserTypeForm" />
+        <form-bean name="workGroupForm" type="au.gov.qld.fire.jms.web.module.setup.WorkGroupForm" />
+    </form-beans>
+
+    <global-forwards>
+
+    </global-forwards>
+
+    <action-mappings>
+
+        <action path="/getSetup"
+            type="au.gov.qld.fire.jms.web.module.setup.SetupAction"
+            input="/WEB-INF/module/setup/getSetup.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findActionCode"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionCodeAction"
+            input="/WEB-INF/module/setup/actionCode/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewActionCode"
+            name="actionCodeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionCodeAction"
+            input="/WEB-INF/module/setup/actionCode/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editActionCode"
+            name="actionCodeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionCodeAction"
+            input="/WEB-INF/module/setup/actionCode/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findActionOutcome"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionOutcomeAction"
+            input="/WEB-INF/module/setup/actionOutcome/find.jsp"
+            validate="false" 
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewActionOutcome"
+            name="actionOutcomeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionOutcomeAction"
+            input="/WEB-INF/module/setup/actionOutcome/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editActionOutcome"
+            name="actionOutcomeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionOutcomeAction"
+            input="/WEB-INF/module/setup/actionOutcome/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findActionWorkflow"
+            name="actionWorkflowForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionWorkflowAction"
+            input="/WEB-INF/module/setup/actionWorkflow/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewActionWorkflow"
+            name="actionWorkflowForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionWorkflowAction"
+            input="/WEB-INF/module/setup/actionWorkflow/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <!-- has 1..N steps before commit, so form has to be session bound -->
+        <action path="/editActionWorkflow"
+            name="actionWorkflowForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ActionWorkflowAction"
+            input="/WEB-INF/module/setup/actionWorkflow/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/cache"
+            name="cacheForm"
+            type="au.gov.qld.fire.jms.web.module.setup.CacheAction"
+            input="/WEB-INF/module/setup/cache/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="find" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/database"
+            name="databaseForm"
+            type="au.gov.qld.fire.jms.web.module.setup.DatabaseAction"
+            input="/WEB-INF/module/setup/database/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="find" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/findUserType"
+            type="au.gov.qld.fire.jms.web.module.setup.UserTypeAction"
+            input="/WEB-INF/module/setup/userType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewUserType"
+            name="userTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.UserTypeAction"
+            input="/WEB-INF/module/setup/userType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editUserType"
+            name="userTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.UserTypeAction"
+            input="/WEB-INF/module/setup/userType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findSecurityGroup"
+            type="au.gov.qld.fire.jms.web.module.setup.SecurityGroupAction"
+            input="/WEB-INF/module/setup/securityGroup/find.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/viewSecurityGroup"
+            name="securityGroupForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SecurityGroupAction"
+            input="/WEB-INF/module/setup/securityGroup/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editSecurityGroup"
+            name="securityGroupForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SecurityGroupAction"
+            input="/WEB-INF/module/setup/securityGroup/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/systemFunction"
+            name="systemFunctionForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SystemFunctionAction"
+            input="/WEB-INF/module/setup/systemFunction/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="find" />
+            <forward name="view" path="/WEB-INF/module/setup/systemFunction/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/setup/systemFunction/edit.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/findWorkGroup"
+            type="au.gov.qld.fire.jms.web.module.setup.WorkGroupAction"
+            input="/WEB-INF/module/setup/workGroup/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewWorkGroup"
+            name="workGroupForm"
+            type="au.gov.qld.fire.jms.web.module.setup.WorkGroupAction"
+            input="/WEB-INF/module/setup/workGroup/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editWorkGroup"
+            name="workGroupForm"
+            type="au.gov.qld.fire.jms.web.module.setup.WorkGroupAction"
+            input="/WEB-INF/module/setup/workGroup/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findTemplate"
+            type="au.gov.qld.fire.jms.web.module.setup.TemplateAction"
+            input="/WEB-INF/module/setup/template/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="find" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewTemplate"
+            name="templateForm"
+            type="au.gov.qld.fire.jms.web.module.setup.TemplateAction"
+            input="/WEB-INF/module/setup/template/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editTemplate"
+            name="templateForm"
+            type="au.gov.qld.fire.jms.web.module.setup.TemplateAction"
+            input="/WEB-INF/module/setup/template/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+            <!-- explicit error.jsp required for miltipart upload handler (to identify error condition) -->
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/helpTemplate"
+            type="au.gov.qld.fire.jms.web.module.setup.TemplateAction"
+            input="/WEB-INF/entity/help/view.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="help" />
+        </action>
+        <action path="/downloadTemplate"
+            name="templateForm"
+            type="au.gov.qld.fire.jms.web.module.setup.TemplateAction"
+            input="/WEB-INF/module/setup/template/view.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="download" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/downloadDocument"
+            name="templateForm"
+            type="au.gov.qld.fire.jms.web.module.setup.TemplateAction"
+            input="/WEB-INF/module/setup/template/view.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="downloadDocument" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/findDocChkList"
+            type="au.gov.qld.fire.jms.web.module.setup.DocChkListAction"
+            input="/WEB-INF/module/setup/docChkList/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+       </action>
+        <action path="/viewDocChkList"
+            name="docChkListForm"
+            type="au.gov.qld.fire.jms.web.module.setup.DocChkListAction"
+            input="/WEB-INF/module/setup/docChkList/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editDocChkList"
+            name="docChkListForm"
+            type="au.gov.qld.fire.jms.web.module.setup.DocChkListAction"
+            input="/WEB-INF/module/setup/docChkList/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findDocType"
+            type="au.gov.qld.fire.jms.web.module.setup.DocTypeAction"
+            input="/WEB-INF/module/setup/docType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewDocType"
+            name="docTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.DocTypeAction"
+            input="/WEB-INF/module/setup/docType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editDocType"
+            name="docTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.DocTypeAction"
+            input="/WEB-INF/module/setup/docType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findRegion"
+            type="au.gov.qld.fire.jms.web.module.setup.RegionAction"
+            input="/WEB-INF/module/setup/region/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewRegion"
+            name="regionForm"
+            type="au.gov.qld.fire.jms.web.module.setup.RegionAction"
+            input="/WEB-INF/module/setup/region/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editRegion"
+            name="regionForm"
+            type="au.gov.qld.fire.jms.web.module.setup.RegionAction"
+            input="/WEB-INF/module/setup/region/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findArea"
+            type="au.gov.qld.fire.jms.web.module.setup.AreaAction"
+            input="/WEB-INF/module/setup/area/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewArea"
+            name="areaForm"
+            type="au.gov.qld.fire.jms.web.module.setup.AreaAction"
+            input="/WEB-INF/module/setup/area/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editArea"
+            name="areaForm"
+            type="au.gov.qld.fire.jms.web.module.setup.AreaAction"
+            input="/WEB-INF/module/setup/area/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findStation"
+            type="au.gov.qld.fire.jms.web.module.setup.StationAction"
+            input="/WEB-INF/module/setup/station/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewStation"
+            name="stationForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StationAction"
+            input="/WEB-INF/module/setup/station/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editStation"
+            name="stationForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StationAction"
+            input="/WEB-INF/module/setup/station/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findBuildingClassification"
+            type="au.gov.qld.fire.jms.web.module.setup.BuildingClassificationAction"
+            input="/WEB-INF/module/setup/buildingClassification/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewBuildingClassification"
+            name="buildingClassificationForm"
+            type="au.gov.qld.fire.jms.web.module.setup.BuildingClassificationAction"
+            input="/WEB-INF/module/setup/buildingClassification/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editBuildingClassification"
+            name="buildingClassificationForm"
+            type="au.gov.qld.fire.jms.web.module.setup.BuildingClassificationAction"
+            input="/WEB-INF/module/setup/buildingClassification/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findSiteType"
+            type="au.gov.qld.fire.jms.web.module.setup.SiteTypeAction"
+            input="/WEB-INF/module/setup/siteType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewSiteType"
+            name="siteTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SiteTypeAction"
+            input="/WEB-INF/module/setup/siteType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editSiteType"
+            name="siteTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SiteTypeAction"
+            input="/WEB-INF/module/setup/siteType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/mailType"
+            name="mailTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.MailTypeAction"
+            input="/WEB-INF/module/setup/mailType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="validationKey" value="mailTypeForm" />
+            <forward name="view" path="/WEB-INF/module/setup/mailType/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/setup/mailType/edit.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/findStakeholder"
+            type="au.gov.qld.fire.jms.web.module.setup.StakeholderAction"
+            input="/WEB-INF/module/setup/stakeholder/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewStakeholder"
+            name="stakeholderForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StakeholderAction"
+            input="/WEB-INF/module/setup/stakeholder/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editStakeholder"
+            name="stakeholderForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StakeholderAction"
+            input="/WEB-INF/module/setup/stakeholder/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findStakeholderType"
+            type="au.gov.qld.fire.jms.web.module.setup.StakeholderTypeAction"
+            input="/WEB-INF/module/setup/stakeholderType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewStakeholderType"
+            name="stakeholderTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StakeholderTypeAction"
+            input="/WEB-INF/module/setup/stakeholderType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editStakeholderType"
+            name="stakeholderTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StakeholderTypeAction"
+            input="/WEB-INF/module/setup/stakeholderType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findSupplierType"
+            type="au.gov.qld.fire.jms.web.module.setup.SupplierTypeAction"
+            input="/WEB-INF/module/setup/supplierType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewSupplierType"
+            name="supplierTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SupplierTypeAction"
+            input="/WEB-INF/module/setup/supplierType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editSupplierType"
+            name="supplierTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SupplierTypeAction"
+            input="/WEB-INF/module/setup/supplierType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findAseType"
+            type="au.gov.qld.fire.jms.web.module.setup.AseTypeAction"
+            input="/WEB-INF/module/setup/aseType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewAseType"
+            name="aseTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.AseTypeAction"
+            input="/WEB-INF/module/setup/aseType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editAseType"
+            name="aseTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.AseTypeAction"
+            input="/WEB-INF/module/setup/aseType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findAseConnType"
+            type="au.gov.qld.fire.jms.web.module.setup.AseConnTypeAction"
+            input="/WEB-INF/module/setup/aseConnType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewAseConnType"
+            name="aseConnTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.AseConnTypeAction"
+            input="/WEB-INF/module/setup/aseConnType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editAseConnType"
+            name="aseConnTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.AseConnTypeAction"
+            input="/WEB-INF/module/setup/aseConnType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findSalutation"
+            type="au.gov.qld.fire.jms.web.module.setup.SalutationAction"
+            input="/WEB-INF/module/setup/salutation/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewSalutation"
+            name="salutationForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SalutationAction"
+            input="/WEB-INF/module/setup/salutation/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editSalutation"
+            name="salutationForm"
+            type="au.gov.qld.fire.jms.web.module.setup.SalutationAction"
+            input="/WEB-INF/module/setup/salutation/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findState"
+            type="au.gov.qld.fire.jms.web.module.setup.StateAction"
+            input="/WEB-INF/module/setup/state/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewState"
+            name="stateForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StateAction"
+            input="/WEB-INF/module/setup/state/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editState"
+            name="stateForm"
+            type="au.gov.qld.fire.jms.web.module.setup.StateAction"
+            input="/WEB-INF/module/setup/state/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findFileStatus"
+            type="au.gov.qld.fire.jms.web.module.setup.FileStatusAction"
+            input="/WEB-INF/module/setup/fileStatus/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewFileStatus"
+            name="fileStatusForm"
+            type="au.gov.qld.fire.jms.web.module.setup.FileStatusAction"
+            input="/WEB-INF/module/setup/fileStatus/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editFileStatus"
+            name="fileStatusForm"
+            type="au.gov.qld.fire.jms.web.module.setup.FileStatusAction"
+            input="/WEB-INF/module/setup/fileStatus/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/findJobType"
+            type="au.gov.qld.fire.jms.web.module.setup.JobTypeAction"
+            input="/WEB-INF/module/setup/jobType/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewJobType"
+            name="jobTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.JobTypeAction"
+            input="/WEB-INF/module/setup/jobType/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <action path="/editJobType"
+            name="jobTypeForm"
+            type="au.gov.qld.fire.jms.web.module.setup.JobTypeAction"
+            input="/WEB-INF/module/setup/jobType/edit.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+        <action path="/scheduledTask"
+            name="scheduledTaskForm"
+            type="au.gov.qld.fire.jms.web.module.setup.ScheduledTaskAction"
+            input="/WEB-INF/module/setup/task/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <set-property key="dispatch" value="find" />
+            <forward name="view" path="/WEB-INF/module/setup/task/view.jsp" redirect="false" />
+            <forward name="edit" path="/WEB-INF/module/setup/task/edit.jsp" redirect="false" />
+            <forward name="importData" path="/WEB-INF/module/setup/task/importData.jsp" redirect="false" />
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+    </action-mappings>
+
+    <!-- ======================= RequestProcessor ========================== -->
+    <!-- http://www.jajakarta.org/struts/struts1.2/documentation/ja/src/share/org/apache/struts/config/ControllerConfig.java -->
+    <controller>
+        <set-property property="processorClass"
+            value="au.gov.qld.fire.jms.web.RequestProcessor" />
+        <set-property property="forwardPattern" value="$P" />
+        <!--set-property property="pagePattern" value="$M$P" /-->
+    </controller>
+
+    <!-- ============= Declare applicationResources for this module ======== -->
+    <message-resources key="setup" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.setup.applicationResources" />
+
+    <!-- ============= Declare Validator plugin for this module ============ -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="
+            /org/apache/struts/validator/validator-rules.xml,
+            /WEB-INF/validation/validator-rules.xml,
+            /WEB-INF/validation/validation.xml,
+            /WEB-INF/module/setup/validation/validation.xml" />
+        <set-property property="stopOnFirstError" value="false"/>
+    </plug-in>
+
+</struts-config>

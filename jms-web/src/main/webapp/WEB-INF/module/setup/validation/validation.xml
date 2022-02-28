@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE form-validation PUBLIC
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+    "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+<form-validation>
+
+    <global>
+        <constant>
+            <constant-name>bundle</constant-name>
+            <constant-value>setup</constant-value>
+        </constant>
+    </global>
+
+    <formset>
+        <form name="actionCodeForm">
+            <field property="entity.code" depends="required">
+                <arg key="label.actionCode.code" bundle="setup" />
+            </field>
+            <field property="entity.code" depends="maxlength">
+                <arg key="label.actionCode.code" bundle="setup" />
+                <arg key="${var:maxlength}" name="maxlength" resource="false" />
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>64</var-value>
+                </var>
+            </field>
+            <field property="entity.notation" depends="required">
+                <arg key="label.actionCode.notation" bundle="setup" />
+            </field>
+            <field property="entity.notation" depends="maxlength">
+                <arg key="label.actionCode.notation" bundle="setup" />
+                <arg key="${var:maxlength}" name="maxlength" resource="false" />
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>255</var-value>
+                </var>
+            </field>
+            <field property="entity.actionType.actionTypeId" depends="required">
+                <arg key="label.actionType" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="actionOutcomeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.actionOutcome.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="actionWorkflowForm">
+            <field indexedListProperty="actionWorkflows" property="nextActionCode.actionCodeId" depends="required">
+                <arg key="label.actionCode" bundle="setup" />
+            </field>
+            <!--field indexedListProperty="actionWorkflows" property="nextDueDays" depends="required">
+                <arg key="label.actionWorkflow.nextDueDays" bundle="setup" />
+            </field-->
+        </form>
+
+        <form name="userTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.userType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="scheduledTaskForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.scheduledTask.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="securityGroupForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.securityGroup.name" bundle="setup" />
+            </field>
+            <field property="entity.description" depends="required">
+                <arg key="label.securityGroup.description" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="workGroupForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.workGroup.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="templateForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.template.name" bundle="setup" />
+            </field>
+            <field property="entity.templateType.templateTypeId" depends="required">
+                <arg key="label.templateType" bundle="setup" />
+            </field>
+            <field property="entity.code" depends="maxlength">
+                <arg key="label.template.code" bundle="setup" />
+                <arg key="${var:maxlength}" name="maxlength" resource="false" />
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>50</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="docTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.docType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="docChkListForm">
+            <field property="entity.template.templateId" depends="required">
+                <arg key="label.docChkList.template" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="fcaForm">
+            <field property="entity.fcaId" depends="required">
+                <arg key="label.fca.id" bundle="fca" />
+            </field>
+        </form>
+
+        <form name="regionForm" extends="entityContactAddressForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.region.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="areaForm" extends="entityContactAddressForm">
+            <field property="entity.areaId" depends="required">
+                <arg key="label.area.areaId" bundle="setup" />
+            </field>
+            <field property="entity.name" depends="required">
+                <arg key="label.area.name" bundle="setup" />
+            </field>
+            <field property="entity.region.regionId" depends="required">
+                <arg key="label.region" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="stationForm" extends="entityContactAddressForm">
+            <field property="entity.stationId" depends="required">
+                <arg key="label.station.stationId" bundle="setup" />
+            </field>
+            <field property="entity.name" depends="required">
+                <arg key="label.station.name" bundle="setup" />
+            </field>
+            <field property="entity.area.areaId" depends="required">
+                <arg key="label.area" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="buildingClassificationForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.buildingClassification.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="siteTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.siteType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="stakeholderTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.stakeholderType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="stakeholderForm" extends="entityContactAddressForm">
+            <field property="entity.stakeHolderType.stakeHolderTypeId" depends="required">
+                <arg key="label.stakeholderType" bundle="setup" />
+            </field>
+            <field property="entity.region.regionId" depends="required">
+                <arg key="label.region" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="supplierTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.supplierType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="aseTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.aseType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="aseConnTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.aseConnType.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="salutationForm">
+            <field property="entity.salutation" depends="required">
+                <arg key="label.salutation" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="stateForm">
+            <field property="entity.state" depends="required">
+                <arg key="label.state" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="fileStatusForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.fileStatus.name" bundle="setup" />
+            </field>
+        </form>
+
+        <form name="jobTypeForm">
+            <field property="entity.name" depends="required">
+                <arg key="label.jobType.name" bundle="setup" />
+            </field>
+        </form>
+
+    </formset>
+
+</form-validation>

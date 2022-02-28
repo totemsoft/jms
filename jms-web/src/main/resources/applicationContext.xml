@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <!-- ========================= JNDI DEFINITIONS ======================== -->
+    <jee:jndi-lookup id="dataSource" jndi-name="${jms.dataSource.jndiName}" />
+
+    <!-- ========================= CORE DEFINITIONS ======================== -->
+    <import resource="classpath:au/gov/qld/fire/jms/spring/spring-inc.xml" />
+
+    <!-- ========================= TX DEFINITIONS ========================== -->
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-tx.xml" />
+
+    <!-- ========================= EJB DEFINITIONS ========================== -->
+    <!--jee:local-slsb id="ReportBean"
+         jndi-name="ejb/ReportBean" 
+         business-interface="au.gov.qld.fire.crystal.ejb.ReportBeanLocal" /-->
+
+    <!-- ========================= REMOTING DEFINITIONS ========================== -->
+    <import resource="classpath:spring/spring-inc-remoting.xml"/>
+
+</beans>

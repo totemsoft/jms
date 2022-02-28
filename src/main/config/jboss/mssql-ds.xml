@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+  <local-tx-datasource>
+    <jndi-name>jdbc/DataSource_jms</jndi-name>
+    <connection-url>jdbc:jtds:sqlserver://192.168.122.212:1433/JMS</connection-url>
+    <driver-class>net.sourceforge.jtds.jdbc.Driver</driver-class>
+    <user-name>jms</user-name>
+    <password>Passw0rd</password>
+    <!-- sql to call when connection is created -->
+    <new-connection-sql>SELECT * FROM DBVERSION</new-connection-sql>
+  </local-tx-datasource>
+  <local-tx-datasource>
+    <jndi-name>jdbc/DataSource_crm</jndi-name>
+    <connection-url>jdbc:jtds:sqlserver://192.168.122.212:1433/JMS</connection-url>
+    <driver-class>net.sourceforge.jtds.jdbc.Driver</driver-class>
+    <user-name>jms</user-name>
+    <password>Passw0rd</password>
+    <!-- sql to call when connection is created -->
+    <new-connection-sql>SELECT * FROM DBVERSION</new-connection-sql>
+  </local-tx-datasource>
+</datasources>

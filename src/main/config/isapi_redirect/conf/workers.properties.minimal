@@ -1,0 +1,50 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# workers.properties.minimal -
+#
+# This file provides minimal jk configuration properties needed to
+# connect to Tomcat.
+#
+# The workers that jk should create and work with
+#
+
+worker.list=wlb2,wlb3,jkstatus
+
+#
+# Defining a worker named jboss01, jboss02 and of type ajp13
+# Note that the name and the type do not have to match.
+#
+worker.jboss01.type=ajp13
+worker.jboss01.host=localhost
+worker.jboss01.port=18009
+worker.jboss02.type=ajp13
+worker.jboss02.host=localhost
+worker.jboss02.port=28009
+
+#
+# Defining a load balancer
+# 
+
+worker.wlb2.type=lb
+worker.wlb2.balance_workers=jboss01
+worker.wlb3.type=lb
+worker.wlb3.balance_workers=jboss02
+
+#
+# Define status worker
+#
+
+worker.jkstatus.type=status

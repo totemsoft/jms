@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+-Xms256m -Xmx512m -XX:MaxPermSize=256m
+-Djava.security.auth.login.config=/Users/shibaevv/dev/apache-tomcat-6.0.32-eclipse-4.0/conf/jaas.config
+-->
+<Context
+    path="/jms"
+    reloadable="false"
+    docBase="/Users/shibaevv/dev/workspace-4.0/jms/jms-web/target/jms"
+    workDir="/Users/shibaevv/dev/workspace-4.0/jms/jms-web/work">
+
+<Resource
+    name="jdbc/DataSource_jms"
+    auth="Container"
+    type="javax.sql.DataSource"
+    defaultAutoCommit="false"
+    defaultReadOnly="true"
+    defaultTransactionIsolation="READ_COMMITTED"
+    maxActive="5" 
+    maxIdle="1" 
+    maxWait="5000"
+    removeAbandoned="true"
+    removeAbandonedTimeout="60"
+    logAbandoned="true"
+    username="jms"
+    password="Passw0rd" 
+    driverClassName="net.sourceforge.jtds.jdbcx.JtdsDataSource"
+    url="jdbc:jtds:sqlserver://192.168.204.128:1433/JMS;instance=" />
+
+</Context>

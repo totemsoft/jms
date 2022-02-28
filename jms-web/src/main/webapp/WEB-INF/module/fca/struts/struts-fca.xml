@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <form-beans>
+        <form-bean name="fcaForm" type="au.gov.qld.fire.jms.web.module.fca.FcaForm" />
+    </form-beans>
+
+    <global-forwards>
+
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/findFca"
+            type="au.gov.qld.fire.jms.web.module.fca.FcaAction"
+            input="/WEB-INF/module/fca/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/viewFca"
+            name="fcaForm"
+            type="au.gov.qld.fire.jms.web.module.fca.FcaAction"
+            input="/WEB-INF/module/fca/view.jsp"
+            validate="false"
+            parameter="dispatch">
+        </action>
+        <!-- Wizard style navigation -->
+        <action path="/editFca"
+            name="fcaForm"
+            type="au.gov.qld.fire.jms.web.module.fca.FcaAction"
+            input="/WEB-INF/module/fca/edit.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+            <forward name="editWarning" path="/fca/editFcaWarning.do?dispatch=editWarning" redirect="true" />
+        </action>
+        <action path="/editFcaWarning"
+            name="fcaForm"
+            type="au.gov.qld.fire.jms.web.module.fca.FcaAction"
+            input="/WEB-INF/module/fca/editWarning.jsp"
+            scope="session"
+            validate="false"
+            parameter="dispatch">
+        </action>
+
+    </action-mappings>
+
+    <!-- ======================= RequestProcessor ========================== -->
+    <!-- http://www.jajakarta.org/struts/struts1.2/documentation/ja/src/share/org/apache/struts/config/ControllerConfig.java -->
+    <controller>
+        <set-property property="processorClass"
+            value="au.gov.qld.fire.jms.web.RequestProcessor" />
+        <set-property property="forwardPattern" value="$P" />
+        <!--set-property property="pagePattern" value="$M$P" /-->
+    </controller>
+
+    <!-- ============= Declare applicationResources for this module ======== -->
+    <message-resources key="fca" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.fca.applicationResources" />
+
+    <!-- ============= Declare Validator plugin for this module ============ -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="
+            /org/apache/struts/validator/validator-rules.xml,
+            /WEB-INF/validation/validator-rules.xml,
+            /WEB-INF/module/fca/validation/validation.xml" />
+        <set-property property="stopOnFirstError" value="false"/>
+    </plug-in>
+
+</struts-config>

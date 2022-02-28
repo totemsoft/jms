@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+    "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <form-beans>
+        <form-bean name="externalInvoiceForm" type="au.gov.qld.fire.jms.web.module.finance.ExternalInvoiceForm" />
+        <form-bean name="financeForm" type="au.gov.qld.fire.jms.web.module.finance.FinanceForm" />
+    </form-beans>
+
+    <global-forwards>
+
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/finance"
+            name="financeForm"
+            type="au.gov.qld.fire.jms.web.module.finance.FinanceAction"
+            input="/WEB-INF/module/finance/main.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+        <action path="/externalInvoice"
+            name="externalInvoiceForm"
+            type="au.gov.qld.fire.jms.web.module.finance.ExternalInvoiceAction"
+            input="/WEB-INF/module/finance/externalInvoice/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+            <forward name="findReload" path="/finance/externalInvoice.do?dispatch=find" redirect="true" />
+            <forward name="editInvoiceReload" path="/finance/externalInvoice.do?dispatch=editInvoice" redirect="true" />
+            <forward name="editInvoice" path="/WEB-INF/module/finance/externalInvoice/edit.jsp" redirect="false" />
+            <forward name="viewInvoice" path="/WEB-INF/module/finance/externalInvoice/view.jsp" redirect="false" />
+        </action>
+
+        <action path="/accountHistory"
+            type="au.gov.qld.fire.jms.web.module.finance.AccountHistoryAction"
+            input="/WEB-INF/module/finance/accountHistory/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/accountInfo"
+            type="au.gov.qld.fire.jms.web.module.finance.AccountInfoAction"
+            input="/WEB-INF/module/finance/accountInfo/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/accountPayable"
+            type="au.gov.qld.fire.jms.web.module.finance.AccountPayableAction"
+            input="/WEB-INF/module/finance/accountPayable/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/accrual"
+            type="au.gov.qld.fire.jms.web.module.finance.AccrualAction"
+            input="/WEB-INF/module/finance/accrual/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/budget"
+            type="au.gov.qld.fire.jms.web.module.finance.BudgetAction"
+            input="/WEB-INF/module/finance/budget/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/debtInfo"
+            type="au.gov.qld.fire.jms.web.module.finance.DebtInfoAction"
+            input="/WEB-INF/module/finance/debtInfo/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/creditControl"
+            type="au.gov.qld.fire.jms.web.module.finance.CreditControlAction"
+            input="/WEB-INF/module/finance/creditControl/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+        <action path="/invoiceGeneration"
+            type="au.gov.qld.fire.jms.web.module.finance.InvoiceGenerationAction"
+            input="/WEB-INF/module/finance/invoiceGeneration/find.jsp"
+            validate="false"
+            parameter="dispatch">
+            <forward name="error" path="/error.do" redirect="false" />
+        </action>
+
+    </action-mappings>
+
+    <!-- ======================= RequestProcessor ========================== -->
+    <!-- http://www.jajakarta.org/struts/struts1.2/documentation/ja/src/share/org/apache/struts/config/ControllerConfig.java -->
+    <controller>
+        <set-property property="processorClass"
+            value="au.gov.qld.fire.jms.web.RequestProcessor" />
+        <set-property property="forwardPattern" value="$P" />
+        <!--set-property property="pagePattern" value="$M$P" /-->
+    </controller>
+
+    <!-- ============= Declare applicationResources for this module ======== -->
+    <message-resources key="finance" null="false"
+        parameter="au.gov.qld.fire.jms.web.module.finance.applicationResources" />
+
+    <!-- ============= Declare Validator plugin for this module ============ -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="
+            /org/apache/struts/validator/validator-rules.xml,
+            /WEB-INF/validation/validator-rules.xml,
+            /WEB-INF/module/finance/validation/validation.xml" />
+        <set-property property="stopOnFirstError" value="false"/>
+    </plug-in>
+
+</struts-config>

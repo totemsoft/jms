@@ -1,0 +1,1507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Purchase Order #1 - 4500108651
+Purchase Order #2 - 4500204251
+
+vi ~/.bash_profile
+export M2_HOME=/usr/share/maven2
+export PATH=${M2_HOME}/bin:${PATH}
+mvn -version
+mvn -o clean install -Dtest -DfailIfNoTests=false -Plocal-jboss
+
+mvn eclipse:clean eclipse:eclipse
+mvn dependency:sources -Dclassifier=sources -DexcludeGroupIds=org/apache/maven
+mvn dependency:resolve -Dclassifier=javadoc -DexcludeGroupIds=org/apache/maven
+mvn dependency:tree -DoutputFile=jms-dependency.txt
+
+mvn install:install-file -DgroupId=org.marre -DartifactId=smsj -Dversion=20051126 -Dpackaging=jar -Dfile=jms-web/src/main/webapp/WEB-INF/lib/smsj-20051126.jar
+
+set JBOSS_HOME=C:\jboss\jboss-5.1.0.GA
+mvn install:install-file -DgroupId=org.jboss -DartifactId=jnpserver -Dversion=5.1.0.GA -Dpackaging=jar -Dfile=$JBOSS_HOME/common/lib/jnpserver.jar
+mvn install:install-file -DgroupId=org.jboss -DartifactId=jboss-logging-spi -Dversion=5.1.0.GA -Dpackaging=jar -Dfile=$JBOSS_HOME/lib/jboss-logging-spi.jar
+
+export JBOSS_HOME=/Users/shibaevv/dev/jboss/jboss-as-7.1.1.Final
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>au.gov.qld.fire</groupId>
+    <artifactId>qfrs</artifactId>
+    <version>${application.version}</version>
+    <packaging>pom</packaging>
+    <name>QFRS Modules</name>
+    <description>QFRS Modules</description>
+    <url>http://jms.apollosoft.net.au/qfrs</url>
+
+    <organization>
+        <name>QFRS</name>
+    </organization>
+    <developers>
+        <developer>
+            <id>shibaevv</id>
+            <name>Valeri Chibaev</name>
+            <email>mail at apollosoft.net.au</email>
+            <organization>ApolloSoft Pty Ltd</organization>
+            <roles>
+                <role>Solution Architect</role>
+                <role>Senior Java Developer</role>
+            </roles>
+            <timezone>+10</timezone>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Andrew Bassingthwaighte</name>
+            <email>andrewbass at skype</email>
+            <organization>http://xir.com.au</organization>
+            <roles>
+                <role>Business Analyst</role>
+            </roles>
+            <timezone>+10</timezone>
+        </contributor>
+        <contributor>
+            <name>Michael Davis</name>
+            <email>michael.davis at dcs.qld.gov.au</email>
+            <organization>http://dcs.qld.gov.au</organization>
+            <roles>
+                <role>Business Analyst</role>
+            </roles>
+            <timezone>+10</timezone>
+        </contributor>
+    </contributors>
+    <licenses>
+        <license>
+            <name>COMMERCIAL/PROPRIETARY. ALL RIGHTS RESERVED. DO NOT USE WITHOUT EXPRESS WRITTEN PERMISSION.</name>
+            <distribution>repository</distribution>
+        </license>
+    </licenses>
+
+    <modules>
+        <module>commons-core</module>
+        <module>commons-web</module>
+
+        <!-- internal report engine (completed) -->
+        <!-- Do Not Run with OpenJDK - Crystal hates it, eg does not have relevant TTF in $JAVA_HOME/lib/fonts -->
+        <!-- http://stackoverflow.com/questions/13629864/rhel6-server-fonts-garbled-on-jsp-viewer-but-perfect-on-exports-from-same-vie -->
+        <module>crystal-core</module>
+        <module>crystal</module>
+
+        <!-- uaa module (WIP) -->
+        <module>uaa-core</module>
+        <!--module>uaa-web</module-->
+
+        <!-- jms module (current) -->
+        <module>jms-core</module>
+        <module>jms-web</module>
+
+        <!-- TODO: CRM module (proposed), see docs/docs-tem spec  -->
+        <!--module>crm-core</module>
+        <module>crm-web</module-->
+
+        <module>health</module>
+
+        <!--module>jms-ear</module-->
+    </modules>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <!--version>2.3.2</version-->
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <wtpversion>1.5</wtpversion>
+                </configuration>
+            </plugin>        
+            <!--plugin>
+                <groupId>org.jboss.as.plugins</groupId>
+                <artifactId>jboss-as-maven-plugin</artifactId>
+                <version>7.4.Final</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>true</skip>
+                    <version>7.1.1.Final</version>
+                </configuration>
+            </plugin-->
+        </plugins>
+    </build>
+    <!-- http://en.wikipedia.org/wiki/CRON_expression -->
+    <properties>
+        <application.timestamp>${maven.build.timestamp}</application.timestamp>
+        <application.version>1.0.0</application.version>
+
+        <smtp.host></smtp.host>
+        <smtp.port>25</smtp.port>
+        <smtp.username>JMS</smtp.username>
+        <smtp.password></smtp.password>
+        <smtp.from>mail@apollosoft.net.au</smtp.from>
+        <sms.viaSmtp>true</sms.viaSmtp>
+
+        <health.context.root>health</health.context.root>
+
+        <jms.version>${application.version}</jms.version>
+        <jms.build>jms-1.0.007</jms.build>
+        <jms.db.version>JMS.01.49</jms.db.version>
+        <jms.context.root>jms</jms.context.root>
+        <jms.dataSource>jdbc/DataSource_jms</jms.dataSource>
+        <jms.dataSource.jndiName>java:comp/env/${jms.dataSource}</jms.dataSource.jndiName>
+        <jms.jta-data-source>java:/${jms.dataSource}</jms.jta-data-source>
+        <!-- every minute -->
+        <jms.cron.taskService-run>0 * * * * ?</jms.cron.taskService-run>
+        <!-- mkdir $JBOSS_HOME/fca-docs -->
+        <jms.document.directory>./fca-docs</jms.document.directory>
+        <!-- om89 -->
+        <imap.host>imap.gmail.com</imap.host>
+        <imap.port>993</imap.port>
+        <imap.username>LOADER_OM89</imap.username>
+        <om89Subject>Emergency Contacts Form</om89Subject>
+
+        <uaa.version>${application.version}</uaa.version>
+        <uaa.db.version>UAA.01.03</uaa.db.version>
+        <uaa.context.root>uaa</uaa.context.root>
+        <uaa.dataSource>jdbc/DataSource_jms</uaa.dataSource>
+        <uaa.dataSource.jndiName>java:comp/env/${uaa.dataSource}</uaa.dataSource.jndiName>
+        <uaa.jta-data-source>java:/${uaa.dataSource}</uaa.jta-data-source>
+
+        <crystal.version>${application.version}</crystal.version>
+        <crystal.db.version>JMS.01.00</crystal.db.version>
+        <crystal.context.root>crystal</crystal.context.root>
+        <crystal.dataSource>jdbc/DataSource_jms</crystal.dataSource>
+        <crystal.dataSource.jndiName>java:comp/env/${crystal.dataSource}</crystal.dataSource.jndiName>
+        <crystal.jta-data-source>java:/${crystal.dataSource}</crystal.jta-data-source>
+
+        <crm.version>${application.version}</crm.version>
+        <crm.db.version>CRM.01.00</crm.db.version>
+        <crm.context.root>crm</crm.context.root>
+
+        <log.dir>logs</log.dir>
+        <logger.level>DEBUG</logger.level>
+
+        <!-- artifacts provided by jboss -->
+        <profile.scope>provided</profile.scope>
+
+        <btm.version>2.1.0</btm.version>
+        <cxf.version>2.6.6</cxf.version>
+        <antlr.version>2.7.7</antlr.version>
+        <aspectj.version>1.6.2</aspectj.version>
+        <cdi.version>1</cdi.version>
+        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <commons-chain.version>1.2</commons-chain.version>
+        <commons-codec.version>1.3</commons-codec.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-configuration.version>1.6</commons-configuration.version>
+        <commons-digester.version>1.8</commons-digester.version>
+        <commons-jxpath.version>1.3</commons-jxpath.version>
+        <commons-fileupload.version>1.2.2</commons-fileupload.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <commons-io.version>2.1</commons-io.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
+        <commons-net.version>2.1</commons-net.version>
+        <crjava.version>12.2.211</crjava.version>
+        <crjava-barcode.version>1.0</crjava-barcode.version>
+        <dom4j.version>1.6.1</dom4j.version>
+        <gwt.version>2.2.0</gwt.version>
+
+        <!-- hibernate -->
+        <hibernate.version>4.2.0.CR1</hibernate.version>
+        <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
+
+        <infinispan.version>5.2.1.Final</infinispan.version>
+        <hibernate.infinispan.version>${hibernate.version}</hibernate.infinispan.version>
+
+        <jboss.version>5.1.0.GA</jboss.version>
+        <jboss-security.scope>provided</jboss-security.scope>
+        <json.version>20090211</json.version>
+        <junit.version>4.8.1</junit.version>
+        <!--junit.version>4.8.1</junit.version-->
+        <jxl.version>2.6.12</jxl.version>
+        <log4j.version>1.2.16</log4j.version>
+        <mail.version>1.4</mail.version>
+        <mssql.version>7.0.0.jre8</mssql.version>
+        <jtds.version>1.2.7</jtds.version>
+        <fop.version>1.0</fop.version>
+        <icu4j.version>4.6.1</icu4j.version>
+        <jackson.version>1.9.2</jackson.version>
+        <jaxen.version>1.1.3</jaxen.version>
+        <jspapi.version>2.0</jspapi.version>
+        <jstl.version>1.1.2</jstl.version>
+        <jpa.version>1.0.2.GA</jpa.version>
+        <jta.version>1.1</jta.version>
+        <opencsv.version>2.0</opencsv.version>
+        <itext.version>4.2.1</itext.version>
+        <itextpdf.version>5.5.1</itextpdf.version>
+        <pdfbox.version>1.8.6</pdfbox.version>
+        <pdfjt.version>2.0.03</pdfjt.version>
+        <poi.version>3.9</poi.version>
+        <saxpath.version>1.0-FCS</saxpath.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <sitemesh.version>2.4.2</sitemesh.version>
+        <slf4j.version>1.5.6</slf4j.version>
+        <smsj.version>20051126</smsj.version>
+        <spring.version>3.2.8.RELEASE</spring.version>
+        <struts.version>1.3.10</struts.version>
+        <xerces.version>2.6.2</xerces.version>
+        <xalan.version>2.7.0</xalan.version>
+        <xml-apis.version>1.3.02</xml-apis.version>
+        <xml-apis-ext.version>1.3.04</xml-apis-ext.version>
+        <xmlParserAPIs.version>2.6.2</xmlParserAPIs.version>
+        <xpp3.version>1.1.4c</xpp3.version>
+        <validation.version>1.0.0.GA</validation.version>
+        <velocity.version>1.6.3</velocity.version>
+        <velocity-tools.version>2.0</velocity-tools.version>
+
+        <crjava.lib.path>${project.basedir}/../crystal/src/main/webapp/WEB-INF/lib</crjava.lib.path>
+        <jms-web.lib.path>${project.basedir}/../jms-web/src/main/webapp/WEB-INF/lib</jms-web.lib.path>
+
+        <hibernate.show_sql>false</hibernate.show_sql>
+        <!-- infinispan -->
+        <!--hibernate.cache.region.factory_class>org.hibernate.cache.infinispan.InfinispanRegionFactory</hibernate.cache.region.factory_class-->
+        <hibernate.cache.region.factory_class>org.jboss.as.jpa.hibernate4.infinispan.InfinispanRegionFactory</hibernate.cache.region.factory_class>
+        <hibernate.cache.infinispan.cachemanager>java:jboss/infinispan/container/hibernate</hibernate.cache.infinispan.cachemanager>
+    
+        <tx.managerLookupClass>org.hibernate.transaction.JBossTransactionManagerLookup</tx.managerLookupClass>
+        <hibernate.transaction.jta.platform>org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform</hibernate.transaction.jta.platform>
+        <!--hibernate.transaction.jta.platform>org.hibernate.service.jta.platform.internal.JBossStandAloneJtaPlatform</hibernate.transaction.jta.platform-->
+
+        <jdk.version>1.6</jdk.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss</maven.build.timestamp.format>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>${xml-apis.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis-ext</artifactId>
+            <version>${xml-apis-ext.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xmlParserAPIs</artifactId>
+            <version>${xmlParserAPIs.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-digester</groupId>
+            <artifactId>commons-digester</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+            <scope>${profile.scope}</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>maven-plugins</groupId>
+                    <artifactId>maven-cobertura-plugin</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>maven-plugins</groupId>
+                    <artifactId>maven-findbugs-plugin</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <scope>${profile.scope}</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>${profile.scope}</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>${profile.scope}</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-envers</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.security</groupId>
+            <artifactId>jbosssx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-spi</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>au.gov.qld.fire.commons</groupId>
+                <artifactId>commons-core</artifactId>
+                <version>${application.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.gov.qld.fire.commons</groupId>
+                <artifactId>commons-core</artifactId>
+                <type>test-jar</type>
+                <scope>test</scope>
+                <version>${application.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.gov.qld.fire.commons</groupId>
+                <artifactId>commons-web</artifactId>
+                <version>${application.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>au.gov.qld.fire.jms</groupId>
+                <artifactId>jms-core</artifactId>
+                <version>${jms.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.gov.qld.fire.jms</groupId>
+                <artifactId>jms-web</artifactId>
+                <version>${jms.version}</version>
+                <type>war</type>
+            </dependency>
+
+            <dependency>
+                <groupId>au.gov.qld.fire.crystal</groupId>
+                <artifactId>crystal-core</artifactId>
+                <version>${crystal.version}</version>
+                <!--type>ejb</type-->
+            </dependency>
+            <dependency>
+                <groupId>au.gov.qld.fire.crystal</groupId>
+                <artifactId>crystal-web</artifactId>
+                <version>${crystal.version}</version>
+                <type>war</type>
+            </dependency>
+
+            <dependency>
+                <groupId>au.gov.qld.fire</groupId>
+                <artifactId>health</artifactId>
+                <version>${application.version}</version>
+                <type>war</type>
+            </dependency>
+
+            <dependency>
+                <groupId>au.gov.qld.fire.uaa</groupId>
+                <artifactId>uaa-core</artifactId>
+                <version>${uaa.version}</version>
+            </dependency>
+            <!--dependency>
+                <groupId>au.gov.qld.fire.uaa</groupId>
+                <artifactId>uaa-web</artifactId>
+                <version>${uaa.version}</version>
+                <type>war</type>
+            </dependency-->
+
+            <!--dependency>
+                <groupId>au.gov.qld.fire.crm</groupId>
+                <artifactId>crm-core</artifactId>
+                <version>${crm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>au.gov.qld.fire.crm</groupId>
+                <artifactId>crm-web</artifactId>
+                <version>${crm.version}</version>
+                <type>war</type>
+            </dependency-->
+
+            <dependency>
+                <groupId>org.codehaus.btm</groupId>
+                <artifactId>btm</artifactId>
+                <version>${btm.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.btm</groupId>
+                <artifactId>btm-tomcat55-lifecycle</artifactId>
+                <version>${btm.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>antlr</groupId>
+                <artifactId>antlr</artifactId>
+                <version>${antlr.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons-beanutils.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons-collections.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <!--dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>${commons-dbcp.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-pool</groupId>
+                <artifactId>commons-pool</artifactId>
+                <version>${commons-pool.version}</version>
+                <scope>test</scope>
+            </dependency-->
+            <dependency>
+                <groupId>commons-jxpath</groupId>
+                <artifactId>commons-jxpath</artifactId>
+                <version>${commons-jxpath.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>xerces</groupId>
+                        <artifactId>xerces</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- COMMENT scope if have to use digester for xml read
+                 Caused by: java.lang.ClassNotFoundException: au.gov.qld.fire.jms.domain.mailOut.OM89Form
+                 from [Module "org.apache.commons.digester:main" from local module loader @48974631 
+                 (roots: /usr/jboss/jboss-as-7.1.1.Final/modules)] -->
+            <dependency>
+                <groupId>commons-digester</groupId>
+                <artifactId>commons-digester</artifactId>
+                <version>${commons-digester.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-fileupload</groupId>
+                <artifactId>commons-fileupload</artifactId>
+                <version>${commons-fileupload.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-httpclient</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>${commons-httpclient.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.sf.ehcache</groupId>
+                        <artifactId>ehcache</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>javax.jms</groupId>
+                        <artifactId>jms</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jmx</groupId>
+                        <artifactId>jmxri</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.sun.jdmk</groupId>
+                        <artifactId>jmxtools</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mail</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-jdk14</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-oxm</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-struts</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-core</artifactId>
+                <version>${infinispan.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jboss.javaee</groupId>
+                        <artifactId>jboss-transaction-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.spec.javax.transaction</groupId>
+                        <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-spring</artifactId>
+                <version>${infinispan.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-infinispan</artifactId>
+                <version>${hibernate.infinispan.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jboss.spec.javax.transaction</groupId>
+                        <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+                    </exclusion>
+                    <!--exclusion>
+                        <groupId>org.hibernate.javax.persistence</groupId>
+                        <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    </exclusion-->
+                    <exclusion>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>xml-apis</groupId>
+                        <artifactId>xml-apis</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>ejb3-persistence</artifactId>
+                <version>${jpa.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${hibernate.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.spec.javax.transaction</groupId>
+                        <artifactId>jboss-transaction-api_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate.javax.persistence</groupId>
+                        <artifactId>hibernate-jpa-2.0-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-envers</artifactId>
+                <version>${hibernate.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-commons-annotations</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-tools</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${jackson.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${jackson.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-jaxrs</artifactId>
+                <version>${jackson.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>${validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-api</artifactId>
+                <version>${cxf.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-core</artifactId>
+                <version>${cxf.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.abdera</groupId>
+                        <artifactId>abdera-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.abdera</groupId>
+                        <artifactId>abdera-parser</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.abdera</groupId>
+                        <artifactId>abdera-extensions-json</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-transports-http</artifactId>
+                <version>${cxf.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-ws-security</artifactId>
+                <version>${cxf.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-security-oauth</artifactId>
+                <version>${cxf.version}</version>
+                <scope>${profile.scope}</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-servlet_3.0_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ibm.icu</groupId>
+                <artifactId>icu4j</artifactId>
+                <version>${icu4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xpp3</groupId>
+                <artifactId>xpp3</artifactId>
+                <version>${xpp3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sourceforge.jtds</groupId>
+                <artifactId>jtds</artifactId>
+                <version>${jtds.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.microsoft.sqlserver</groupId>
+                <artifactId>mssql-jdbc</artifactId>
+                <version>${mssql.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.transaction</groupId>
+                <artifactId>jta</artifactId>
+                <version>${jta.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>${jspapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${mail.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>6.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${cdi.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-core</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-tiles</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-extras</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-el</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-taglib</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-faces</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.struts</groupId>
+                <artifactId>struts-scripting</artifactId>
+                <version>${struts.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>opensymphony</groupId>
+                <artifactId>sitemesh</artifactId>
+                <version>${sitemesh.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${jstl.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>taglibs</groupId>
+                <artifactId>standard</artifactId>
+                <version>${jstl.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>xerces</groupId>
+                <artifactId>xercesImpl</artifactId>
+                <version>${xerces.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>xalan</groupId>
+                <artifactId>xalan</artifactId>
+                <version>${xalan.version}</version>
+                <!--scope>provided</scope-->
+            </dependency>
+            <dependency>
+                <groupId>jaxen</groupId>
+                <artifactId>jaxen</artifactId>
+                <version>${jaxen.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>xercesImpl</artifactId>
+                        <groupId>xerces</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>xalan</artifactId>
+                        <groupId>xalan</groupId>
+                    </exclusion>
+                </exclusions>      
+            </dependency>
+            <dependency>
+                <groupId>saxpath</groupId>
+                <artifactId>saxpath</artifactId>
+                <version>${saxpath.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.xmlgraphics</groupId>
+                <artifactId>fop</artifactId>
+                <version>${fop.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.marre</groupId>
+                <artifactId>smsj</artifactId>
+                <version>${smsj.version}</version>
+                <scope>system</scope>
+                <systemPath>${jms-web.lib.path}/smsj-20051126.jar</systemPath>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.velocity</groupId>
+              <artifactId>velocity-tools</artifactId>
+              <version>${velocity-tools.version}</version>
+              <scope>${profile.scope}</scope>
+              <exclusions>
+                <exclusion>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts-core</artifactId>
+                </exclusion>
+                <exclusion>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts-tiles</artifactId>
+                </exclusion>
+                <exclusion>
+                  <groupId>org.apache.struts</groupId>
+                  <artifactId>struts-taglib</artifactId>
+                </exclusion>
+              </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.sourceforge.jexcelapi</groupId>
+                <artifactId>jxl</artifactId>
+                <version>${jxl.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.lowagie</groupId>
+                <artifactId>itext</artifactId>
+                <version>${itext.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.itextpdf</groupId>
+                <artifactId>itextpdf</artifactId>
+                <version>${itextpdf.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${pdfbox.version}</version>
+                <scope>${profile.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.adobe.pdfjt</groupId>
+                <artifactId>pdfjt</artifactId>
+                <version>${pdfjt.version}</version>
+                <scope>system</scope>
+                <systemPath>${jms-web.lib.path}/pdfjt.jar</systemPath>
+            </dependency>
+
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-common</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/CrystalCommon2.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-runtime</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/CrystalReportsRuntime.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-webreporting</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/webreporting.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-logging</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/logging.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-keycodeDecoder</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/keycodeDecoder.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-JDBInterface</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/JDBInterface.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-DatabaseConnectors</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/DatabaseConnectors.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-QueryBuilder</artifactId>
+                <version>${crjava.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/QueryBuilder.jar</systemPath>
+            </dependency>
+            <dependency>
+                <groupId>com.azalea.ufl</groupId>
+                <artifactId>crjava-barcode</artifactId>
+                <version>${crjava-barcode.version}</version>
+                <scope>system</scope>
+                <systemPath>${crjava.lib.path}/com.azalea.ufl.barcode.1.0.jar</systemPath>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.security</groupId>
+                <artifactId>jbosssx</artifactId>
+                <version>2.0.3.SP1</version>
+                <scope>${jboss-security.scope}</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging-spi</artifactId>
+                <version>2.1.0.GA</version>
+                <scope>${jboss-security.scope}</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <!--repository>
+            <id>apollosoft-repository</id>
+            <url>http://apollosoft.net.au/maven2</url>
+        </repository-->
+        <!--repository>
+            <id>JBoss Repo</id>
+            <url>http://repository.jboss.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository-->
+        <!--repository>
+            <id>terracotta-repository</id>
+            <url>http://www.terracotta.org/download/reflector/releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository-->
+    </repositories>
+
+    <!--
+        http://maven.apache.org/guides/mini/guide-building-for-different-environments.html
+    -->
+<!--
+mvn clean install -Dtest -Plocal-tomcat
+./deploy-as7.sh
+-->
+    <profiles>
+        <profile>
+            <id>local-tomcat</id>
+            <properties>
+                <application.env>local</application.env>
+                <!-- artifacts not provided by tomcat -->
+                <profile.scope>compile</profile.scope>
+                <jboss-security.scope>compile</jboss-security.scope>
+                <tx.managerLookupClass>org.hibernate.transaction.BTMTransactionManagerLookup</tx.managerLookupClass>
+                <hibernate.transaction.jta.platform>org.hibernate.service.jta.platform.internal.BitronixJtaPlatform</hibernate.transaction.jta.platform>
+                <hibernate.cache.region.factory_class>org.hibernate.cache.infinispan.InfinispanRegionFactory</hibernate.cache.region.factory_class>
+                <hibernate.cache.infinispan.cachemanager></hibernate.cache.infinispan.cachemanager>
+                <sms.viaSmtp>true</sms.viaSmtp>
+                <context.root>http://localhost:8080</context.root>
+                <local-context.root>http://127.0.0.1:8080</local-context.root>
+                <jms.dataSource.jndiName>java:comp/env/${jms.dataSource}</jms.dataSource.jndiName>
+                <jms.jta-data-source>java:comp/env/${jms.dataSource}</jms.jta-data-source>
+                <jms.cron.taskService-run>0 0 0 * * SUN</jms.cron.taskService-run>
+                <jms.document.directory>./fca-docs</jms.document.directory>
+                <!-- absolute directory where all crystal report files stored -->
+                <crystal.report.directory>${env.CATALINA_HOME}/crystal-reports</crystal.report.directory>
+                <crystal.reportlocation>../../../crystal-reports</crystal.reportlocation>
+                <crystal.jdbc.url>jdbc:jtds:sqlserver://192.168.4.130:1433/JMS</crystal.jdbc.url>
+            </properties>
+        </profile>
+<!--
+mvn clean install -Dtest -Plocal-jboss
+./deploy-as7.sh
+-->
+        <profile>
+            <id>local-jboss</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <application.env>local</application.env>
+                <sms.viaSmtp>false</sms.viaSmtp>
+                <context.root>http://localhost:8080</context.root>
+                <local-context.root>http://127.0.0.1:8080</local-context.root>
+                <jms.cron.taskService-run>0 0 0 * * SUN</jms.cron.taskService-run>
+                <jms.document.directory>/Users/shibaevv/Documents/dev/jboss/jboss-as-7.2.0.Final/fca-docs</jms.document.directory>
+                <!-- absolute directory where all crystal report files stored -->
+                <!--crystal.report.directory>${env.JBOSS_HOME}/standalone/deployments/crystal-reports</crystal.report.directory-->
+                <crystal.report.directory>/Users/shibaevv/Documents/dev/jboss/jboss-as-7.2.0.Final/standalone/deployments/crystal-reports</crystal.report.directory>
+                <!-- JBoss 5.1 was relative to "webapp" xxx.war/WEB-INF/lib, JBoss 7.1 changed /content -->
+                <crystal.reportlocation>../../../..${crystal.report.directory}</crystal.reportlocation>
+                <crystal.jdbc.url>jdbc:jtds:sqlserver://192.168.4.130:1433/JMS</crystal.jdbc.url>
+            </properties>
+        </profile>
+
+        <!-- JBoss 7.2 @jboss.apollosoft.net.au -->
+        <profile>
+            <id>uat</id>
+            <properties>
+                <application.env>uat</application.env>
+                <logger.level>DEBUG</logger.level>
+                <!--log.dir>.</log.dir-->
+                <!-- email - apollosoft (production access), user: "ses-smtp-user.20130917-205557" -->
+                <smtp.host>email-smtp.us-east-1.amazonaws.com</smtp.host>
+                <smtp.username></smtp.username>
+                <smtp.password></smtp.password>
+                <sms.viaSmtp>false</sms.viaSmtp>
+                <!-- om89 -->
+                <imap.host>imap.gmail.com</imap.host>
+                <imap.port>993</imap.port>
+                <imap.username>LOADER_OM89</imap.username>
+                <om89Subject>Emergency Contacts Form</om89Subject>
+                <!--  -->
+                <context.root>http://jms.apollosoft.net.au</context.root>
+                <local-context.root>http://127.0.0.1:8080</local-context.root>
+                <!--jms.cron.taskService-run>0 0 0 * * SUN</jms.cron.taskService-run-->
+                <jms.document.directory>/usr/jboss/jboss-as-7.2.0.Final/fca-docs</jms.document.directory>
+                <!-- absolute directory where all crystal report files stored -->
+                <!--crystal.report.directory>${env.JBOSS_HOME}/standalone/deployments/crystal-reports</crystal.report.directory-->
+                <crystal.report.directory>/usr/jboss/jboss-as-7.2.0.Final/standalone/deployments/crystal-reports</crystal.report.directory>
+                <!-- JBoss 5.1 was relative to "webapp" xxx.war/WEB-INF/lib, JBoss 7.1 changed /content -->
+                <crystal.reportlocation>../../../..${crystal.report.directory}</crystal.reportlocation>
+                <crystal.jdbc.url>jdbc:jtds:sqlserver://192.168.122.212:1433/JMS;instance=</crystal.jdbc.url>
+            </properties>
+        </profile>
+
+        <!--
+        JBoss 7.2 @bnedev16
+        Data Source=bnesql06\sql2008r2;Initial Catalog=JMS;Integrated Security=SSPI; jms Passw0rd
+        -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <application.env>dev</application.env>
+                <logger.level>DEBUG</logger.level>
+                <!--log.dir>.</log.dir-->
+                <smtp.host>BNEEML10.desqld.internal</smtp.host>
+                <smtp.username>jmsdev</smtp.username>
+                <smtp.password>Passw0rd</smtp.password>
+                <smtp.from>jmsdev@psba.qld.gov.au</smtp.from>
+                <!-- om89 -->
+                <imap.host>BNEEML10.desqld.internal</imap.host>
+                <imap.port>993</imap.port>
+                <imap.username>jmsdev</imap.username>
+                <om89Subject>Emergency Contacts Form</om89Subject>
+                <!--  -->
+                <context.root>http://bnedev16</context.root>
+                <local-context.root>http://127.0.0.1:8080</local-context.root>
+                <!--jms.cron.taskService-run>0 0 0 * * SUN</jms.cron.taskService-run-->
+                <jms.document.directory>E:/Operational/qld_fca_files</jms.document.directory>
+                <!-- absolute directory where all crystal report files stored -->
+                <!--crystal.report.directory>${env.JBOSS_HOME}/standalone/deployments/crystal-reports</crystal.report.directory-->
+                <crystal.report.directory>/JBoss/jboss-as-7.2.0.Final/standalone/deployments/crystal-reports</crystal.report.directory>
+                <!-- JBoss 5.1 was relative to "webapp" xxx.war/WEB-INF/lib, JBoss 7.1 changed /content -->
+                <crystal.reportlocation>../../../..${crystal.report.directory}</crystal.reportlocation>
+                <crystal.jdbc.url>jdbc:jtds:sqlserver://bnesql06:1433/JMS;instance=sql2008r2</crystal.jdbc.url>
+            </properties>
+        </profile>
+
+        <!--
+        JBoss 7.2 @bnejms01
+        Data Source=sql2008r2\sql2008r2;Initial Catalog=JMS;Integrated Security=SSPI; jms Passw0rd
+        -->
+        <profile>
+            <id>prd</id>
+            <properties>
+                <application.env>prd</application.env>
+                <logger.level>INFO</logger.level>
+                <!--log.dir>.</log.dir-->
+                <smtp.host>BNEEML11.desqld.internal</smtp.host>
+                <smtp.username>jms</smtp.username>
+                <smtp.from>jms@psba.qld.gov.au</smtp.from>
+                <!-- om89 -->
+                <imap.host>BNEEML11.desqld.internal</imap.host>
+                <imap.port>993</imap.port>
+                <imap.username>${smtp.username}</imap.username>
+                <om89Subject>Emergency Contacts Form</om89Subject>
+                <!--  -->
+                <context.root>http://bnejms01</context.root>
+                <local-context.root>http://127.0.0.1:8080</local-context.root>
+                <!--jms.cron.taskService-run>0 0 0 * * SUN</jms.cron.taskService-run-->
+                <jms.document.directory>E:/Operational/qld_fca_files</jms.document.directory>
+                <!-- absolute directory where all crystal report files stored -->
+                <!--crystal.report.directory>${env.JBOSS_HOME}/standalone/deployments/crystal-reports</crystal.report.directory-->
+                <crystal.report.directory>/JBoss/jboss-as-7.2.0.Final/standalone/deployments/crystal-reports</crystal.report.directory>
+                <!-- JBoss 5.1 was relative to "webapp" xxx.war/WEB-INF/lib, JBoss 7.1 changed /content -->
+                <crystal.reportlocation>../../../..${crystal.report.directory}</crystal.reportlocation>
+                <crystal.jdbc.url>jdbc:jtds:sqlserver://sql2008r2:1433/JMS;instance=sql2008r2</crystal.jdbc.url>
+            </properties>
+        </profile>
+    </profiles>
+</project>

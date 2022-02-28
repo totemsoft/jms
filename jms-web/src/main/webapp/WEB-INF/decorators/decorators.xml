@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/decorators">
+    <excludes>
+        <pattern>/oauth/*</pattern>
+        <pattern>/ckeditor*</pattern>
+        <pattern>*/delete*</pattern>
+        <pattern>*/edit*</pattern>
+        <pattern>*/*.do?readOnly=*</pattern>
+        <pattern>*/*.do?dispatch=edit*</pattern>
+        <pattern>*/*.do?dispatch=save*</pattern>
+        <pattern>*/*.do?dispatch=view*</pattern>
+        <pattern>*/*.do?dispatch=run*</pattern>
+        <pattern>*/calendarStaff.do*</pattern>
+        <pattern>*/download*</pattern>
+        <pattern>/error.do</pattern>
+        <pattern>*/error*</pattern>
+        <pattern>*/export*</pattern>
+        <pattern>*/find*</pattern>
+        <pattern>*/get*</pattern>
+        <pattern>*/print*</pattern>
+        <pattern>*/blank.html</pattern>
+    </excludes>
+    <decorator name="default" page="default.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+    <decorator name="default-nonav" page="default-nonav.jsp">
+        <pattern>/login.jsp</pattern>
+        <pattern>/j_security_check.do</pattern>
+        <pattern>*/changePassword*</pattern>
+    </decorator>
+</decorators>
