@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.location.Address" 
+    table="ADDRESS"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="ADDRESS_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="addrLine1"
+        type="string"
+        column="ADDR_LINE_1"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="addrLine2"
+        type="string"
+        column="ADDR_LINE_2"
+        length="255"
+    />
+    <property
+        name="suburb"
+        type="string"
+        column="SUBURB"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="postcode"
+        type="string"
+        column="POSTCODE"
+        not-null="false"
+        length="10"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to State -->
+    <many-to-one
+        name="state"
+        not-null="true"
+    >
+        <column name="STATE" />
+    </many-to-one>
+
+</class>
+
+<query name="address.findByAddrLinePostcodeSuburb">
+    <![CDATA[
+        FROM Address
+        WHERE   (:addrLine1 IS NULL OR upper(addrLine1) LIKE :addrLine1)
+            AND (:addrLine2 IS NULL OR upper(addrLine2) LIKE :addrLine2)
+            AND (:postcode IS NULL OR upper(postcode) LIKE :postcode)
+            AND (:suburb IS NULL OR upper(suburb) LIKE :suburb)
+            AND (:state IS NULL OR upper(state) LIKE :state)
+    ]]>
+</query>
+
+</hibernate-mapping>

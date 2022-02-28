@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.report.ReportDoc" 
+    table="REPORT_DOC"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="REPORT_DOC_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        length="100"
+    />
+    <property
+        name="description"
+        type="string"
+        column="DESCRIPTION"
+        length="255"
+    />
+    <property
+        name="location"
+        type="string"
+        column="LOCATION"
+        length="255"
+    />
+    <property
+        name="uploadDate"
+        type="timestamp"
+        column="UPLOAD_DATE"
+        length="23"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to DocType -->
+    <many-to-one
+        name="docType"
+        not-null="true"
+    >
+        <column name="DOC_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Template -->
+    <many-to-one
+        name="template"
+    >
+        <column name="TEMPLATE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Document -->
+    <many-to-one
+        name="document"
+        cascade="save-update"
+    >
+        <column name="DOCUMENT_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="reportDoc.findByDocType">
+        <![CDATA[
+            FROM ReportDoc WHERE docType = :docType
+        ]]>
+    </query>
+    <query name="reportDoc.findByTemplateUser">
+        <![CDATA[
+            FROM ReportDoc
+            WHERE template = :template AND createdBy = :user
+            ORDER BY createdDate DESC
+        ]]>
+    </query>
+
+</hibernate-mapping>

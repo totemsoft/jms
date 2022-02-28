@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <!-- ========================= PROPERTIES DEFINITIONS ================== -->
+    <bean id="reportPropertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:au/gov/qld/fire/spring/report.properties</value>
+            </list>
+        </property>
+        <property name="placeholderPrefix" value="$report{" />
+    </bean>
+
+    <bean id="jdbcDao" class="au.gov.qld.fire.dao.hibernate.JdbcDaoImpl" />
+
+    <bean id="addressDao" class="au.gov.qld.fire.dao.hibernate.AddressDaoImpl" />
+    <bean id="areaDao" class="au.gov.qld.fire.dao.hibernate.AreaDaoImpl" />
+    <bean id="contactDao" class="au.gov.qld.fire.dao.hibernate.ContactDaoImpl" />
+    <bean id="documentDao" class="au.gov.qld.fire.dao.hibernate.DocumentDaoImpl" />
+    <bean id="docTypeDao" class="au.gov.qld.fire.dao.hibernate.DocTypeDaoImpl" />
+    <bean id="leaveTypeDao" class="au.gov.qld.fire.dao.hibernate.LeaveTypeDaoImpl" />
+    <bean id="mailTypeDao" class="au.gov.qld.fire.dao.hibernate.MailTypeDaoImpl" />
+    <bean id="reportDao" class="au.gov.qld.fire.dao.hibernate.ReportDaoImpl">
+        <property name="xmlRoot" value="$report{xmlRoot}" />
+    </bean>
+    <bean id="reportDocDao" class="au.gov.qld.fire.dao.hibernate.ReportDocDaoImpl" />
+    <bean id="regionDao" class="au.gov.qld.fire.dao.hibernate.RegionDaoImpl" />
+    <bean id="salutationDao" class="au.gov.qld.fire.dao.hibernate.SalutationDaoImpl" />
+    <bean id="scheduledTaskDao" class="au.gov.qld.fire.dao.hibernate.ScheduledTaskDaoImpl" />
+    <bean id="scheduledTaskHistoryDao" class="au.gov.qld.fire.dao.hibernate.ScheduledTaskHistoryDaoImpl" />
+    <bean id="scheduledTaskHistoryItemDao" class="au.gov.qld.fire.dao.hibernate.ScheduledTaskHistoryItemDaoImpl" />
+    <bean id="securityGroupDao" class="au.gov.qld.fire.dao.hibernate.SecurityGroupDaoImpl" />
+    <bean id="staffLeaveDao" class="au.gov.qld.fire.dao.hibernate.StaffLeaveDaoImpl" />
+    <bean id="stateDao" class="au.gov.qld.fire.dao.hibernate.StateDaoImpl" />
+    <bean id="stationDao" class="au.gov.qld.fire.dao.hibernate.StationDaoImpl" />
+    <bean id="supplierDao" class="au.gov.qld.fire.dao.hibernate.SupplierDaoImpl" />
+    <bean id="supplierTypeDao" class="au.gov.qld.fire.dao.hibernate.SupplierTypeDaoImpl" />
+    <bean id="systemFunctionDao" class="au.gov.qld.fire.dao.hibernate.SystemFunctionDaoImpl" />
+    <bean id="templateDao" class="au.gov.qld.fire.dao.hibernate.TemplateDaoImpl" />
+    <bean id="templateTypeDao" class="au.gov.qld.fire.dao.hibernate.TemplateTypeDaoImpl" />
+    <bean id="userDao" class="au.gov.qld.fire.dao.hibernate.UserDaoImpl" />
+    <bean id="userTypeDao" class="au.gov.qld.fire.dao.hibernate.UserTypeDaoImpl" />
+    <bean id="workGroupDao" class="au.gov.qld.fire.dao.hibernate.WorkGroupDaoImpl" />
+
+</beans>

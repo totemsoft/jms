@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.security.SystemFunction" 
+    table="SYSTEM_FUNCTION"
+    dynamic-update="true"
+>
+	<cache usage="read-write" region="refdata" />
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="SYSTEM_FUNCTION_ID"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="module"
+        type="string"
+        column="MODULE"
+        length="50"
+    />
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="query"
+        type="string"
+        column="QUERY"
+        not-null="false"
+        length="255"
+    />
+    <property
+        name="description"
+        type="string"
+        column="DESCRIPTION"
+        not-null="true"
+        length="255"
+    />
+
+</class>
+</hibernate-mapping>

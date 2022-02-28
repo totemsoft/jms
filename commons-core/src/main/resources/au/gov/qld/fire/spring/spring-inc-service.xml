@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <!-- ========================= PROPERTIES DEFINITIONS ================== -->
+    <bean id="smsPropertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:au/gov/qld/fire/spring/sms-clickatell.properties</value>
+            </list>
+        </property>
+        <property name="placeholderPrefix" value="$sms{" />
+    </bean>
+
+    <!-- ========================= AOP DEFINITIONS ===================== -->
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-aop.xml"/>
+
+    <!-- ========================= COMPONENTS DEFINITIONS ===================== -->
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-component.xml"/>
+
+    <!-- ========================= SERVICE DEFINITIONS ===================== -->
+    <bean id="supplierService" class="au.gov.qld.fire.service.impl.SupplierServiceImpl" />
+    <bean id="userService" class="au.gov.qld.fire.service.impl.UserServiceImpl" />
+
+    <bean id="emailService" class="au.gov.qld.fire.service.impl.EmailServiceImpl"
+        c:host="${smtp.host}"
+        c:port="${smtp.port}"
+        c:username="${smtp.username}"
+        c:password="${smtp.password}"
+        c:from="${smtp.from}"
+    />
+
+    <bean id="smsService" class="au.gov.qld.fire.service.impl.SmsServiceImpl"
+        p:viaSmtp="$sms{viaSmtp}"
+        p:username="$sms{username}"
+        p:password="$sms{password}"
+        p:httpApiid="$sms{http.apiid}"
+        p:httpSender="$sms{http.sender}"
+        p:smtpApiid="$sms{smtp.apiid}"
+        p:smtpSender="$sms{smtp.sender}"
+    />
+
+</beans>

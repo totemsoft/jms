@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.refdata.DocType" 
+    table="DOC_TYPE"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+	<cache usage="read-write" region="refdata" />
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="DOC_TYPE_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="50"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+</class>
+
+<query name="docType.findByName">
+    <![CDATA[
+        FROM DocType WHERE name = :name
+    ]]>
+</query>
+
+</hibernate-mapping>

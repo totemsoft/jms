@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.document.Template" 
+    table="TEMPLATE"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="TEMPLATE_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="code"
+        type="string"
+        column="CODE"
+        length="50"
+    />
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="description"
+        type="string"
+        column="DESCRIPTION"
+        length="255"
+    />
+    <property
+        name="location"
+        type="string"
+        column="LOCATION"
+        length="255"
+    />
+    <property
+        name="uploadDate"
+        type="timestamp"
+        column="UPLOAD_DATE"
+        length="23"
+    />
+    <property
+        name="content"
+        type="au.gov.qld.fire.dao.hibernate.BlobByteArrayType"
+        column="CONTENT"
+    />
+    <property
+        name="contentType"
+        type="string"
+        column="CONTENT_TYPE"
+        length="60"
+    />
+    <property
+        name="sqlQuery"
+        type="string"
+        column="SQL_QUERY"
+        length="1024"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to TemplateType -->
+    <many-to-one
+        name="templateType"
+        not-null="true"
+    >
+        <column name="TEMPLATE_TYPE_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="template.findByTemplateType">
+        <![CDATA[
+            FROM Template WHERE (templateType = :templateType)
+            ORDER BY name
+        ]]>
+    </query>
+
+    <query name="template.findByTemplateTypeCode">
+        <![CDATA[
+            FROM Template WHERE (templateType = :templateType) AND (code = :templateCode)
+        ]]>
+    </query>
+
+</hibernate-mapping>

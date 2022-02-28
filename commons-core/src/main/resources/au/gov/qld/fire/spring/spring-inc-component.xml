@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+        <property name="objectMapper">
+            <bean class="au.gov.qld.fire.converters.ObjectMapperFactoryBean" />
+        </property>
+    </bean>
+
+    <bean id="taskRequest" class="au.gov.qld.fire.domain.task.TaskRequest">
+        <property name="messageConverter" ref="jsonMessageConverter" />
+    </bean>
+
+</beans>

@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.security.User" 
+    table="USERS"
+    where="USER_TYPE_ID > 0"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="USER_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="login"
+        type="string"
+        column="LOGIN"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="password"
+        type="string"
+        column="PASSWORD"
+        not-null="true"
+        length="32"
+    />
+    <property
+        name="passwordExpire"
+        type="date"
+        column="PASSWORD_EXPIRE"
+        not-null="true"
+        length="23"
+    />
+    <property
+        name="active"
+        type="yes_no"
+        column="ACTIVE"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to Contact -->
+    <many-to-one
+        name="contact"
+        not-null="true"
+        cascade="save-update"
+    >
+        <column name="CONTACT_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to SecurityGroup -->
+    <many-to-one
+        name="securityGroup"
+        not-null="true"
+    >
+        <column name="SECURITY_GROUP_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to UserType -->
+    <many-to-one
+        name="userType"
+        not-null="true"
+    >
+        <column name="USER_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Supplier -->
+    <many-to-one
+        name="supplier"
+        not-null="false"
+    >
+        <column name="SUPPLIER_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="user.findByLogin">
+        <![CDATA[
+            FROM User WHERE login = :login
+        ]]>
+    </query>
+    
+    <query name="user.findAllByCriteria">
+        <![CDATA[
+            FROM User
+            WHERE
+            (:userTypes IS NULL OR userType.name = :userTypes)
+            AND (:securityGroups IS NULL OR securityGroup.name = :securityGroups)
+        ]]>
+    </query>
+
+</hibernate-mapping>

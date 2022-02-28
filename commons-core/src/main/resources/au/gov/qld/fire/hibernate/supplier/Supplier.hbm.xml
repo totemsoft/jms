@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.supplier.Supplier" 
+    table="SUPPLIER"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="SUPPLIER_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="legalName"
+        type="string"
+        column="LEGAL_NAME"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="abn"
+        type="string"
+        column="ABN"
+        length="11"
+    />
+    <property
+        name="serviceDescription"
+        type="string"
+        column="SERVICE_DESCRIPTION"
+        length="255"
+    />
+    <property
+        name="active"
+        type="yes_no"
+        column="ACTIVE"
+        length="1"
+    />
+
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to Region -->
+    <many-to-one
+        name="region"
+        cascade="none"
+    >
+        <column name="REGION_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to SupplierType -->
+    <many-to-one
+        name="supplierType"
+        not-null="true"
+        cascade="none"
+    >
+        <column name="SUPPLIER_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Contact -->
+    <many-to-one
+        name="contact"
+        cascade="save-update"
+    >
+        <column name="CONTACT_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Supplier -->
+    <many-to-one
+        name="masterSupplier"
+        cascade="none"
+    >
+        <column name="MASTER_SUPPLIER_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Address -->
+    <many-to-one
+        name="address"
+        cascade="save-update"
+    >
+        <column name="ADDRESS_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Address -->
+    <many-to-one
+        name="postAddress"
+        cascade="save-update"
+    >
+        <column name="POST_ADDRESS_ID" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to SupplierType -->
+    <bag
+        name="supplierTypeMatch"
+        table="SUPPLIER_TYPE_MATCH"
+        lazy="true"
+    >
+        <key column="SUPPLIER_ID" />
+        <many-to-many column="SUPPLIER_TYPE_ID" 
+            class="au.gov.qld.fire.domain.refdata.SupplierType"
+            unique="true"
+        />
+    </bag>
+</class>
+
+    <query name="supplier.findByName">
+        <![CDATA[
+            FROM Supplier WHERE name = :name
+        ]]>
+    </query>
+    <query name="supplier.findByLegalName">
+        <![CDATA[
+            FROM Supplier WHERE legalName = :legalName
+        ]]>
+    </query>
+    <query name="supplier.findByABN">
+        <![CDATA[
+            FROM Supplier WHERE abn = :abn
+        ]]>
+    </query>
+    <query name="supplier.findBySupplierType">
+        <![CDATA[
+            FROM Supplier WHERE supplierType = :supplierType AND active = 'Y'
+        ]]>
+    </query>
+    <query name="supplier.findByCriteria">
+        <![CDATA[
+            FROM Supplier AS supplier
+                INNER JOIN supplier.contact AS contact
+            WHERE
+                    (:supplierName IS NULL OR supplier.name LIKE :supplierName)
+                AND (:supplierContact IS NULL OR contact.surname LIKE :supplierContact)
+                AND (:supplierPhone IS NULL OR contact.phone LIKE :supplierPhone)
+                AND (:active IS NULL OR supplier.active = :active)
+            ORDER BY
+                supplier.supplierType.name, supplier.name
+        ]]>
+    </query>
+
+    <sql-query name="supplier.findSupplierName">
+        <![CDATA[
+            SELECT NAME
+            FROM SUPPLIER
+            WHERE (NAME LIKE :value) AND ACTIVE = 'Y'
+        ]]>
+    </sql-query>
+    <sql-query name="supplier.findSupplierContact">
+        <![CDATA[
+            SELECT CONTACT.SURNAME
+            FROM SUPPLIER INNER JOIN
+                CONTACT ON SUPPLIER.CONTACT_ID = CONTACT.CONTACT_ID
+            WHERE (CONTACT.SURNAME LIKE :value) AND SUPPLIER.ACTIVE = 'Y'
+        ]]>
+    </sql-query>
+    <sql-query name="supplier.findSupplierPhone">
+        <![CDATA[
+            SELECT CONTACT.PHONE
+            FROM SUPPLIER INNER JOIN
+                CONTACT ON SUPPLIER.CONTACT_ID = CONTACT.CONTACT_ID
+            WHERE (CONTACT.PHONE LIKE :value) AND SUPPLIER.ACTIVE = 'Y'
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

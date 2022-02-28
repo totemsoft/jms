@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.entity.Contact" 
+    table="CONTACT"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="CONTACT_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="firstName"
+        type="string"
+        column="FIRST_NAME"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="surname"
+        type="string"
+        column="SURNAME"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="phone"
+        type="string"
+        column="PHONE"
+        length="50"
+    />
+    <property
+        name="mobile"
+        type="string"
+        column="MOBILE"
+        length="50"
+    />
+    <property
+        name="email"
+        type="string"
+        column="EMAIL"
+        length="50"
+    />
+    <property
+        name="fax"
+        type="string"
+        column="FAX"
+        length="50"
+    />
+    <property
+        name="skype"
+        type="string"
+        column="SKYPE"
+        length="50"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to Salutation -->
+    <many-to-one
+        name="salutation"
+        not-null="true"
+    >
+        <column name="SALUTATION" />
+    </many-to-one>
+
+</class>
+
+<query name="contact.findByEmail">
+    <![CDATA[
+        FROM Contact WHERE email = :email
+    ]]>
+</query>
+
+</hibernate-mapping>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.location.State" 
+    table="STATE"
+    dynamic-update="true"
+>
+	<cache usage="read-write" region="refdata" />
+
+    <id
+        name="id"
+        type="string"
+        column="STATE"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="defaultState"
+        type="yes_no"
+        column="DEFAULT_STATE"
+        length="1"
+    />
+  
+</class>
+
+    <query name="state.findDefault">
+        <![CDATA[
+            FROM State WHERE defaultState = true
+        ]]>
+    </query>
+
+</hibernate-mapping>

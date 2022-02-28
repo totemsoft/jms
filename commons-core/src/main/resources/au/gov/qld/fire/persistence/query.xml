@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+	<named-query name="address.findByAddrLinePostcodeSuburb">
+	    <query>
+	        FROM Address
+	        WHERE   (:addrLine1 IS NULL OR upper(addrLine1) LIKE :addrLine1)
+	            AND (:addrLine2 IS NULL OR upper(addrLine2) LIKE :addrLine2)
+	            AND (:postcode IS NULL OR upper(postcode) LIKE :postcode)
+	            AND (:suburb IS NULL OR upper(suburb) LIKE :suburb)
+	            AND (:state IS NULL OR upper(state) LIKE :state)
+	    </query>
+	</named-query>
+
+    <named-query name="area.findByRegionArea">
+        <query>
+            FROM Area
+            WHERE name = :name
+                AND (region = :region)
+        </query>
+    </named-query>
+    <named-query name="area.findAreaByRegion">
+        <query>
+            SELECT name
+            FROM Area
+            WHERE (name LIKE :areaLike AND active = true)
+                AND (region.name = :region AND region.active = true)
+        </query>
+    </named-query>
+
+	<named-query name="contact.findByEmail">
+	    <query>
+	        FROM Contact WHERE email = :email
+	    </query>
+	</named-query>
+
+	<named-query name="mailType.findByName">
+	    <query>
+	        FROM MailType WHERE name = :name
+	    </query>
+	</named-query>
+
+    <named-query name="region.findByName">
+        <query>
+            FROM Region WHERE name = :name
+        </query>
+    </named-query>
+    <named-query name="region.findByCode">
+        <query>
+            FROM Region WHERE code = :code
+        </query>
+    </named-query>
+    <named-query name="region.findRegion">
+        <query>
+            SELECT name FROM Region
+            WHERE (name LIKE :regionLike) AND (active = true)
+        </query>
+    </named-query>
+
+    <named-query name="reportDoc.findByDocType">
+        <query>
+            FROM ReportDoc WHERE docType = :docType
+        </query>
+    </named-query>
+    <named-query name="reportDoc.findByTemplateUser">
+        <query>
+            FROM ReportDoc
+            WHERE template = :template AND createdBy = :user
+            ORDER BY createdDate DESC
+        </query>
+    </named-query>
+
+    <named-query name="scheduledTask.findByCriteria">
+        <query>
+            FROM ScheduledTask
+            WHERE
+                (:name IS NULL OR name = :name)
+                AND (:active IS NULL OR active = :active)
+            ORDER BY name
+        </query>
+    </named-query>
+
+    <named-query name="scheduledTaskHistory.findByCriteria">
+        <query>
+            FROM ScheduledTaskHistory
+            WHERE
+                (:name IS NULL OR name = :name)
+                AND ((:status IS NULL AND status IS NULL) OR (:status IS NOT NULL AND status = :status))
+            ORDER BY name
+        </query>
+    </named-query>
+
+    <named-query name="scheduledTaskHistoryItem.findByItemId">
+        <query>
+            FROM ScheduledTaskHistoryItem
+            WHERE itemId = :itemId
+        </query>
+    </named-query>
+
+    <named-query name="securityGroup.findByWorkGroupId">
+        <query>
+            SELECT sg
+            FROM SecurityGroup sg, User u
+            WHERE sg = u.securityGroup
+            AND :workGroupId IN ELEMENTS(u.workGroups)
+        </query>
+    </named-query>
+
+    <named-query name="state.findDefault">
+        <query>
+            FROM State WHERE defaultState = true
+        </query>
+    </named-query>
+
+    <named-query name="station.findByAreaStation">
+        <query>
+            FROM Station
+            WHERE name = :name
+                AND (area = :area)
+        </query>
+    </named-query>
+    <named-query name="station.findByRegion">
+        <query>
+            FROM Station
+            WHERE area.region = :region
+            ORDER BY name
+        </query>
+    </named-query>
+    <named-query name="station.findStationByRegionArea">
+        <query>
+            SELECT name
+            FROM Station
+            WHERE (name LIKE :stationLike AND active = true)
+                AND (area.name = :area AND area.active = true)
+                AND (area.region.name = :region AND area.region.active = true)
+        </query>
+    </named-query>
+
+    <named-query name="supplier.findByName">
+        <query>
+            FROM Supplier WHERE name = :name
+        </query>
+    </named-query>
+    <named-query name="supplier.findByLegalName">
+        <query>
+            FROM Supplier WHERE legalName = :legalName
+        </query>
+    </named-query>
+    <named-query name="supplier.findByABN">
+        <query>
+            FROM Supplier WHERE abn = :abn
+        </query>
+    </named-query>
+    <named-query name="supplier.findBySupplierType">
+        <query>
+            FROM Supplier WHERE supplierType = :supplierType AND active = true
+        </query>
+    </named-query>
+    <named-query name="supplier.findByCriteria">
+        <query>
+            FROM Supplier
+            WHERE
+                    (:supplierName IS NULL OR name LIKE :supplierName)
+                AND (:supplierContact IS NULL OR contact.surname LIKE :supplierContact)
+                AND (:supplierPhone IS NULL OR contact.phone LIKE :supplierPhone)
+                AND (:active IS NULL OR active = :active)
+            ORDER BY
+                supplierType.name, name
+        </query>
+    </named-query>
+    <named-query name="supplier.findByCriteriaASE">
+        <query>
+            FROM Supplier
+            WHERE
+                    (:supplierName IS NULL OR name LIKE :supplierName)
+                AND (:supplierContact IS NULL OR contact.surname LIKE :supplierContact)
+                AND (:supplierPhone IS NULL OR contact.phone LIKE :supplierPhone)
+                AND (:active IS NULL OR active = :active)
+                AND (supplierType.supplierTypeId IN (3, 4))
+            ORDER BY
+                supplierType.name, name
+        </query>
+    </named-query>
+    <named-query name="supplier.findSupplierName">
+        <query>
+            SELECT name
+            FROM Supplier
+            WHERE (name LIKE :value) AND active = true
+        </query>
+    </named-query>
+    <named-query name="supplier.findSupplierContact">
+        <query>
+            SELECT contact.surname
+            FROM Supplier
+            WHERE (contact.surname LIKE :value) AND active = true
+        </query>
+    </named-query>
+    <named-query name="supplier.findSupplierPhone">
+        <query>
+            SELECT contact.phone
+            FROM Supplier
+            WHERE (contact.phone LIKE :value) AND active = true
+        </query>
+    </named-query>
+
+    <named-query name="template.findByTemplateType">
+        <query>
+            FROM Template WHERE (templateType = :templateType)
+            ORDER BY name
+        </query>
+    </named-query>
+    <named-query name="template.findByTemplateTypeCode">
+        <query>
+            FROM Template WHERE (templateType = :templateType) AND (code = :templateCode)
+        </query>
+    </named-query>
+
+    <named-query name="templateType.findByName">
+        <query>
+            FROM TemplateType WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="user.findByLogin">
+        <query>
+            FROM User WHERE login = :login
+        </query>
+    </named-query>
+    <named-query name="user.findAllByCriteria">
+        <query>
+            FROM User
+            WHERE
+            (:userTypes IS NULL OR userType.name = :userTypes)
+            AND (:securityGroups IS NULL OR securityGroup.name = :securityGroups)
+            AND (:login IS NULL OR login LIKE :login)
+            AND (:firstName IS NULL OR contact.firstName LIKE :firstName)
+            AND (:surname IS NULL OR contact.surname LIKE :surname)
+        </query>
+    </named-query>
+
+    <named-query name="workGroup.findWorkGroup">
+        <query>
+            SELECT name
+            FROM WorkGroup
+            WHERE (name LIKE :value) AND active = true
+        </query>
+    </named-query>
+
+	<!--
+	Unable to configure EntityManagerFactory
+	Pure native scalar queries are not yet supported
+	-->
+    <!--named-native-query name="user.findByLogin" result-class="au.gov.qld.fire.domain.security.User">
+        <query>
+			SELECT '1' AS key, '2' AS value
+        </query>
+    </named-native-query-->
+
+</entity-mappings>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.refdata.WorkGroup" 
+    table="WORK_GROUP"
+    dynamic-update="true"
+>
+	<cache usage="read-write" region="refdata" />
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="WORK_GROUP_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="50"
+    />
+    <property
+        name="active"
+        type="yes_no"
+        column="ACTIVE"
+        not-null="true"
+        length="1"
+    />
+
+</class>
+
+    <sql-query name="workGroup.findWorkGroup">
+        <![CDATA[
+            SELECT NAME
+            FROM WORK_GROUP
+            WHERE (NAME LIKE :value AND ACTIVE = 'Y')
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

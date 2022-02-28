@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.domain.location.Region" 
+    table="REGION"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="REGION_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="active"
+        type="yes_no"
+        column="ACTIVE"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to Contact -->
+    <many-to-one
+        name="contact"
+        cascade="save-update"
+    >
+        <column name="CONTACT_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Address -->
+    <many-to-one
+        name="address"
+        cascade="save-update"
+    >
+        <column name="ADDRESS_ID" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to Area -->
+    <bag
+        name="areas"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="REGION_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.domain.location.Area"
+        />
+    </bag>
+
+</class>
+
+    <query name="region.findByName">
+        <![CDATA[
+            FROM Region
+            WHERE name = :name
+        ]]>
+    </query>
+
+    <sql-query name="region.findRegion">
+        <![CDATA[
+            SELECT NAME
+            FROM REGION
+            WHERE (NAME LIKE :regionLike) AND (ACTIVE = 'Y')
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>
