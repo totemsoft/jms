@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="crystal" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>${crystal.jta-data-source}</jta-data-source>
+        <!--non-jta-data-source>${crystal.jta-data-source}</non-jta-data-source-->
+
+        <mapping-file>au/gov/qld/fire/persistence/query.xml</mapping-file>
+
+        <class>au.gov.qld.fire.domain.document.Document</class>
+        <class>au.gov.qld.fire.domain.document.Template</class>
+        <class>au.gov.qld.fire.domain.entity.Contact</class>
+        <class>au.gov.qld.fire.domain.location.Address</class>
+        <class>au.gov.qld.fire.domain.location.Area</class>
+        <class>au.gov.qld.fire.domain.location.Region</class>
+        <class>au.gov.qld.fire.domain.location.State</class>
+        <class>au.gov.qld.fire.domain.location.Station</class>
+        <class>au.gov.qld.fire.domain.refdata.DocType</class>
+        <class>au.gov.qld.fire.domain.refdata.MailType</class>
+        <class>au.gov.qld.fire.domain.refdata.Salutation</class>
+        <class>au.gov.qld.fire.domain.refdata.SupplierType</class>
+        <class>au.gov.qld.fire.domain.refdata.TemplateType</class>
+        <class>au.gov.qld.fire.domain.refdata.UserType</class>
+        <class>au.gov.qld.fire.domain.refdata.WorkGroup</class>
+        <class>au.gov.qld.fire.domain.report.ReportDoc</class>
+        <class>au.gov.qld.fire.domain.security.SecurityGroup</class>
+        <class>au.gov.qld.fire.domain.security.SystemFunction</class>
+        <class>au.gov.qld.fire.domain.security.User</class>
+        <class>au.gov.qld.fire.domain.supplier.Supplier</class>
+        <class>au.gov.qld.fire.domain.task.ScheduledTask</class>
+        <class>au.gov.qld.fire.domain.task.ScheduledTaskHistory</class>
+        <class>au.gov.qld.fire.domain.task.ScheduledTaskHistoryItem</class>
+
+        <!-- JPA 2.0 way to specify whether the entities and entity-related state of a persistence unit will be cached -->
+        <!--shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode-->
+        <!--exclude-unlisted-classes>true</exclude-unlisted-classes-->
+
+        <!-- http://bill.burkecentral.com/2007/07/06/co-existence-with-hibernate-jpa-and-ejb3/ -->
+        <properties>
+            <!--property name="transaction.factory_class" value="org.hibernate.transaction.JTATransactionFactory" />
+            <property name="hibernate.transaction.manager_lookup_class" value="${tx.managerLookupClass}" /-->
+            <!--property name="hibernate.transaction.jta.platform" value="${hibernate.transaction.jta.platform}" /-->
+
+            <!--property name="jboss.as.jpa.providerModule" value="org.hibernate:3" /-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
+            <!--property name="hibernate.ejb.interceptor" value="au.gov.qld.fire.dao.hibernate.HibernateInterceptor" /-->
+            <!-- When loading a persistence archive, Hibernate Entity Manager will automatically scan the .jar file for any *hbm.xml files and add them to its mapping information. -->
+            <!--property name="hibernate.ejb.cfgfile" value="/au/gov/qld/fire/jms/hibernate/hibernate.cfg.xml_" /-->
+            <!--property name="hibernate.archive.autodetection" value="class, hbm" /-->
+
+            <property name="hibernate.cache.region.factory_class" value="${hibernate.cache.region.factory_class}" />
+            <property name="hibernate.cache.use_query_cache" value="true" />
+            <property name="hibernate.cache.use_second_level_cache" value="true" />
+
+            <!--property name="hibernate.cache.infinispan.cfg" value="infinispan.xml" /-->
+            <property name="hibernate.cache.infinispan.use_synchronization" value="false" />
+            <property name="hibernate.cache.infinispan.statistics" value="false" />
+            <!--property name="hibernate.cache.infinispan.cachemanager" value="java:jboss/infinispan/hibernate" /-->
+
+            <property name="hibernate.flush" value="never" />
+            <!--property name="hibernate.hbm2ddl.auto" value="validate" /-->
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+            <property name="hibernate.generate_statistics" value="false" />
+            <property name="hibernate.bytecode.use_reflection_optimizer" value="true" />
+            <property name="hibernate.current_session_context_class" value="jta" />
+        </properties>
+    </persistence-unit>
+</persistence>

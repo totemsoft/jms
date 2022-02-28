@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>au.gov.qld.fire</groupId>
+        <artifactId>qfrs</artifactId>
+        <version>${application.version}</version>
+    </parent>
+    <groupId>au.gov.qld.fire.crystal</groupId>
+    <artifactId>crystal-core</artifactId>
+    <version>${crystal.version}</version>
+    <packaging>jar</packaging>
+    <name>QFRS Crystal Reports Core</name>
+    <description>QFRS Job management system.</description>
+    <url>http://myjms.com.au/qfrs/crystal</url>
+
+    <build>  
+        <plugins>  
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <crjava.lib.path>${project.basedir}/../crystal/src/main/webapp/WEB-INF/lib</crjava.lib.path>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>au.gov.qld.fire.commons</groupId>
+            <artifactId>commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>au.gov.qld.fire.commons</groupId>
+            <artifactId>commons-core</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm-tomcat55-lifecycle</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xpp3</groupId>
+            <artifactId>xpp3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.crystaldecisions</groupId>
+            <artifactId>crjava-common</artifactId>
+        </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-runtime</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-webreporting</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-logging</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-keycodeDecoder</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-JDBInterface</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-DatabaseConnectors</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.crystaldecisions</groupId>
+                <artifactId>crjava-QueryBuilder</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.azalea.ufl</groupId>
+                <artifactId>crjava-barcode</artifactId>
+            </dependency>
+    </dependencies>
+</project>

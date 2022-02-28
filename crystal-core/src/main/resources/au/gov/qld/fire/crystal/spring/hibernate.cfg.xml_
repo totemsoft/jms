@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping resource="au/gov/qld/fire/hibernate/document/Document.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/document/Template.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/entity/Contact.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/location/Address.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/location/Area.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/location/Region.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/location/State.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/location/Station.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/refdata/DocType.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/refdata/Salutation.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/refdata/SupplierType.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/refdata/TemplateType.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/refdata/UserType.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/refdata/WorkGroup.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/report/ReportDoc.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/security/SecurityGroup.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/security/SystemFunction.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/security/User.hbm.xml"/>
+        <mapping resource="au/gov/qld/fire/hibernate/supplier/Supplier.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

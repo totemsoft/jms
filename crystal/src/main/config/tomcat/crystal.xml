@@ -1,0 +1,22 @@
+<Context
+    path="/crystal"
+    reloadable="false"
+    docBase="/Users/shibaevv/dev/workspace-4.0/jms/crystal/target/crystal"
+    workDir="/Users/shibaevv/dev/workspace-4.0/jms/crystal/work">
+
+<Resource
+    name="jdbc/DataSource_jms"
+    auth="Container"
+    type="javax.sql.DataSource"
+    maxActive="5" 
+    maxIdle="1" 
+    maxWait="5000"
+    removeAbandoned="true"
+    removeAbandonedTimeout="60"
+    logAbandoned="true"
+    username="jms"
+    password="Passw0rd" 
+    driverClassName="net.sourceforge.jtds.jdbc.Driver"
+    url="jdbc:jtds:sqlserver://localhost:1433/JMS" />
+
+</Context>

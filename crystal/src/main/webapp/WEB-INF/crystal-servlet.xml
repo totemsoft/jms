@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config />
+
+    <!--
+        The controllers are auto-detected POJOs label with the @Controller annotation.
+    -->
+    <context:component-scan scoped-proxy="targetClass" base-package="au.gov.qld.fire.crystal.web">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!--
+        This bean resolves specific types of exception to corresponding error views.
+        The default behaviour of DispatcherServlet is to propagate all exceptions to the
+        servlet container. This will happen here with all other types of exception.
+    -->
+    <bean id="exceptionResolver" class="au.gov.qld.fire.web.servlet.HandlerExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">common/error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--
+        This bean configures the 'prefix' and 'suffix' properties of InternalResourceViewResolver,
+        which resolves logical view names returned by Controllers
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+        p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />
+
+    <!-- ========================= MESSAGE SOURCE DEFINITION ========================= -->
+    <!--
+        Message source for this context, loaded from localised "messages_xx" files
+    -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
+        p:basename="applicationResources" />
+
+</beans>
