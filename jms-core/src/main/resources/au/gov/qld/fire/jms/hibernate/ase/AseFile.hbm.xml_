@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.ase.AseFile" 
+    table="ASE_FILE"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="ASE_FILE_ID"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="aseSerialNo"
+        type="string"
+        column="ASE_SERIAL_NO"
+        length="50"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AseType -->
+    <many-to-one
+        name="aseType"
+        class="au.gov.qld.fire.jms.domain.refdata.AseType"
+    >
+        <column name="ASE_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional one-to-one association to AseConn -->
+    <one-to-one
+        name="aseConn"
+        class="au.gov.qld.fire.jms.domain.ase.AseConn"
+        cascade="save-update"
+        >
+    </one-to-one>
+    <!-- bi-directional one-to-many association to AseChange -->
+    <bag
+        name="aseChanges"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="ASE_FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.ase.AseChange"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to Supplier -->
+    <bag
+        name="suppliers"
+        table="ASE_SUPPLIER"
+        lazy="true"
+    >
+        <key column="ASE_FILE_ID" />
+        <many-to-many column="SUPPLIER_ID"
+            class="au.gov.qld.fire.domain.supplier.Supplier"
+            unique="true"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to SubPanel -->
+    <list
+        name="subPanels"
+        lazy="true"
+        inverse="true"
+        cascade="save-update"
+    >
+        <key column="ASE_FILE_ID" />
+        <index column="SUB_PANEL_ORDER_ID" />
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.ase.SubPanel"
+        />
+    </list>
+
+</class>
+
+    <query name="aseFile.findByAseType">
+        <![CDATA[
+            FROM AseFile WHERE aseType = :aseType
+        ]]>
+    </query>
+
+</hibernate-mapping>

@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.entity.StakeHolder" 
+    table="STAKE_HOLDER"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="STAKE_HOLDER_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="active"
+        type="yes_no"
+        column="ACTIVE"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to Region -->
+    <many-to-one
+        name="region"
+        class="au.gov.qld.fire.domain.location.Region"
+        not-null="true"
+    >
+        <column name="REGION_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Contact -->
+    <many-to-one
+        name="contact"
+        class="au.gov.qld.fire.domain.entity.Contact"
+        not-null="true"
+        cascade="save-update"
+    >
+        <column name="CONTACT_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Address -->
+    <many-to-one
+        name="address"
+        class="au.gov.qld.fire.domain.location.Address"
+        not-null="true"
+        cascade="save-update"
+    >
+        <column name="ADDRESS_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to StakeHolderType -->
+    <many-to-one
+        name="stakeHolderType"
+        class="au.gov.qld.fire.jms.domain.refdata.StakeHolderType"
+        not-null="true"
+    >
+        <column name="STAKE_HOLDER_TYPE_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="stakeHolder.findByStakeHolderType">
+        <![CDATA[
+            FROM StakeHolder WHERE stakeHolderType = :stakeHolderType
+        ]]>
+    </query>
+    <query name="stakeHolder.findByRegion">
+        <![CDATA[
+            FROM StakeHolder WHERE region = :region
+        ]]>
+    </query>
+
+</hibernate-mapping>

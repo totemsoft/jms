@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+
+    <persistence-unit name="jms" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>${jms.jta-data-source}</jta-data-source>
+        <!--non-jta-data-source>${jms.jta-data-source}</non-jta-data-source-->
+
+        <mapping-file>au/gov/qld/fire/persistence/query.xml</mapping-file>
+        <mapping-file>au/gov/qld/fire/jms/persistence/query.xml</mapping-file>
+        <mapping-file>au/gov/qld/fire/jms/persistence/query-native.xml</mapping-file>
+
+        <class>au.gov.qld.fire.domain.DbVersion</class>
+        <class>au.gov.qld.fire.domain.document.Document</class>
+        <class>au.gov.qld.fire.domain.document.Template</class>
+        <class>au.gov.qld.fire.domain.entity.Company</class>
+        <class>au.gov.qld.fire.domain.entity.Contact</class>
+        <class>au.gov.qld.fire.domain.envers.RevisionEntity</class>
+        <class>au.gov.qld.fire.domain.location.Address</class>
+        <class>au.gov.qld.fire.domain.location.Area</class>
+        <class>au.gov.qld.fire.domain.location.Region</class>
+        <class>au.gov.qld.fire.domain.location.State</class>
+        <class>au.gov.qld.fire.domain.location.Station</class>
+        <class>au.gov.qld.fire.domain.refdata.DocType</class>
+        <class>au.gov.qld.fire.domain.refdata.LeaveType</class>
+        <class>au.gov.qld.fire.domain.refdata.MailType</class>
+        <class>au.gov.qld.fire.domain.refdata.Salutation</class>
+        <class>au.gov.qld.fire.domain.refdata.SupplierType</class>
+        <class>au.gov.qld.fire.domain.refdata.TemplateType</class>
+        <class>au.gov.qld.fire.domain.refdata.UserType</class>
+        <class>au.gov.qld.fire.domain.refdata.WorkGroup</class>
+        <class>au.gov.qld.fire.domain.report.ReportDoc</class>
+        <class>au.gov.qld.fire.domain.security.SecurityGroup</class>
+        <class>au.gov.qld.fire.domain.security.SystemFunction</class>
+        <class>au.gov.qld.fire.domain.security.User</class>
+        <class>au.gov.qld.fire.domain.supplier.Supplier</class>
+        <class>au.gov.qld.fire.domain.task.ScheduledTask</class>
+        <class>au.gov.qld.fire.domain.task.ScheduledTaskHistory</class>
+        <class>au.gov.qld.fire.domain.task.ScheduledTaskHistoryItem</class>
+        <class>au.gov.qld.fire.domain.user.StaffLeave</class>
+
+        <class>au.gov.qld.fire.jms.domain.Fca</class>
+        <class>au.gov.qld.fire.jms.domain.KeyReg</class>
+        <class>au.gov.qld.fire.jms.domain.KeyReceipt</class>
+        <class>au.gov.qld.fire.jms.domain.action.ActionOutcome</class>
+        <class>au.gov.qld.fire.jms.domain.action.ActionWorkflow</class>
+        <class>au.gov.qld.fire.jms.domain.action.FileAction</class>
+        <class>au.gov.qld.fire.jms.domain.action.FileActionTodo</class>
+        <class>au.gov.qld.fire.jms.domain.action.JobAction</class>
+        <class>au.gov.qld.fire.jms.domain.action.JobActionTodo</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AlarmPanel</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseChange</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseChangeSupplier</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseConn</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseFile</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseKey</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseKeyInvoice</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseKeyOrder</class>
+        <class>au.gov.qld.fire.jms.domain.ase.AseKeyPrice</class>
+        <class>au.gov.qld.fire.jms.domain.ase.SubPanel</class>
+        <class>au.gov.qld.fire.jms.domain.building.Building</class>
+        <class>au.gov.qld.fire.jms.domain.building.BuildingAlt</class>
+        <class>au.gov.qld.fire.jms.domain.building.BuildingContact</class>
+        <class>au.gov.qld.fire.jms.domain.document.DocChkList</class>
+        <class>au.gov.qld.fire.jms.domain.entity.Owner</class>
+        <class>au.gov.qld.fire.jms.domain.entity.StakeHolder</class>
+        <class>au.gov.qld.fire.jms.domain.file.ActiveArchive</class>
+        <class>au.gov.qld.fire.jms.domain.file.ActiveFile</class>
+        <class>au.gov.qld.fire.jms.domain.file.ActiveAseFile</class>
+        <class>au.gov.qld.fire.jms.domain.file.Archive</class>
+        <class>au.gov.qld.fire.jms.domain.file.File</class>
+        <class>au.gov.qld.fire.jms.domain.file.FileAudit</class>
+        <class>au.gov.qld.fire.jms.domain.file.FileArchive</class>
+        <class>au.gov.qld.fire.jms.domain.file.FileDoc</class>
+        <class>au.gov.qld.fire.jms.domain.file.FileDocChkList</class>
+        <class>au.gov.qld.fire.jms.domain.finance.Invoice</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceArea</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceBatch</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceData</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceGlData</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceHeader</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceText</class>
+        <class>au.gov.qld.fire.jms.domain.finance.InvoiceType</class>
+        <class>au.gov.qld.fire.jms.domain.isolation.IsolationHistory</class>
+        <class>au.gov.qld.fire.jms.domain.job.ActiveJob</class>
+        <class>au.gov.qld.fire.jms.domain.job.ActiveJobRequest</class>
+        <class>au.gov.qld.fire.jms.domain.job.Job</class>
+        <class>au.gov.qld.fire.jms.domain.job.JobDoc</class>
+        <class>au.gov.qld.fire.jms.domain.job.JobRequest</class>
+        <class>au.gov.qld.fire.jms.domain.mail.ActiveMailRegister</class>
+        <class>au.gov.qld.fire.jms.domain.mail.MailBatch</class>
+        <class>au.gov.qld.fire.jms.domain.mail.MailBatchFile</class>
+        <class>au.gov.qld.fire.jms.domain.mail.MailRegister</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.ActionCode</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.ActionType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.AseConnType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.AseType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.Brigade</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.BuildingClassification</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.BuildingContactType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.FileStatus</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.JobType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.OwnerType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.SiteType</class>
+        <class>au.gov.qld.fire.jms.domain.refdata.StakeHolderType</class>
+        <class>au.gov.qld.fire.jms.domain.sap.Rfi</class>
+        <class>au.gov.qld.fire.jms.domain.sap.SapHeader</class>
+
+        <class>au.gov.qld.fire.jms.uaa.domain.Injury</class>
+        <class>au.gov.qld.fire.jms.uaa.domain.refdata.InjuryType</class>
+
+        <!-- JPA 2.0 way to specify whether the entities and entity-related state of a persistence unit will be cached -->
+        <!--shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode-->
+        <!--exclude-unlisted-classes>true</exclude-unlisted-classes-->
+
+        <!-- http://bill.burkecentral.com/2007/07/06/co-existence-with-hibernate-jpa-and-ejb3/ -->
+        <properties>
+            <!--property name="transaction.factory_class" value="org.hibernate.transaction.JTATransactionFactory" />
+            <property name="hibernate.transaction.manager_lookup_class" value="${tx.managerLookupClass}" /-->
+            <!--property name="hibernate.transaction.jta.platform" value="${hibernate.transaction.jta.platform}" /-->
+
+            <property name="javax.persistence.sharedCache.mode" value="ENABLE_SELECTIVE" />
+            <property name="javax.persistence.validation.mode" value="none" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
+            <!--property name="hibernate.ejb.interceptor" value="au.gov.qld.fire.dao.hibernate.HibernateInterceptor" /-->
+            <!-- When loading a persistence archive, Hibernate Entity Manager will automatically scan the .jar file for any *hbm.xml files and add them to its mapping information. -->
+            <!--property name="hibernate.ejb.cfgfile" value="/au/gov/qld/fire/jms/hibernate/hibernate.cfg.xml_" /-->
+            <!--property name="hibernate.archive.autodetection" value="class, hbm" /-->
+
+            <!-- https://docs.jboss.org/author/display/AS71/JPA+Reference+Guide#JPAReferenceGuide-UsingtheInfinispansecondlevelcache -->
+            <property name="hibernate.cache.infinispan.cachemanager" value="${hibernate.cache.infinispan.cachemanager}" />
+            <property name="hibernate.cache.region.factory_class" value="${hibernate.cache.region.factory_class}" />
+            <property name="hibernate.cache.region_prefix" value="" />
+            <property name="hibernate.cache.use_query_cache" value="false" />
+            <property name="hibernate.cache.use_second_level_cache" value="true" />
+            <property name="hibernate.cache.use_structured_entries" value="false" />
+
+            <property name="hibernate.flush" value="never" />
+            <!--property name="hibernate.hbm2ddl.auto" value="validate" /-->
+            <property name="hibernate.show_sql" value="false" />
+            <property name="hibernate.format_sql" value="false" />
+            <property name="hibernate.generate_statistics" value="false" />
+            <property name="hibernate.bytecode.use_reflection_optimizer" value="false" />
+            <property name="hibernate.current_session_context_class" value="jta" />
+
+            <!-- http://docs.jboss.org/hibernate/core/4.0/devguide/en-US/html/ch15.html -->
+            <property name="org.hibernate.envers.audit_table_suffix" value="_AUD" />
+            <property name="org.hibernate.envers.revision_field_name" value="REV_ID" />
+            <property name="org.hibernate.envers.revision_type_field_name" value="REV_TYPE" />
+            <property name="org.hibernate.envers.audit_strategy" value="org.hibernate.envers.strategy.DefaultAuditStrategy" />
+            <property name="org.hibernate.envers.store_data_at_delete" value="true" />
+            <!--property name="org.hibernate.envers.audit_strategy_validity_end_rev_field_name" value="REV_END_ID" />
+            <property name="org.hibernate.envers.audit_strategy_validity_revend_timestamp_field_name" value="REV_END_TSTMP" />
+            <property name="org.hibernate.envers.audit_strategy_validity_store_revend_timestamp" value="false" /-->
+       </properties>
+    </persistence-unit>
+</persistence>

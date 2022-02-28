@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.action.JobAction" 
+    table="JOB_ACTION"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+    where="LOGICALLY_DELETED IS NULL"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="JOB_ACTION_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="dueDate"
+        type="date"
+        column="DUE_DATE"
+        not-null="true"
+        length="23"
+    />
+    <property
+        name="notation"
+        type="string"
+        column="NOTATION"
+        not-null="true"
+        length="4098"
+    />
+    <property
+        name="destination"
+        type="string"
+        column="DESTINATION"
+        length="250"
+    />
+    <property
+        name="subject"
+        type="string"
+        column="SUBJECT"
+        length="250"
+    />
+    <property
+        name="completedDate"
+        type="timestamp"
+        column="COMPLETED_DATE"
+        length="23"
+    />
+    <property
+        name="logicallyDeleted"
+        type="yes_no"
+        column="LOGICALLY_DELETED"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="completedBy"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="COMPLETED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionCode -->
+    <many-to-one
+        name="actionCode"
+        class="au.gov.qld.fire.jms.domain.refdata.ActionCode"
+        not-null="true"
+    >
+        <column name="ACTION_CODE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionOutcome -->
+    <many-to-one
+        name="actionOutcome"
+        class="au.gov.qld.fire.jms.domain.action.ActionOutcome"
+        not-null="true"
+    >
+        <column name="ACTION_OUTCOME_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Job -->
+    <many-to-one
+        name="job"
+        class="au.gov.qld.fire.jms.domain.job.Job"
+        not-null="true"
+    >
+        <column name="JOB_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Document -->
+    <many-to-one
+        name="document"
+        class="au.gov.qld.fire.domain.document.Document"
+        cascade="save-update"
+    >
+        <column name="DOCUMENT_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="jobAction.findByJob">
+        <![CDATA[
+            FROM JobAction WHERE job = :job
+        ]]>
+    </query>
+
+    <query name="jobAction.findJobActionTodoByDueDate">
+        <![CDATA[
+            FROM JobAction
+            WHERE (dueDate = :dueDate) AND (logicallyDeleted IS NULL) AND (completedDate IS NULL)
+                AND (:fileNo IS NULL OR job.file.id LIKE :fileNo)
+                AND (:fcaNo IS NULL OR job.fca.id LIKE :fcaNo)
+        ]]>
+    </query>
+
+    <sql-query name="jobAction.findJobActionToDoByCriteria">
+        <![CDATA[
+            SELECT
+                JOBS.JOB_ID AS jobId,
+                FILES.FILE_ID AS fileId,
+                FCA.FCA_NO AS fcaId,
+                JOB_TYPE.NAME AS jobType,
+                JOBS.CREATED_DATE AS jobStartDate, 
+                JOB_ACTION.DUE_DATE AS nextActionDate,
+                ACTION_CODE.CODE AS nextAction,
+                WORK_GROUP.NAME AS workGroup
+            FROM
+                USERS_WORKGROUP RIGHT OUTER JOIN
+                FCA RIGHT OUTER JOIN
+                FILES ON FCA.FILE_ID = FILES.FILE_ID RIGHT OUTER JOIN
+                JOBS LEFT OUTER JOIN
+                WORK_GROUP INNER JOIN
+                JOB_ACTION INNER JOIN
+                ACTION_CODE ON JOB_ACTION.ACTION_CODE_ID = ACTION_CODE.ACTION_CODE_ID ON WORK_GROUP.WORK_GROUP_ID = ACTION_CODE.WORK_GROUP_ID ON 
+                JOBS.JOB_ID = JOB_ACTION.JOB_ID ON FILES.FILE_ID = JOBS.FILE_ID ON 
+                USERS_WORKGROUP.WORK_GROUP_ID = WORK_GROUP.WORK_GROUP_ID LEFT OUTER JOIN
+                JOB_TYPE ON JOBS.JOB_TYPE_ID = JOB_TYPE.JOB_TYPE_ID
+            WHERE (FILES.FILE_STATUS_ID = 1)
+                AND (JOBS.COMPLETED_DATE IS NULL)
+                AND (JOB_ACTION.LOGICALLY_DELETED IS NULL)
+                AND (JOB_ACTION.COMPLETED_DATE IS NULL)
+                AND (:fileNo IS NULL OR FILES.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR FCA.FCA_NO LIKE :fcaNo)
+                AND (:actionCodeId IS NULL OR JOB_ACTION.ACTION_CODE_ID = :actionCodeId) AND (:actionCode IS NULL OR ACTION_CODE.CODE LIKE :actionCode)
+                AND (:workGroupId IS NULL OR ACTION_CODE.WORK_GROUP_ID = :workGroupId) AND (:workGroup IS NULL OR WORK_GROUP.NAME LIKE :workGroup)
+                AND (:responsibleUserId IS NULL OR JOBS.RESPONSIBLE_USER_ID = :responsibleUserId OR USERS_WORKGROUP.USER_ID = :responsibleUserId)
+            ORDER BY JOB_ACTION.DUE_DATE, ACTION_CODE.CODE
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

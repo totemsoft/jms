@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <!--sql-query name="actionCode.findActionCode">
+        <![CDATA[
+            SELECT CODE
+            FROM ACTION_CODE
+            WHERE (CODE LIKE :value)
+            AND (ACTIVE = 'Y')
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="archive.findByCriteria">
+    <![CDATA[
+        SELECT
+            DISTINCT a.ARCHIVE_ID, a.DATE_FROM
+        FROM
+            FILES AS f INNER JOIN
+            FILE_ARCHIVE AS fa ON f.FILE_ID = fa.FILE_ID LEFT OUTER JOIN
+            FCA AS fca ON f.FILE_ID = fca.FILE_ID LEFT OUTER JOIN
+            SAP_HEADER AS sh ON f.FILE_ID = sh.FILE_ID RIGHT OUTER JOIN
+            ARCHIVE AS a ON fa.ARCHIVE_ID = a.ARCHIVE_ID
+        WHERE
+            (:date IS NULL OR (DATE_FROM <= :date AND (DATE_TO IS NULL OR :date <= DATE_TO)))
+            AND (:fileId IS NULL OR fa.FILE_ID = :fileId)
+            AND (:fcaId IS NULL OR fca.FCA_NO = :fcaId)
+            AND (:sapCustNo IS NULL OR sh.SAP_CUST_NO = :sapCustNo)
+        ORDER BY
+            a.DATE_FROM DESC
+    ]]>
+    </sql-query-->
+
+    <!--sql-query name="fca.findFcaNo">
+        <![CDATA[
+            SELECT FCA_NO, FILE_ID
+            FROM FCA
+            WHERE (FCA_NO LIKE :fcaNo)
+                AND ((:unassignedFca = 'Y' AND FILE_ID IS NULL)
+                 OR (:unassignedFca = 'N' AND FILE_ID IS NOT NULL))
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="file.findFileNo">
+        <![CDATA[
+            SELECT
+                f.FILE_ID AS fileId, fca.FCA_NO AS fcaNo
+            FROM FILES f
+                LEFT OUTER JOIN FCA fca ON f.FILE_ID = fca.FILE_ID
+            WHERE
+                CAST(f.FILE_ID AS VARCHAR(11)) LIKE :fileNo
+        ]]>
+    </sql-query-->
+    <!--sql-query name="file.findFilesByCriteria">
+        <![CDATA[
+            SELECT
+                f.FILE_ID AS fileId,
+                FCA.FCA_NO AS fcaId,
+                BUILDING.NAME AS buildingName,
+                ADDRESS.ADDR_LINE_1 AS buildingAddrLine,
+                ADDRESS.SUBURB AS buildingSuburb,
+                ADDRESS.STATE AS buildingState,
+                SUPPLIER.NAME AS supplierName,
+                OWNER.LEGAL_NAME AS ownerName
+            FROM FILES f LEFT OUTER JOIN
+                ASE_SUPPLIER INNER JOIN
+                SUPPLIER ON ASE_SUPPLIER.SUPPLIER_ID = SUPPLIER.SUPPLIER_ID RIGHT OUTER JOIN
+                ASE_FILE ON ASE_SUPPLIER.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID ON f.FILE_ID = ASE_FILE.FILE_ID LEFT OUTER JOIN
+                OWNER LEFT OUTER JOIN
+                CONTACT ON OWNER.CONTACT_ID = CONTACT.CONTACT_ID ON f.FILE_ID = OWNER.FILE_ID LEFT OUTER JOIN
+                BUILDING LEFT OUTER JOIN
+                ADDRESS ON BUILDING.ADDRESS_ID = ADDRESS.ADDRESS_ID ON f.FILE_ID = BUILDING.FILE_ID LEFT OUTER JOIN
+                FCA ON f.FILE_ID = FCA.FILE_ID
+            WHERE
+                (OWNER.OWNER_TYPE_ID IS NULL OR OWNER.OWNER_TYPE_ID = 1)
+                AND ((:fileTypeId IS NULL AND f.FILE_TYPE_ID IS NULL)
+                 OR (:fileTypeId IS NOT NULL AND f.FILE_TYPE_ID = :fileTypeId))
+                AND (:fileStatusId IS NULL OR f.FILE_STATUS_ID = :fileStatusId)
+                AND (:fileNo IS NULL OR f.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR FCA.FCA_NO LIKE :fcaNo)
+                AND (:buildingName IS NULL OR BUILDING.NAME LIKE :buildingName)
+                AND (:buildingAddress IS NULL OR ADDRESS.SUBURB LIKE :buildingAddress)
+                AND (:ownerName IS NULL OR OWNER.LEGAL_NAME LIKE :ownerName)
+                AND (:ownerContact IS NULL OR CONTACT.SURNAME LIKE :ownerContact)
+                AND (:supplierName IS NULL OR SUPPLIER.NAME LIKE :supplierName)
+            ORDER BY
+                f.CREATED_DATE DESC, f.FILE_ID
+        ]]>
+    </sql-query-->
+    <!--sql-query name="file.findAseChangeFiles">
+        <![CDATA[
+            SELECT
+                FILES.FILE_ID AS fileId,
+                FCA.FCA_NO AS fcaId,
+                BUILDING.NAME AS buildingName,
+                ADDRESS.ADDR_LINE_1 AS buildingAddrLine,
+                ADDRESS.SUBURB AS buildingSuburb,
+                ADDRESS.STATE AS buildingState,
+                SUPPLIER.NAME AS supplierName,
+                OWNER.LEGAL_NAME AS ownerName
+            FROM ASE_SUPPLIER INNER JOIN
+                SUPPLIER ON ASE_SUPPLIER.SUPPLIER_ID = SUPPLIER.SUPPLIER_ID RIGHT OUTER JOIN
+                ASE_CHANGE RIGHT OUTER JOIN
+                ASE_FILE ON ASE_CHANGE.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID ON ASE_SUPPLIER.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID RIGHT OUTER JOIN
+                FILES ON ASE_FILE.FILE_ID = FILES.FILE_ID LEFT OUTER JOIN
+                OWNER LEFT OUTER JOIN
+                CONTACT ON OWNER.CONTACT_ID = CONTACT.CONTACT_ID ON FILES.FILE_ID = OWNER.FILE_ID LEFT OUTER JOIN
+                BUILDING LEFT OUTER JOIN
+                ADDRESS ON BUILDING.ADDRESS_ID = ADDRESS.ADDRESS_ID ON FILES.FILE_ID = BUILDING.FILE_ID LEFT OUTER JOIN
+                FCA ON FILES.FILE_ID = FCA.FILE_ID
+            WHERE   (ASE_CHANGE.DATE_CHANGE IS NOT NULL)
+                AND (FILES.FILE_STATUS_ID = :fileStatusId)
+                AND (:fileNo IS NULL OR FILES.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR FCA.FCA_NO LIKE :fcaNo)
+                AND (:buildingName IS NULL OR BUILDING.NAME LIKE :buildingName)
+            ORDER BY
+                FILES.FILE_ID
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="fileAction.findFileActionToDoByCriteria">
+        <![CDATA[
+            SELECT
+                fa.FILE_ACTION_ID AS id,
+                f.FILE_ID AS fileId,
+                fca.FCA_NO AS fcaId,
+                fa.DUE_DATE AS nextActionDate,
+                ac.CODE AS nextAction,
+                wg.NAME AS workGroup
+            FROM
+                ACTION_CODE ac INNER JOIN
+                FILE_ACTION fa ON ac.ACTION_CODE_ID = fa.ACTION_CODE_ID LEFT OUTER JOIN
+                WORK_GROUP wg ON ac.WORK_GROUP_ID = wg.WORK_GROUP_ID LEFT OUTER JOIN
+                FILES f ON fa.FILE_ID = f.FILE_ID LEFT OUTER JOIN
+                FCA fca ON f.FILE_ID = fca.FILE_ID
+            WHERE (f.FILE_STATUS_ID = 1)
+                AND (fa.LOGICALLY_DELETED IS NULL)
+                AND (:completed IS NULL
+                 OR (:completed = 'false' AND fa.COMPLETED_DATE IS NULL)
+                 OR (:completed = 'true' AND fa.COMPLETED_DATE IS NOT NULL))
+                AND (:fileNo IS NULL OR f.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fca.FCA_NO LIKE :fcaNo)
+                AND (:actionTypeId IS NULL OR ac.ACTION_TYPE_ID = :actionTypeId)
+                AND (:actionCodeId IS NULL OR fa.ACTION_CODE_ID = :actionCodeId)
+                AND (:actionCode IS NULL OR ac.CODE LIKE :actionCode)
+                AND (:workGroupId IS NULL OR ac.WORK_GROUP_ID = :workGroupId)
+                AND (:workGroup IS NULL OR wg.NAME LIKE :workGroup)
+            ORDER BY fa.DUE_DATE, ac.CODE
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="job.findJobNo" comment="">
+        <![CDATA[
+            SELECT CAST(JOB_ID AS VARCHAR(11))
+            FROM JOBS
+            WHERE (CAST(JOB_ID AS VARCHAR(11)) LIKE :value)
+            AND (STATUS = 'Y')
+        ]]>
+    </sql-query-->
+    <!--sql-query name="job.findActiveJobByCriteria" comment="V_ACTIVE_JOB">
+        <![CDATA[
+            SELECT
+                j.JOB_ID AS jobId,
+                f.FILE_ID AS fileId,
+                fca.FCA_NO AS fcaId,
+                jt.NAME AS jobType,
+                j.CREATED_DATE AS jobStartDate,
+                ja.DUE_DATE AS nextActionDate,
+                ac.CODE AS nextAction,
+                u.LOGIN AS requestedBy,
+                wg.NAME AS workGroup
+            FROM BUILDING RIGHT OUTER JOIN
+                FCA AS fca RIGHT OUTER JOIN
+                FILES AS f ON fca.FILE_ID = f.FILE_ID ON BUILDING.FILE_ID = f.FILE_ID RIGHT OUTER JOIN
+                WORK_GROUP AS wg RIGHT OUTER JOIN
+                USERS AS u INNER JOIN
+                JOBS AS j ON u.USER_ID = j.CREATED_BY LEFT OUTER JOIN
+                JOB_ACTION AS ja INNER JOIN
+                ACTION_CODE AS ac ON ja.ACTION_CODE_ID = ac.ACTION_CODE_ID ON j.JOB_ID = ja.JOB_ID AND (ja.LOGICALLY_DELETED IS NULL) AND (ja.COMPLETED_DATE IS NULL) LEFT OUTER JOIN
+                JOB_TYPE AS jt ON j.JOB_TYPE_ID = jt.JOB_TYPE_ID ON wg.WORK_GROUP_ID = jt.WORK_GROUP_ID ON
+                f.FILE_ID = j.FILE_ID
+            WHERE (f.FILE_STATUS_ID = 1)
+                AND (j.COMPLETED_DATE IS NULL)
+                AND (:fileNo IS NULL OR f.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR j.FCA_NO LIKE :fcaNo)
+                AND (:buildingName IS NULL OR BUILDING.NAME LIKE :buildingName)
+                AND (:actionCodeId IS NULL OR ja.ACTION_CODE_ID = :actionCodeId)
+                AND (:actionCode IS NULL OR ac.CODE LIKE :actionCode)
+                AND (:workGroup IS NULL OR wg.NAME LIKE :workGroup)
+                AND (:workGroupId IS NULL OR jt.WORK_GROUP_ID = :workGroupId)
+                AND (:jobType IS NULL OR jt.NAME LIKE :jobType)
+                AND (:jobTypeId IS NULL OR j.JOB_TYPE_ID = :jobTypeId)
+                AND (:jobNo IS NULL OR j.JOB_ID LIKE :jobNo)
+            ORDER BY j.JOB_ID, jt.NAME
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="jobAction.findJobActionToDoByCriteria">
+        <![CDATA[
+            SELECT
+                ja.JOB_ACTION_ID AS id,
+                j.JOB_ID AS jobId,
+                f.FILE_ID AS fileId,
+                fca.FCA_NO AS fcaId,
+                jt.NAME AS jobType,
+                j.CREATED_DATE AS jobStartDate, 
+                ja.DUE_DATE AS nextActionDate,
+                ac.CODE AS nextAction,
+                wg.NAME AS workGroup,
+                j.RESPONSIBLE_USER_ID AS responsibleUserId,
+                uw.USER_ID AS workGroupUserId
+            FROM
+                USERS_WORKGROUP AS uw RIGHT OUTER JOIN
+                FCA AS fca RIGHT OUTER JOIN
+                FILES AS f ON fca.FILE_ID = f.FILE_ID RIGHT OUTER JOIN
+                JOBS AS j RIGHT OUTER JOIN
+                JOB_ACTION AS ja LEFT OUTER JOIN
+                WORK_GROUP AS wg RIGHT OUTER JOIN
+                ACTION_CODE AS ac ON wg.WORK_GROUP_ID = ac.WORK_GROUP_ID ON ja.ACTION_CODE_ID = ac.ACTION_CODE_ID ON j.JOB_ID = ja.JOB_ID ON 
+                f.FILE_ID = j.FILE_ID ON uw.WORK_GROUP_ID = wg.WORK_GROUP_ID LEFT OUTER JOIN
+                JOB_TYPE AS jt ON j.JOB_TYPE_ID = jt.JOB_TYPE_ID
+            WHERE (f.FILE_STATUS_ID = 1)
+                AND (j.COMPLETED_DATE IS NULL)
+                AND (ja.LOGICALLY_DELETED IS NULL)
+                AND (:completed IS NULL OR (:completed = 'false' AND ja.COMPLETED_DATE IS NULL) OR (:completed = 'true' AND ja.COMPLETED_DATE IS NOT NULL))
+                AND (:fileNo IS NULL OR f.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fca.FCA_NO LIKE :fcaNo)
+                AND (:actionTypeId IS NULL OR ac.ACTION_TYPE_ID = :actionTypeId)
+                AND (:actionCodeId IS NULL OR ja.ACTION_CODE_ID = :actionCodeId) AND (:actionCode IS NULL OR ac.CODE LIKE :actionCode)
+                AND (:workGroupId IS NULL OR ac.WORK_GROUP_ID = :workGroupId) AND (:workGroup IS NULL OR wg.NAME LIKE :workGroup)
+                AND (:responsibleUserId IS NULL OR j.RESPONSIBLE_USER_ID = :responsibleUserId OR uw.USER_ID = :responsibleUserId)
+            ORDER BY ja.DUE_DATE, ac.CODE
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="jobRequest.findJobRequestNo">
+        <![CDATA[
+            SELECT CAST(JOB_REQUEST_ID AS VARCHAR(11))
+            FROM JOB_REQUEST
+            WHERE (CAST(JOB_REQUEST_ID AS VARCHAR(11)) LIKE :value)
+        ]]>
+    </sql-query>
+    <sql-query name="jobRequest.findActiveJobRequestByCriteria">
+        <![CDATA[
+            SELECT
+                JOB_REQUEST.JOB_REQUEST_ID AS jobRequestId,
+                JOB_TYPE.NAME AS jobType,
+                WORK_GROUP.NAME AS workGroup,
+                USERS.LOGIN AS requestedBy,
+                JOB_REQUEST.REQUESTED_DATE AS requestedDate, 
+                JOB_REQUEST.REQUESTED_EMAIL AS requestedEmail,
+                JOB_REQUEST.LINK AS link
+            FROM JOB_TYPE RIGHT OUTER JOIN
+                USERS RIGHT OUTER JOIN
+                FCA RIGHT OUTER JOIN
+                JOB_REQUEST ON FCA.FCA_NO = JOB_REQUEST.FCA_NO ON USERS.USER_ID = JOB_REQUEST.REQUESTED_BY ON 
+                JOB_TYPE.JOB_TYPE_ID = JOB_REQUEST.JOB_TYPE_ID LEFT OUTER JOIN
+                WORK_GROUP ON JOB_TYPE.WORK_GROUP_ID = WORK_GROUP.WORK_GROUP_ID
+            WHERE (JOB_REQUEST.ACCEPTED_DATE IS NULL)
+                AND (:jobRequestNo IS NULL OR JOB_REQUEST.JOB_REQUEST_ID LIKE :jobRequestNo)
+                AND (:workGroup IS NULL OR WORK_GROUP.NAME LIKE :workGroup)
+                AND (:workGroupId IS NULL OR JOB_TYPE.WORK_GROUP_ID = :workGroupId)
+                AND (:jobType IS NULL OR JOB_TYPE.NAME LIKE :jobType)
+                AND (:jobTypeId IS NULL OR JOB_REQUEST.JOB_TYPE_ID = :jobTypeId)
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="mailRegister.findByCriteria">
+        <![CDATA[
+            SELECT mr.MAIL_REGISTER_ID AS id
+            FROM  CONTACT AS c RIGHT OUTER JOIN
+                MAIL_REGISTER AS mr ON c.CONTACT_ID = mr.CONTACT_ID LEFT OUTER JOIN
+                FCA AS fca INNER JOIN
+                FILES AS f ON fca.FILE_ID = f.FILE_ID ON mr.FILE_ID = f.FILE_ID LEFT OUTER JOIN
+                SAP_HEADER AS sh ON f.FILE_ID = sh.FILE_ID
+            WHERE
+                    (:date IS NULL OR mr.MAIL_REGISTER_DATE = :date)
+                AND (:mailIn IS NULL OR mr.MAIL_IN = :mailIn)
+                AND (:rts IS NULL OR mr.RTS = :rts)
+                AND (:sapCustNo IS NULL OR sh.SAP_CUST_NO LIKE :sapCustNo)
+                AND (:fcaNo IS NULL OR fca.FCA_NO LIKE :fcaNo)
+                AND (:mailTypeId IS NULL OR mr.MAIL_TYPE_ID = :mailTypeId)
+                AND (:mailRegisterNo IS NULL OR mr.MAIL_REGISTER_NO LIKE :mailRegisterNo)
+                AND ((:firstName IS NULL AND :surname IS NULL) OR (c.FIRST_NAME LIKE :firstName AND c.SURNAME LIKE :surname))
+            ORDER BY mr.MAIL_REGISTER_DATE DESC
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="owner.findLegalName">
+        <![CDATA[
+            SELECT LEGAL_NAME
+            FROM OWNER
+            WHERE (LEGAL_NAME LIKE :value)
+        ]]>
+    </sql-query>
+    <sql-query name="owner.findContactSurname">
+        <![CDATA[
+            SELECT CONTACT.SURNAME
+            FROM OWNER INNER JOIN
+                CONTACT ON OWNER.CONTACT_ID = CONTACT.CONTACT_ID
+            WHERE (CONTACT.SURNAME LIKE :value)
+        ]]>
+    </sql-query-->
+
+    <!--sql-query name="sapHeader.findSapCustNo">
+        <![CDATA[
+            SELECT SAP_CUST_NO
+            FROM SAP_HEADER
+            WHERE
+                CAST(SAP_CUST_NO AS VARCHAR(11)) LIKE :sapCustNo
+        ]]>
+    </sql-query-->
+
+</hibernate-mapping>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE digester-rules PUBLIC "-//Jakarta Apache //DTD digester-rules XML V1.0//EN"
+   "digester-rules.dtd">
+<digester-rules>
+    <object-create-rule pattern="form1" classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form" />
+    <set-nested-properties-rule />
+    <!-- ======================================================================
+         /form1/Questions, etc
+    ======================================================================= -->
+    <pattern value="form1/Questions">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$Question" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setQuestion"/>
+    </pattern>
+    <pattern value="form1/adAlarmDetails">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$AlarmDetails" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setAlarmDetails"/>
+    </pattern>
+    <pattern value="form1/poPremiseOwnerDetails">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$PremiseOwnerDetails" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setPremiseOwnerDetails"/>
+    </pattern>
+    <pattern value="form1/bcBodyCorporate">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$BodyCorporate" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setBodyCorporate"/>
+    </pattern>
+    <pattern value="form1/pmPropertyManager">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$PropertyManager" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setPropertyManager"/>
+    </pattern>
+    <pattern value="form1/ptTenantDetails">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$TenantDetails" />
+        <bean-property-setter-rule pattern="State" propertyname="state" />
+        <set-nested-properties-rule allow-unknown-child-elements="true" />
+        <set-next-rule methodname="setTenantDetails"/>
+    </pattern>
+    <pattern value="form1/ecEmergencyContactInfo">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$EmergencyContactInfo" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setEmergencyContactInfo"/>
+    </pattern>
+    <pattern value="form1/scSecurityContactInfo">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$SecurityContactInfo" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setSecurityContactInfo"/>
+    </pattern>
+    <pattern value="form1/fecFutureEmergencyContacts">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$FutureEmergencyContacts" />
+        <bean-property-setter-rule pattern="State" propertyname="state" />
+        <set-nested-properties-rule allow-unknown-child-elements="true" />
+        <set-next-rule methodname="setFutureEmergencyContacts"/>
+    </pattern>
+    <pattern value="form1/aiAdditionalInfo">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$AdditionalInfo" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setAdditionalInfo"/>
+    </pattern>
+    <pattern value="form1/cfCustomerFeedback">
+        <object-create-rule classname="au.gov.qld.fire.jms.domain.mailOut.OM89Form$CustomerFeedback" />
+        <set-nested-properties-rule />
+        <set-next-rule methodname="setCustomerFeedback"/>
+    </pattern>
+</digester-rules>

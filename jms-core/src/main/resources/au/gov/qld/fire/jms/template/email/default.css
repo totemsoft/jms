@@ -1,0 +1,145 @@
+/* Sizes */
+.bold {font-weight:bold;}
+.italic {font-style:italic;}
+.normal {font-weight:normal;}
+.larger {font-size:1.10em !important;}
+.large {font-size:1.05em !important;}
+.small {font-size:0.95em !important;}
+.smaller {font-size:0.9em !important;}
+.reallysmall {font-size:0.75em !important;}
+.capitalize {text-transform: capitalize !important;}
+.lowercase {text-transform: lowercase !important;}
+.uppercase {text-transform: uppercase !important;}
+.wrap {white-space: normal;}
+.nowrap {white-space: nowrap;}
+.left {text-align: left;}
+.center {text-align: center;}
+.right {text-align: right;}
+.valign-top {vertical-align: top !important;}
+.valign-middle {vertical-align: middle !important;}
+.valign-bottom {vertical-align: bottom !important;}
+.noborder {border: none;}
+
+body {font-family: calibri;font-size: 12px;}
+
+.error {color: red;}
+
+.number {text-align: right !important; padding-right: 0px;}
+
+/* table */
+table {padding: 0px;}
+table caption {font-size: 110%;font-weight: bold;}
+table th {font-weight: bold;}
+table tr.even {background-color: #DBEAFF;color: #000000;}
+table tr.odd {background-color: #FFFFFF;color: #000000;}
+
+
+/* Data Tables and Pagination
+   Contains the basic styles that affect all data tables
+ */
+.dataTable {
+    border: 1px solid #338BA6;
+    width: 99%;
+    *width: 99%;
+}
+.dataTable th {
+    background-color: #ccc;
+	/*background: transparent url(../yui/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;*/
+	border: 1px solid #338BA6;
+    font-weight: bold;
+    padding: 2px;
+    vertical-align: top;
+}
+.dataTable td {
+    border-left: 1px solid #65a1d7;/*#cfd6ce; */
+    padding: 2px;
+    vertical-align: top;
+    text-align: left;
+}
+.dataTable td.overflow,
+.dataTable td textarea.overflow {
+    /*display: block;
+    height: auto;
+    *height: expression( this.scrollHeight > 100 ? "100px" : "auto" );
+    max-height: 10em;
+    overflow: auto;*/
+    max-width: 400px;
+}
+.dataTable tr.even {
+    background-color: #DFE7F2;
+    color: #000000;
+}
+.dataTable tr:hover, .dataTable tr.hilite {
+    background-color: #80C9FF;
+    color: #000000;
+}
+.dataTable col.odd, .dataTable colgroup.odd {
+    background-color: #80C9FF;
+    color: #000000;
+}
+.dataTable col.even, .dataTable colgroup.even {
+    background-color: #BFE4FF;
+    color: #000000;
+}
+/* Highlight the focused form field when the user clicks on it or tabs to it */
+.dataTable input {
+    width: 98%;
+    /*padding: 0.2em 0.4em 0.2em 0.4em;*/
+    margin: 0;
+    border: 2px solid #ffffff;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+.dataTable input[type=checkbox],
+.dataTable input.checkbox {
+    width: 35px;
+}
+.dataTable input:focus, textarea:focus {
+    border: 1px solid #000000;
+}
+
+/* Non Data Tables
+ */
+.nonDataTable {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    *width: 100%;
+}
+.nonDataTable table {
+    /*border: 1px outset #666;*/
+	width: 100%;
+    *width: 100%;
+}
+.nonDataTable table th, .nonDataTable table td {
+    font-size: 1em;
+}
+.nonDataTable tr {
+    background-color: #fff;
+}
+.nonDataTable th {
+    font-weight: bold;
+    background-color: #ccc;
+    padding: 1px;
+    vertical-align: top;
+}
+.nonDataTable td {
+    vertical-align: top;
+    text-align: left;
+    padding: 1px 2px;
+}
+.nonDataTable .bottomBorder {
+    border-bottom: 1px solid #999;
+}
+.nonDataTable th.first, .nonDataTable td.first {
+    padding: 5px 10px 2px 10px;
+}
+.nonDataTable td.indent{
+    padding-left: 15px;
+}
+.nonDataTable td.right{
+    float: right;
+    padding-right: 2px;
+}
+.nonDataTable td.yellow {
+    background-color:#ffc
+}

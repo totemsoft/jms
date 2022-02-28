@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.KeyReg" 
+    table="KEY_REG"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="KEY_REG_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="keyNo"
+        type="string"
+        column="KEY_NO"
+        length="10"
+    />
+    <property
+        name="ownerKeyId"
+        type="string"
+        column="OWNER_KEY_ID"
+        length="20"
+    />
+    <property
+        name="lockType"
+        type="string"
+        column="LOCK_TYPE"
+        length="100"
+    />
+    <property
+        name="lockLocation"
+        type="string"
+        column="LOCK_LOCATION"
+        length="150"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+
+</class>
+
+<query name="keyReg.findByFile">
+    <![CDATA[
+        FROM KeyReg WHERE file = :file
+    ]]>
+</query>
+
+</hibernate-mapping>

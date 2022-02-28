@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.job.JobRequest" 
+    table="JOB_REQUEST"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="JOB_REQUEST_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="description"
+        type="string"
+        column="DESCRIPTION"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="requestedDate"
+        type="timestamp"
+        column="REQUESTED_DATE"
+        not-null="true"
+        length="23"
+    />
+    <property
+        name="requestedEmail"
+        type="string"
+        column="REQUESTED_EMAIL"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="link"
+        type="string"
+        column="LINK"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="accepted"
+        type="yes_no"
+        column="ACCEPTED"
+        length="1"
+    />
+    <property
+        name="rejectReason"
+        type="string"
+        column="REJECT_REASON"
+        length="255"
+    />
+    <property
+        name="acceptedDate"
+        type="timestamp"
+        column="ACCEPTED_DATE"
+        length="23"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="requestedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        not-null="true"
+    >
+        <column name="REQUESTED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="acceptedBy"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="ACCEPTED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Fca -->
+    <many-to-one
+        name="fca"
+        class="au.gov.qld.fire.jms.domain.Fca"
+        not-null="true"
+    >
+        <column name="FCA_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to JobType -->
+    <many-to-one
+        name="jobType"
+        class="au.gov.qld.fire.jms.domain.refdata.JobType"
+        not-null="true"
+    >
+        <column name="JOB_TYPE_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="jobRequest.findByJobType">
+        <![CDATA[
+            FROM JobRequest WHERE jobType = :jobType
+        ]]>
+    </query>
+
+    <sql-query name="jobRequest.findJobRequestNo">
+        <![CDATA[
+            SELECT CAST(JOB_REQUEST_ID AS VARCHAR(11))
+            FROM JOB_REQUEST
+            WHERE (CAST(JOB_REQUEST_ID AS VARCHAR(11)) LIKE :value)
+        ]]>
+    </sql-query>
+    <sql-query name="jobRequest.findActiveJobRequestByCriteria">
+        <![CDATA[
+            SELECT
+                JOB_REQUEST.JOB_REQUEST_ID AS jobRequestId,
+                JOB_TYPE.NAME AS jobType,
+                WORK_GROUP.NAME AS workGroup,
+                USERS.LOGIN AS requestedBy,
+                JOB_REQUEST.REQUESTED_DATE AS requestedDate, 
+                JOB_REQUEST.REQUESTED_EMAIL AS requestedEmail,
+                JOB_REQUEST.LINK AS link
+            FROM JOB_TYPE RIGHT OUTER JOIN
+                USERS RIGHT OUTER JOIN
+                FCA RIGHT OUTER JOIN
+                JOB_REQUEST ON FCA.FCA_NO = JOB_REQUEST.FCA_NO ON USERS.USER_ID = JOB_REQUEST.REQUESTED_BY ON 
+                JOB_TYPE.JOB_TYPE_ID = JOB_REQUEST.JOB_TYPE_ID LEFT OUTER JOIN
+                WORK_GROUP ON JOB_TYPE.WORK_GROUP_ID = WORK_GROUP.WORK_GROUP_ID
+            WHERE (JOB_REQUEST.ACCEPTED_DATE IS NULL)
+                AND (:jobRequestNo IS NULL OR JOB_REQUEST.JOB_REQUEST_ID LIKE :jobRequestNo)
+                AND (:workGroup IS NULL OR WORK_GROUP.NAME LIKE :workGroup)
+                AND (:workGroupId IS NULL OR JOB_TYPE.WORK_GROUP_ID = :workGroupId)
+                AND (:jobType IS NULL OR JOB_TYPE.NAME LIKE :jobType)
+                AND (:jobTypeId IS NULL OR JOB_REQUEST.JOB_TYPE_ID = :jobTypeId)
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

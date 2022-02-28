@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<email>
+    <from>${smtp.from}</from>
+    <subject>ASE Change</subject>
+    <body>
+<![CDATA[
+Hi %[user.contact.firstName]%,<br/>
+<br/>
+ASE Changed at ${context.root}/${jms.context.root}/<br/>
+<br/>
+Here are new details:<br/>
+<br/>
+Kind regards,<br/>
+<br/>
+QFRS<br/>
+<br/>
+EMail: ${smtp.from}<br/>
+Phone: 07 0000 0000<br/>
+<br/>
+85 Hudson Road, Albion QLD 4010<br/>
+]]>
+    </body>
+</email>

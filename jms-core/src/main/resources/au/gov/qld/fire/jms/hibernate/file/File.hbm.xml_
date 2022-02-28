@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.file.File" 
+    table="FILES"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="FILE_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to FileStatus -->
+    <many-to-one
+        name="fileStatus"
+        class="au.gov.qld.fire.jms.domain.refdata.FileStatus"
+        not-null="true"
+    >
+        <column name="FILE_STATUS_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to SiteType -->
+    <many-to-one
+        name="siteType"
+        class="au.gov.qld.fire.jms.domain.refdata.SiteType"
+        not-null="false"
+    >
+        <column name="SITE_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional one-to-one association to SapHeader -->
+    <one-to-one
+        name="sapHeader"
+        class="au.gov.qld.fire.jms.domain.sap.SapHeader"
+        >
+    </one-to-one>
+    <!-- bi-directional one-to-many association to Rfi -->
+    <bag
+        name="rfis"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key column="FILE_ID" />
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.sap.Rfi"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to FileDoc -->
+    <bag
+        name="fileDocs"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.file.FileDoc"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to Job -->
+    <bag
+        name="jobs"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.job.Job"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to FileAction -->
+    <bag
+        name="fileActions"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+        where="LOGICALLY_DELETED IS NULL"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.action.FileAction"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to Building -->
+    <bag
+        name="buildings"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many
+            class="au.gov.qld.fire.jms.domain.building.Building"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to KeyReceipt -->
+    <bag
+        name="keyReceipts"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.KeyReceipt"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to FileDocChkList -->
+    <bag
+        name="fileDocChkLists"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.file.FileDocChkList"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to BuildingContact -->
+    <bag
+        name="buildingContacts"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+        order-by="PRIORITY"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.building.BuildingContact"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to AlarmPanel -->
+    <bag
+        name="alarmPanels"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.ase.AlarmPanel"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to Fca -->
+    <bag
+        name="fcas"
+        lazy="false"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.Fca"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to KeyReg -->
+    <bag
+        name="keyRegs"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.KeyReg"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to Owner -->
+    <bag
+        name="owners"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.entity.Owner"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to AseFile -->
+    <bag
+        name="aseFiles"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="FILE_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.ase.AseFile"
+        />
+    </bag>
+
+</class>
+
+    <query name="file.findByStatus">
+        <![CDATA[
+            FROM File WHERE fileStatus = :fileStatus
+        ]]>
+    </query>
+
+    <!--query name="file.findByCriteria">
+        <![CDATA[
+            FROM File AS file
+                LEFT OUTER JOIN file.fcas AS fcas
+                LEFT OUTER JOIN file.buildings AS buildings
+            WHERE
+                    (:fileNo IS NULL OR file.id LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcas.id LIKE :fcaNo)
+                AND (:buildingName IS NULL OR buildings.name LIKE :buildingName)
+        ]]>
+    </query-->
+
+    <sql-query name="file.findFileNo">
+        <![CDATA[
+            SELECT
+                f.FILE_ID AS fileId, fca.FCA_NO AS fcaNo
+            FROM FILES f
+                LEFT OUTER JOIN FCA fca ON f.FILE_ID = fca.FILE_ID
+            WHERE
+                CAST(f.FILE_ID AS VARCHAR(11)) LIKE :fileNo
+        ]]>
+    </sql-query>
+
+    <sql-query name="file.findSupplierName">
+        <![CDATA[
+            SELECT SUPPLIER.NAME
+            FROM FILES INNER JOIN
+                ASE_FILE ON FILES.FILE_ID = ASE_FILE.FILE_ID INNER JOIN
+                ASE_SUPPLIER ON ASE_FILE.ASE_FILE_ID = ASE_SUPPLIER.ASE_FILE_ID INNER JOIN
+                SUPPLIER ON ASE_SUPPLIER.SUPPLIER_ID = SUPPLIER.SUPPLIER_ID
+            WHERE (SUPPLIER.NAME LIKE :value)
+        ]]>
+    </sql-query>
+
+    <sql-query name="file.findFilesByCriteria">
+        <![CDATA[
+            SELECT
+                FILES.FILE_ID AS fileId,
+                FCA.FCA_NO AS fcaId,
+                BUILDING.NAME AS buildingName,
+                ADDRESS.ADDR_LINE_1 AS buildingAddrLine,
+                ADDRESS.SUBURB AS buildingSuburb,
+                ADDRESS.STATE AS buildingState,
+                SUPPLIER.NAME AS supplierName,
+                OWNER.LEGAL_NAME AS ownerName
+            FROM FILES LEFT OUTER JOIN
+                ASE_SUPPLIER INNER JOIN
+                SUPPLIER ON ASE_SUPPLIER.SUPPLIER_ID = SUPPLIER.SUPPLIER_ID RIGHT OUTER JOIN
+                ASE_FILE ON ASE_SUPPLIER.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID ON FILES.FILE_ID = ASE_FILE.FILE_ID LEFT OUTER JOIN
+                OWNER LEFT OUTER JOIN
+                CONTACT ON OWNER.CONTACT_ID = CONTACT.CONTACT_ID ON FILES.FILE_ID = OWNER.FILE_ID LEFT OUTER JOIN
+                BUILDING LEFT OUTER JOIN
+                ADDRESS ON BUILDING.ADDRESS_ID = ADDRESS.ADDRESS_ID ON FILES.FILE_ID = BUILDING.FILE_ID LEFT OUTER JOIN
+                FCA ON FILES.FILE_ID = FCA.FILE_ID
+            WHERE (FILES.FILE_STATUS_ID = :fileStatusId)
+                AND (:fileNo IS NULL OR FILES.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR FCA.FCA_NO LIKE :fcaNo)
+                AND (:buildingName IS NULL OR BUILDING.NAME LIKE :buildingName)
+                AND (:buildingAddress IS NULL OR ADDRESS.SUBURB LIKE :buildingAddress)
+                AND (:ownerName IS NULL OR OWNER.LEGAL_NAME LIKE :ownerName)
+                AND (:ownerContact IS NULL OR CONTACT.SURNAME LIKE :ownerContact)
+                AND (:supplierName IS NULL OR SUPPLIER.NAME LIKE :supplierName)
+            ORDER BY
+                FILES.FILE_ID
+        ]]>
+    </sql-query>
+
+    <sql-query name="file.findAseChangeFiles">
+        <![CDATA[
+            SELECT
+                FILES.FILE_ID AS fileId,
+                FCA.FCA_NO AS fcaId,
+                BUILDING.NAME AS buildingName,
+                ADDRESS.ADDR_LINE_1 AS buildingAddrLine,
+                ADDRESS.SUBURB AS buildingSuburb,
+                ADDRESS.STATE AS buildingState,
+                SUPPLIER.NAME AS supplierName,
+                OWNER.LEGAL_NAME AS ownerName
+            FROM ASE_SUPPLIER INNER JOIN
+                SUPPLIER ON ASE_SUPPLIER.SUPPLIER_ID = SUPPLIER.SUPPLIER_ID RIGHT OUTER JOIN
+                ASE_CHANGE RIGHT OUTER JOIN
+                ASE_FILE ON ASE_CHANGE.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID ON ASE_SUPPLIER.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID RIGHT OUTER JOIN
+                FILES ON ASE_FILE.FILE_ID = FILES.FILE_ID LEFT OUTER JOIN
+                OWNER LEFT OUTER JOIN
+                CONTACT ON OWNER.CONTACT_ID = CONTACT.CONTACT_ID ON FILES.FILE_ID = OWNER.FILE_ID LEFT OUTER JOIN
+                BUILDING LEFT OUTER JOIN
+                ADDRESS ON BUILDING.ADDRESS_ID = ADDRESS.ADDRESS_ID ON FILES.FILE_ID = BUILDING.FILE_ID LEFT OUTER JOIN
+                FCA ON FILES.FILE_ID = FCA.FILE_ID
+            WHERE (FILES.FILE_STATUS_ID = :fileStatusId)
+                AND (:fileNo IS NULL OR FILES.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR FCA.FCA_NO LIKE :fcaNo)
+                AND (:buildingName IS NULL OR BUILDING.NAME LIKE :buildingName)
+                AND (ASE_CHANGE.DATE_CHANGE IS NOT NULL)
+            ORDER BY
+                FILES.FILE_ID
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

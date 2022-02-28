@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--mapping resource="au/gov/qld/fire/hibernate/document/Document.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/document/Template.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/entity/Contact.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/location/Address.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/location/Area.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/location/Region.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/location/State.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/location/Station.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/refdata/DocType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/refdata/Salutation.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/refdata/SupplierType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/refdata/TemplateType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/refdata/UserType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/refdata/WorkGroup.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/report/ReportDoc.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/security/SecurityGroup.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/security/SystemFunction.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/security/User.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/hibernate/supplier/Supplier.hbm.xml"/-->
+
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/Fca.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/KeyReceipt.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/KeyReg.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/action/ActionOutcome.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/action/ActionWorkflow.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/action/FileAction.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/action/JobAction.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/building/Building.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/building/BuildingContact.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/document/DocChkList.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/entity/Owner.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/entity/StakeHolder.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/file/File.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/file/FileDoc.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/file/FileDocChkList.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/job/Job.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/job/JobDoc.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/job/JobRequest.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/ase/AlarmPanel.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/ase/AseChange.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/ase/AseChangeSupplier.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/ase/AseConn.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/ase/AseFile.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/ase/SubPanel.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/ActionCode.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/ActionType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/AseConnType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/AseType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/BuildingContactType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/FileStatus.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/JobType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/refdata/StakeHolderType.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/sap/Rfi.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/sap/SapHeader.hbm.xml"/-->
+
+        <!--mapping resource="au/gov/qld/fire/jms/persistence/query-native.hbm.xml"/-->
+        <!--mapping resource="au/gov/qld/fire/jms/hibernate/report/Report.hbm.xml"/-->
+    </session-factory>
+</hibernate-configuration>

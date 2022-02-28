@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- http://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/queryhql.html#queryhql-expressions -->
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+    version="2.0">
+
+    <named-query name="actionCode.findActionCode">
+        <query>
+            SELECT code
+            FROM ActionCode
+            WHERE code LIKE :value
+                AND (active = true)
+        </query>
+    </named-query>
+    <named-query name="actionCode.findByCode">
+        <query>
+            FROM ActionCode
+            WHERE code = :code
+                AND (active = true)
+        </query>
+    </named-query>
+    <named-query name="actionCode.findAllByCriteria">
+        <query>
+            FROM ActionCode
+            WHERE
+                (:actionTypes IS NULL OR actionType.name = :actionTypes)
+                AND (:active IS NULL OR active = :active)
+            ORDER BY actionType.name, code
+        </query>
+    </named-query>
+    <named-query name="actionCode.findAllByActionType">
+        <query>
+            FROM ActionCode
+            WHERE actionType.actionTypeId = :actionTypeId
+                AND (active = true)
+            ORDER BY actionType.name, code
+        </query>
+    </named-query>
+    <named-query name="actionCode.findAllByJobType">
+        <query>
+            FROM ActionCode
+            WHERE (jobType.jobTypeId = :jobTypeId)
+                AND (active = true)
+            ORDER BY actionType.name, code
+        </query>
+    </named-query>
+    <named-query name="actionCode.findAllByActionTypeJobType">
+        <query>
+            FROM ActionCode
+            WHERE (actionType.actionTypeId = :actionTypeId)
+                AND (:jobTypeId IS NULL OR jobType.jobTypeId = :jobTypeId)
+                AND (active = true)
+            ORDER BY actionType.name, code
+        </query>
+    </named-query>
+
+    <named-query name="actionType.findByName">
+        <query>
+            FROM ActionType WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="actionOutcome.findByName">
+        <query>
+            FROM ActionOutcome WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="actionWorkflow.findByActionCode">
+        <query>
+            FROM ActionWorkflow WHERE actionCode = :actionCode
+        </query>
+    </named-query>
+    <named-query name="actionWorkflow.findByActionCodeOutcome">
+        <query>
+            FROM ActionWorkflow WHERE actionCode = :actionCode
+                AND actionOutcome = :actionOutcome
+            ORDER BY nextDueDays
+        </query>
+    </named-query>
+
+    <named-query name="alarmPanel.findByFile">
+        <query>
+            FROM AlarmPanel WHERE file = :file
+        </query>
+    </named-query>
+
+    <named-query name="archive.findByCode">
+        <query>
+            FROM Archive WHERE code = :code
+        </query>
+    </named-query>
+    <named-query name="archive.findByCodeLike">
+        <query>
+            FROM Archive WHERE code LIKE :code
+        </query>
+    </named-query>
+    <named-query name="archive.findByCriteria">
+        <query>
+        <![CDATA[
+            FROM ActiveArchive
+            WHERE
+                (:date IS NULL
+                 OR (dateFrom <= :date AND (dateTo IS NULL OR :date <= dateTo)))
+                AND (:fileId IS NULL OR fileId = :fileId)
+                AND (:fcaId IS NULL OR fcaId = :fcaId)
+                AND (:sapCustNo IS NULL OR sapCustNo = :sapCustNo)
+            ORDER BY
+                dateFrom DESC
+        ]]>
+        </query>
+    </named-query>
+
+    <named-query name="aseChange.findByAseFile">
+        <query>
+            FROM AseChange WHERE aseFile = :aseFile
+        </query>
+    </named-query>
+    <named-query name="aseChange.findByDateChange">
+        <query>
+        <![CDATA[
+            FROM AseChange
+            WHERE (aseFile.file.fileStatus.fileStatusId = :fileStatusId)
+                AND (dateChange IS NOT NULL)
+                AND (dateChange >= :dateStart)
+                AND (dateChange < :dateEnd)
+                AND (:fileNo IS NULL OR cast(aseFile.file.fileId as string) LIKE :fileNo)
+        ]]>
+        </query>
+    </named-query>
+
+    <named-query name="aseConn.findByAseConnType">
+        <query>
+            FROM AseConn WHERE aseConnType = :aseConnType
+        </query>
+    </named-query>
+
+    <named-query name="aseFile.findByAseType">
+        <query>
+            FROM AseFile WHERE aseType = :aseType
+        </query>
+    </named-query>
+
+    <named-query name="aseKey.findAseKeyNo">
+        <query>
+            SELECT aseKeyNo FROM AseKey WHERE aseKeyNo LIKE :aseKeyNo
+        </query>
+    </named-query>
+    <named-query name="aseKey.findByCriteria">
+        <query>
+            SELECT ak
+            FROM AseKey AS ak
+              LEFT JOIN ak.supplier AS s
+              LEFT JOIN ak.contact AS c
+            WHERE (:orderNo IS NULL OR cast(ak.order.aseKeyOrderId as string) LIKE :orderNo)
+              AND (:aseKeyNo IS NULL OR ak.aseKeyNo LIKE :aseKeyNo)
+              AND (:supplierName IS NULL OR s.name LIKE :supplierName)
+              AND (:firstName IS NULL OR c.firstName LIKE :firstName)
+              AND (:surname IS NULL OR c.surname LIKE :surname)
+              AND (:status IS NULL OR ak.status = :status)
+        </query>
+    </named-query>
+
+    <named-query name="aseKeyOrder.findOrderNo">
+        <query>
+            SELECT cast(aseKeyOrderId as string) FROM AseKeyOrder WHERE cast(aseKeyOrderId as string) LIKE :orderNo
+        </query>
+    </named-query>
+    <named-query name="aseKeyOrder.findByCriteria">
+        <query>
+            SELECT ako
+            FROM AseKeyOrder AS ako
+              LEFT JOIN ako.supplier AS s
+              LEFT JOIN ako.contact AS c
+            WHERE (:orderNo IS NULL OR cast(ako.aseKeyOrderId as string) LIKE :orderNo)
+              AND (:supplierName IS NULL OR s.name LIKE :supplierName)
+              AND (:firstName IS NULL OR c.firstName LIKE :firstName)
+              AND (:surname IS NULL OR c.surname LIKE :surname)
+        </query>
+    </named-query>
+
+    <named-query name="aseConnType.findByName">
+        <query>
+            FROM AseConnType WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="aseType.findByName">
+        <query>
+            FROM AseType WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="building.findByName">
+        <query>
+            FROM Building
+            WHERE name = :name
+        </query>
+    </named-query>
+    <named-query name="building.findByNameLike">
+        <query>
+            FROM Building
+            WHERE name LIKE :name
+        </query>
+    </named-query>
+    <named-query name="building.findBuildingName">
+        <query>
+            SELECT DISTINCT name
+            FROM Building
+            WHERE name LIKE :value
+        </query>
+    </named-query>
+    <named-query name="building.findBuildingSuburb">
+        <query>
+            SELECT DISTINCT address.suburb
+            FROM Building
+            WHERE address.suburb LIKE :value
+        </query>
+    </named-query>
+
+    <named-query name="buildingContactType.findByName">
+        <query>
+            FROM BuildingContactType
+            WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="docChkList.findByTemplate">
+        <query>
+            FROM DocChkList WHERE template = :template
+        </query>
+    </named-query>
+
+    <named-query name="fca.findByCriteriaUnassigned">
+        <query>
+            FROM Fca
+            WHERE 
+                    (file IS NULL)
+                AND (subPanel = :subPanel)
+                AND (:fcaNo IS NULL OR id LIKE :fcaNo)
+                AND (:region IS NULL OR region = :region)
+        </query>
+    </named-query>
+    <named-query name="fca.findByCriteriaAssigned">
+        <query>
+            FROM Fca
+            WHERE   (file IS NOT NULL)
+                AND (subPanel = :subPanel)
+                AND (:fcaNo IS NULL OR id LIKE :fcaNo)
+                AND (:region IS NULL OR region = :region)
+                AND (:area IS NULL OR area = :area)
+                AND (:station IS NULL OR station = :station)
+        </query>
+    </named-query>
+    <named-query name="fca.findByFileId">
+        <query>
+            FROM Fca
+            WHERE (fileId = :fileId)
+        </query>
+    </named-query>
+    <named-query name="fca.findFcaNo">
+        <query>
+            SELECT fcaId, fileId
+            FROM Fca
+            WHERE (fcaId LIKE :fcaNo)
+                AND ((:unassignedFca = true AND fileId IS NULL)
+                 OR (:unassignedFca = false AND fileId IS NOT NULL))
+        </query>
+    </named-query>
+
+    <named-query name="file.findFileNo">
+        <query>
+            SELECT fileId AS fileId, fca.fcaId AS fcaId
+            FROM File
+            WHERE cast(fileId as string) LIKE :fileNo
+        </query>
+    </named-query>
+    <named-query name="file.findByStatus">
+        <query>
+            FROM File WHERE fileStatus = :fileStatus
+        </query>
+    </named-query>
+    <named-query name="file.findBySapCustNo">
+        <query>
+            FROM File f WHERE f.sapHeader.sapCustNo = :sapCustNo
+        </query>
+    </named-query>
+    <!--named-query name="file.findByCriteria">
+        <query>
+            FROM File AS f
+                LEFT OUTER JOIN f.fcas AS fcas
+                LEFT OUTER JOIN f.buildings AS buildings
+            WHERE
+                    (:fileNo IS NULL OR cast(f.fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcas.fcaId LIKE :fcaNo)
+                AND (:buildingName IS NULL OR buildings.name LIKE :buildingName)
+        </query>
+    </named-query-->
+    <named-query name="file.findFilesByCriteria">
+        <query>
+            FROM ActiveFile
+            WHERE  ((:fileTypeId IS NULL AND fileTypeId IS NULL)
+                 OR (:fileTypeId IS NOT NULL AND fileTypeId = :fileTypeId))
+                AND (fileStatusId IN (:fileStatusIds))
+                AND (:fileNo IS NULL OR cast(fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND ((:buildingId IS NOT NULL AND buildingId = :buildingId)
+                  OR (:buildingName IS NULL OR buildingName LIKE :buildingName))
+                AND (:buildingAddress IS NULL OR buildingSuburb LIKE :buildingAddress)
+                AND (:ownerName IS NULL OR ownerName LIKE :ownerName)
+                AND (:ownerContact IS NULL OR ownerContact LIKE :ownerContact)
+                AND (:supplierName IS NULL OR supplierName LIKE :supplierName)
+            ORDER BY
+                createdDate DESC, fileId
+        </query>
+    </named-query>
+    <named-query name="file.findAseChangeFiles">
+        <query>
+            FROM ActiveAseFile
+            WHERE   (:fileStatusId IS NULL OR fileStatusId = :fileStatusId)
+                AND (:fileNo IS NULL OR cast(fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND ((:buildingId IS NOT NULL AND buildingId = :buildingId)
+                  OR (:buildingName IS NULL OR buildingName LIKE :buildingName))
+            ORDER BY
+                createdDate DESC, fileId
+        </query>
+    </named-query>
+
+    <named-query name="fileAction.findByFileActionType">
+        <query>
+            FROM FileAction
+            WHERE (logicallyDeleted IS NULL)
+                AND file = :file
+                AND (:actionType IS NULL OR actionCode.actionType = :actionType)
+            ORDER BY dueDate DESC
+        </query>
+    </named-query>
+
+    <named-query name="fileAction.findFileActionToDoByCriteria">
+        <query>
+            FROM FileActionTodo
+            WHERE   (:completed IS NULL
+                 OR (:completed = false AND completedDate IS NULL)
+                 OR (:completed = true AND completedDate IS NOT NULL))
+                AND (:fileNo IS NULL OR cast(fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND (:actionTypeId IS NULL OR actionTypeId = :actionTypeId)
+                AND (:actionCodeId IS NULL OR actionCodeId = :actionCodeId)
+                AND (:actionCode IS NULL OR nextAction LIKE :actionCode)
+                AND (:workGroupId IS NULL OR workGroupId = :workGroupId)
+                AND (:workGroup IS NULL OR workGroup LIKE :workGroup)
+            ORDER BY nextActionDate, nextAction
+        </query>
+    </named-query>
+    <named-query name="fileAction.findFileActionToBeDoneByCriteria">
+        <query>
+        <![CDATA[
+            SELECT MAX(id), fileId, MAX(completedDate)
+            FROM FileActionTodo
+            WHERE   (:fileNo IS NULL OR cast(fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND (actionCodeId = :actionCodeId)
+                AND (:dateFrom > completedDate) AND (fileId NOT IN (SELECT fa.fileId FROM FileActionTodo fa WHERE fa.completedDate >= :dateFrom))
+            GROUP BY fileId
+        ]]>
+        </query>
+    </named-query>
+
+    <named-query name="fileDoc.findByFile">
+        <query>
+            FROM FileDoc WHERE file = :file
+        </query>
+    </named-query>
+
+    <named-query name="fileDocChkList.findByFile">
+        <query>
+            FROM FileDocChkList WHERE file = :file
+        </query>
+    </named-query>
+
+    <named-query name="invoice.findFiscalYears">
+        <query>
+            SELECT DISTINCT(fiscalYear)
+            FROM Invoice
+            ORDER BY fiscalYear DESC
+        </query>
+    </named-query>
+    <named-query name="invoice.findByReference">
+        <query>
+            FROM Invoice
+            WHERE header.reference = :reference
+        </query>
+    </named-query>
+    <named-query name="invoice.findByCriteria">
+        <query>
+            FROM Invoice
+            WHERE
+                (:fiscalYear IS NULL OR fiscalYear = :fiscalYear)
+                AND (:invoiceTypeId IS NULL OR invoiceType.invoiceTypeId = :invoiceTypeId)
+                AND (:invoiceAreaId IS NULL OR invoiceArea.invoiceAreaId = :invoiceAreaId)
+        </query>
+    </named-query>
+
+    <named-query name="invoiceArea.findByNameLike">
+        <query>
+            FROM InvoiceArea
+            WHERE name LIKE :name
+        </query>
+    </named-query>
+
+    <named-query name="invoiceBatch.findFiscalYears">
+        <query>
+            SELECT DISTINCT(fiscalYear)
+            FROM InvoiceBatch
+            ORDER BY fiscalYear DESC
+        </query>
+    </named-query>
+    <named-query name="invoiceBatch.findByCriteria">
+        <query>
+            FROM InvoiceBatch
+            WHERE
+                (:fiscalYear IS NULL OR fiscalYear = :fiscalYear)
+                AND (:invoiceTypeId IS NULL OR invoiceType.invoiceTypeId = :invoiceTypeId)
+                AND (:invoiceAreaId IS NULL OR invoiceArea.invoiceAreaId = :invoiceAreaId)
+        </query>
+    </named-query>
+    <named-query name="invoiceBatch.findMaxSequence">
+        <query>
+            SELECT MAX(sequence)
+            FROM InvoiceBatch
+            WHERE fiscalYear = :fiscalYear
+        </query>
+    </named-query>
+
+    <named-query name="job.findJobNo">
+        <query>
+            SELECT cast(jobId as string) AS jobId
+            FROM Job
+            WHERE cast(jobId as string) LIKE :value
+                AND (status = true)
+        </query>
+    </named-query>
+    <named-query name="job.findByJobType">
+        <query>
+            FROM Job WHERE jobType = :jobType
+        </query>
+    </named-query>
+
+    <named-query name="job.findActiveJobByCriteria">
+        <query>
+            FROM ActiveJob
+            WHERE (:fileNo IS NULL OR cast(fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND ((:buildingId IS NOT NULL AND buildingId = :buildingId)
+                  OR (:buildingName IS NULL OR buildingName LIKE :buildingName))
+                AND (:actionCodeId IS NULL OR actionCodeId = :actionCodeId)
+                AND (:actionCode IS NULL OR nextAction LIKE :actionCode)
+                AND (:workGroup IS NULL OR workGroup LIKE :workGroup)
+                AND (:workGroupId IS NULL OR workGroupId = :workGroupId)
+                AND (:jobType IS NULL OR jobType LIKE :jobType)
+                AND (:jobTypeId IS NULL OR jobTypeId = :jobTypeId)
+                AND (:jobNo IS NULL OR jobId LIKE :jobNo)
+            ORDER BY fileId, jobId, jobType
+        </query>
+    </named-query>
+
+    <named-query name="jobDoc.findByJob">
+        <query>
+            FROM JobDoc WHERE job = :job
+        </query>
+    </named-query>
+
+    <named-query name="jobAction.findJobActionToDoByCriteria">
+        <query>
+            FROM JobActionTodo
+            WHERE   (:completed IS NULL
+                 OR (:completed = false AND completedDate IS NULL)
+                 OR (:completed = true AND completedDate IS NOT NULL))
+                AND (:fileNo IS NULL OR cast(fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND (:actionTypeId IS NULL OR actionTypeId = :actionTypeId)
+                AND (:actionCodeId IS NULL OR actionCodeId = :actionCodeId)
+                AND (:actionCode IS NULL OR nextAction LIKE :actionCode)
+                AND (:workGroupId IS NULL OR workGroupId = :workGroupId)
+                AND (:workGroup IS NULL OR workGroup LIKE :workGroup)
+                AND (:responsibleUserId IS NULL
+                 OR responsibleUserId = :responsibleUserId
+                 OR workGroupUserId = :responsibleUserId)
+            ORDER BY nextActionDate, nextAction
+        </query>
+    </named-query>
+
+    <named-query name="jobRequest.findByJobType">
+        <query>
+            FROM JobRequest WHERE jobType = :jobType
+        </query>
+    </named-query>
+
+    <named-query name="jobType.findByName">
+        <query>
+            FROM JobType WHERE name = :name
+        </query>
+    </named-query>
+
+    <named-query name="isolationHistory.findByCriteria">
+        <query>
+        <![CDATA[
+            FROM IsolationHistory
+            WHERE (:fcaNo IS NULL OR fca.fcaId LIKE :fcaNo)
+                AND (:regionId IS NULL OR fca.region.regionId = :regionId)
+                AND (:area IS NULL OR fca.area.areaId LIKE :area)
+                AND (:station IS NULL OR fca.station.stationId LIKE :station)
+                AND (:isolationDate IS NULL OR isolationDate >= :isolationDate)
+                AND (:deIsolationDate IS NULL OR deIsolationDate <= :deIsolationDate)
+            ORDER BY isolationDate DESC, fca.fcaId, input
+        ]]>
+        </query>
+    </named-query>
+    <named-query name="isolationHistory.findUniqueByCriteria">
+        <query>
+            FROM IsolationHistory
+            WHERE fca.fcaId = :fcaNo
+                AND input = :input
+                AND isolationDate = :isolationDate
+                AND deIsolationDate = :deIsolationDate
+        </query>
+    </named-query>
+
+    <named-query name="jobAction.findJobActionTodoByDueDate">
+        <query>
+            FROM JobAction
+            WHERE (dueDate = :dueDate) AND (logicallyDeleted IS NULL) AND (completedDate IS NULL)
+                AND (:fileNo IS NULL OR cast(job.file.fileId as string) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR job.fca.fcaId LIKE :fcaNo)
+        </query>
+    </named-query>
+    <named-query name="jobAction.findByJob">
+        <query>
+            FROM JobAction
+            WHERE (logicallyDeleted IS NULL)
+                AND job = :job
+        </query>
+    </named-query>
+    <named-query name="jobAction.findByFileActionType">
+        <query>
+            FROM JobAction
+            WHERE (logicallyDeleted IS NULL)
+                AND job.file = :file
+                AND (:actionType IS NULL OR actionCode.actionType = :actionType)
+            ORDER BY dueDate DESC
+        </query>
+    </named-query>
+
+    <named-query name="jobRequest.findJobRequestNo">
+        <query>
+            SELECT cast(jobRequestId as string) AS jobRequestId
+            FROM JobRequest
+            WHERE cast(jobRequestId as string) LIKE :value
+        </query>
+    </named-query>
+    <named-query name="jobRequest.findActiveJobRequestByCriteria">
+        <query>
+            FROM ActiveJobRequest
+            WHERE   (:jobRequestNo IS NULL OR cast(jobRequestId as string) LIKE :jobRequestNo)
+                AND (:workGroup IS NULL OR workGroup LIKE :workGroup)
+                AND (:workGroupId IS NULL OR workGroupId = :workGroupId)
+                AND (:jobType IS NULL OR jobType LIKE :jobType)
+                AND (:jobTypeId IS NULL OR jobTypeId = :jobTypeId)
+        </query>
+    </named-query>
+
+    <named-query name="keyReceipt.findByFile">
+        <query>
+            FROM KeyReceipt WHERE file = :file
+        </query>
+    </named-query>
+    <named-query name="keyReceipt.findByKeyReceiptNo">
+        <query>
+            FROM KeyReceipt WHERE keyReceiptNo = :keyReceiptNo
+        </query>
+    </named-query>
+
+    <named-query name="keyReg.findByFile">
+        <query>
+            FROM KeyReg WHERE file = :file
+        </query>
+    </named-query>
+
+    <named-query name="mailBatch.findByName">
+        <query>
+            FROM MailBatch
+            WHERE name = :name
+        </query>
+    </named-query>
+    <named-query name="mailBatch.findByCriteria">
+        <query>
+            FROM MailBatch
+            ORDER BY createdDate DESC
+        </query>
+    </named-query>
+
+    <named-query name="mailBatchFile.findByCriteria">
+        <query>
+        <![CDATA[
+            FROM MailBatchFile
+            WHERE 
+                (:batchId IS NULL OR mailBatch.mailBatchId = :batchId)
+                AND (:actionCodeId IS NULL OR fileAction.actionCode.actionCodeId = :actionCodeId)
+                AND ((:noStatus = true AND mailStatus.status IS NULL) OR (mailStatus.status IN (:status)))
+                AND (file.noMailOut = :doNotMail)
+                AND (:fcaNo IS NULL OR file.fca.fcaId LIKE :fcaNo)
+                AND (:fileNo IS NULL OR cast(file.fileId as string) LIKE :fileNo)
+                AND (:regionId IS NULL OR file.fca.region.regionId = :regionId)
+                AND ((:sentDateOption IS NULL)
+                 OR ((:sentDateOption = 1) AND (:sentDateFrom IS NULL OR mailStatus.sentDate <= :sentDateFrom))
+                 OR ((:sentDateOption = 2) AND (:sentDateFrom IS NULL OR mailStatus.sentDate >= :sentDateFrom))
+                 OR (((:sentDateOption = 3) AND (:sentDateFrom IS NULL OR mailStatus.sentDate >= :sentDateFrom) AND (:sentDateTo IS NULL OR mailStatus.sentDate <= :sentDateTo))))
+                AND ((:receivedDateOption IS NULL)
+                 OR ((:receivedDateOption = 1) AND (:receivedDateFrom IS NULL OR mailStatus.receivedDate <= :sentDateFrom))
+                 OR ((:receivedDateOption = 2) AND (:receivedDateFrom IS NULL OR mailStatus.receivedDate >= :sentDateFrom))
+                 OR (((:receivedDateOption = 3) AND (:receivedDateFrom IS NULL OR mailStatus.receivedDate >= :sentDateFrom) AND (:receivedDateTo IS NULL OR mailStatus.receivedDate <= :receivedDateTo))))
+            ORDER BY createdDate DESC
+        ]]>
+        </query>
+    </named-query>
+
+    <named-query name="mailRegister.findByCriteria">
+        <query>
+            FROM ActiveMailRegister
+            WHERE   (:date IS NULL OR date = :date)
+                AND (:mailIn IS NULL OR mailIn = :mailIn)
+                AND (:rts IS NULL OR rts = :rts)
+                AND (:sapCustNo IS NULL OR cast(sapCustNo as string) LIKE :sapCustNo)
+                AND (:fcaNo IS NULL OR fcaId LIKE :fcaNo)
+                AND (:mailTypeId IS NULL OR mailTypeId = :mailTypeId)
+                AND (:mailRegisterNo IS NULL OR mailRegisterNo LIKE :mailRegisterNo)
+                AND ((:firstName IS NULL AND :surname IS NULL)
+                 OR (firstName LIKE :firstName AND surname LIKE :surname))
+            ORDER BY date DESC
+        </query>
+    </named-query>
+
+    <named-query name="owner.findByLegalName">
+        <query>
+            FROM Owner
+            WHERE legalName = :legalName
+        </query>
+    </named-query>
+    <named-query name="owner.findByLegalNameLike">
+        <query>
+            FROM Owner
+            WHERE (:ownerTypeId IS NULL OR ownerType.ownerTypeId = :ownerTypeId)
+                AND (legalName LIKE :legalName)
+        </query>
+    </named-query>
+    <named-query name="owner.findByContactName">
+        <query>
+            FROM Owner
+            WHERE (:ownerTypeId IS NULL OR ownerType.ownerTypeId = :ownerTypeId)
+                AND (:firstName IS NULL OR contact.firstName LIKE :firstName)
+                AND (:surname IS NULL OR contact.surname LIKE :surname)
+        </query>
+    </named-query>
+    <named-query name="owner.findLegalName">
+        <query>
+            SELECT DISTINCT legalName
+            FROM Owner
+            WHERE legalName LIKE :value
+        </query>
+    </named-query>
+    <named-query name="owner.findContactSurname">
+        <query>
+            SELECT DISTINCT contact.surname
+            FROM Owner
+            WHERE contact.surname LIKE :value
+        </query>
+    </named-query>
+
+    <named-query name="rfi.findByFile">
+        <query>
+            FROM Rfi WHERE file = :file
+        </query>
+    </named-query>
+
+    <named-query name="sapHeader.findByFile">
+        <query>
+            FROM SapHeader
+            WHERE file = :file
+        </query>
+    </named-query>
+    <named-query name="sapHeader.findSapCustNo">
+        <query>
+            SELECT sapCustNo
+            FROM SapHeader
+            WHERE cast(sapCustNo as string) LIKE :value
+        </query>
+    </named-query>
+
+    <named-query name="stakeHolder.findByStakeHolderType">
+        <query>
+            FROM StakeHolder WHERE stakeHolderType = :stakeHolderType
+        </query>
+    </named-query>
+    <named-query name="stakeHolder.findByRegion">
+        <query>
+            FROM StakeHolder WHERE region = :region
+        </query>
+    </named-query>
+
+    <named-query name="subPanel.findByAseFile">
+        <query>
+            FROM SubPanel WHERE aseFile = :aseFile
+        </query>
+    </named-query>
+
+    <named-query name="supplier.findSupplierByName">
+        <query>
+            FROM Supplier
+            WHERE name LIKE :name
+        </query>
+    </named-query>
+
+    <!--named-native-query name="fileAction.findMailOutAction" result-class="au.gov.qld.fire.jms.domain.action.FileActionTodo">
+        <query>
+        <![CDATA[
+
+        ]]>
+        </query>
+    </named-native-query-->
+
+    <named-native-query name="fileAction.findMailOutAction" result-set-mapping="fileActionTodoScalar">
+        <query>
+        <![CDATA[
+            SELECT
+                MAX(fa.FILE_ACTION_ID) AS fileActionId,
+                f.FILE_ID AS fileId
+            FROM OWNER AS o RIGHT OUTER JOIN
+                FILES AS f INNER JOIN
+                FCA AS fca ON f.FILE_ID = fca.FILE_ID ON o.FILE_ID = f.FILE_ID LEFT OUTER JOIN
+                FILE_ACTION AS fa INNER JOIN
+                MAIL_BATCH_FILE AS mbf ON fa.FILE_ACTION_ID = mbf.FILE_ACTION_ID ON f.FILE_ID = mbf.FILE_ID
+            WHERE (f.FILE_STATUS_ID = 1)
+                AND (:fileNo IS NULL OR CAST(f.FILE_ID AS VARCHAR) LIKE :fileNo)
+                AND (:fcaNo IS NULL OR fca.FCA_NO LIKE :fcaNo)
+                AND (:regionId IS NULL OR fca.REGION_ID = :regionId)
+                AND ((:noStatus = 'Y' AND mbf.STATUS_ID IS NULL) OR (mbf.STATUS_ID IN (:status)))
+                AND (f.NO_MAIL_OUT = :doNotMail)
+                AND (:actionCodeId IS NULL OR fa.FILE_ACTION_ID IS NULL OR (fa.ACTION_CODE_ID = :actionCodeId AND fa.LOGICALLY_DELETED IS NULL))
+                AND (mbf.FILE_ACTION_ID IS NULL OR
+                (:sentDateOption IS NULL) OR
+                ((:sentDateOption = 1) AND (:sentDateFrom IS NULL OR mbf.SENT_DATE <= :sentDateFrom)) OR
+                ((:sentDateOption = 2) AND (:sentDateFrom IS NULL OR mbf.SENT_DATE >= :sentDateFrom)) OR
+                (((:sentDateOption = 3) AND (:sentDateFrom IS NULL OR mbf.SENT_DATE >= :sentDateFrom) AND (:sentDateTo IS NULL OR mbf.SENT_DATE <= :sentDateTo))))
+                AND (mbf.FILE_ACTION_ID IS NULL OR
+                (:receivedDateOption IS NULL) OR
+                ((:receivedDateOption = 1) AND (:receivedDateFrom IS NULL OR mbf.RECEIVED_DATE <= :receivedDateFrom)) OR
+                ((:receivedDateOption = 2) AND (:receivedDateFrom IS NULL OR mbf.RECEIVED_DATE >= :receivedDateFrom)) OR
+                (((:receivedDateOption = 3) AND (:receivedDateFrom IS NULL OR mbf.RECEIVED_DATE >= :receivedDateFrom) AND (:receivedDateTo IS NULL OR mbf.RECEIVED_DATE <= :receivedDateTo))))
+                AND (:ownerTypeId IS NULL OR o.OWNER_TYPE_ID = :ownerTypeId)
+                AND (:ownerId IS NULL OR o.OWNER_ID = :ownerId)
+                AND (:ownerIdContact IS NULL OR o.OWNER_ID = :ownerIdContact)
+            GROUP BY f.FILE_ID
+            ORDER BY fileActionId DESC
+        ]]>
+        </query>
+    </named-native-query>
+
+    <sql-result-set-mapping name="fileActionTodoScalar">
+        <column-result name="fileActionId" />
+        <column-result name="fileId" />
+    </sql-result-set-mapping>
+
+</entity-mappings>

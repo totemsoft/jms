@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class
+    name="au.gov.qld.fire.jms.domain.building.BuildingContact" 
+    table="BUILDING_CONTACT"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="BUILDING_CONTACT_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to BuildingContactType -->
+    <many-to-one
+        name="buildingContactType"
+        class="au.gov.qld.fire.jms.domain.refdata.BuildingContactType"
+        not-null="true"
+    >
+        <column name="BUILDING_CONTACT_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Contact -->
+    <many-to-one
+        name="contact"
+        class="au.gov.qld.fire.domain.entity.Contact"
+        not-null="true"
+        cascade="save-update"
+    >
+        <column name="CONTACT_ID" />
+    </many-to-one>
+
+</class>
+
+<query name="buildingContact.findByBuildingContactType">
+    <![CDATA[
+        FROM BuildingContact WHERE buildingContactType = :buildingContactType
+    ]]>
+</query>
+
+</hibernate-mapping>

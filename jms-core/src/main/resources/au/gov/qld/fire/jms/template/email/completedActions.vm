@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="version" content="completedActions.vm" />
+        <title>[JMS] - Completed Actions</title>
+        <style>
+            #include("au/gov/qld/fire/jms/template/email/default.css")
+        </style>
+    </head>
+    <body>
+        <p>
+            Dear Sir/Madam,<br/><br/>
+            This e-mail provides information on the completed actions.<br/>
+            Click the following link to access the site to view details: <a href="${context.root}/${jms.context.root}/">JMS <span class="uppercase">${application.env}<span></a>
+        </p>
+        <ul>
+        #foreach($a in $actions)
+            <li><span class="bold">$a.actionCode.code</span> action for file <a href="${context.root}/${jms.context.root}/file/editFile.do?dispatch=edit&view=detailView&id=$a.file.id">$a.file.id</a> is completed</li>
+        #end
+        </ul>
+        <br/>
+        <p>
+            Please ensure the status of these changes is correct.<br/>
+            Regards,<br/>
+            JMS <span class="uppercase">${application.env}<span>
+        </p>
+    </body>
+</html>

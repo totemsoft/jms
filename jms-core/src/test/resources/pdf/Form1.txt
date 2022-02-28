@@ -1,0 +1,2 @@
+form1[0].\#subform[0].FCA[0]=fca/@id
+form1[0].\#subform[0].PremiseName[0]=building/@name

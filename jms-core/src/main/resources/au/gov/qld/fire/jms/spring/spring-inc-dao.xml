@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-dao.xml"/>
+
+    <bean id="scheduledTaskDao" class="au.gov.qld.fire.dao.hibernate.ScheduledTaskDaoImpl" />
+
+    <!-- ========================= JMS DEFINITIONS ===================== -->
+    <bean id="actionCodeDao" class="au.gov.qld.fire.jms.dao.hibernate.ActionCodeDaoImpl" />
+    <bean id="actionOutcomeDao" class="au.gov.qld.fire.jms.dao.hibernate.ActionOutcomeDaoImpl" />
+    <bean id="actionTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.ActionTypeDaoImpl" />
+    <bean id="actionWorkflowDao" class="au.gov.qld.fire.jms.dao.hibernate.ActionWorkflowDaoImpl" />
+    <bean id="alarmPanelDao" class="au.gov.qld.fire.jms.dao.hibernate.AlarmPanelDaoImpl" />
+    <bean id="archiveDao" class="au.gov.qld.fire.jms.dao.hibernate.ArchiveDaoImpl" />
+    <bean id="buildingClassificationDao" class="au.gov.qld.fire.jms.dao.hibernate.BuildingClassificationDaoImpl" />
+    <bean id="buildingContactDao" class="au.gov.qld.fire.jms.dao.hibernate.BuildingContactDaoImpl" />
+    <bean id="buildingContactTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.BuildingContactTypeDaoImpl" />
+    <bean id="buildingDao" class="au.gov.qld.fire.jms.dao.hibernate.BuildingDaoImpl" />
+    <bean id="docChkListDao" class="au.gov.qld.fire.jms.dao.hibernate.DocChkListDaoImpl" />
+    <bean id="fileDocDao" class="au.gov.qld.fire.jms.dao.hibernate.FileDocDaoImpl" />
+    <bean id="fcaDao" class="au.gov.qld.fire.jms.dao.hibernate.FcaDaoImpl" />
+    <bean id="fileActionDao" class="au.gov.qld.fire.jms.dao.hibernate.FileActionDaoImpl" />
+    <bean id="fileDao" class="au.gov.qld.fire.jms.dao.hibernate.FileDaoImpl" />
+    <bean id="fileAuditDao" class="au.gov.qld.fire.jms.dao.hibernate.FileAuditDaoImpl" />
+    <bean id="fileArchiveDao" class="au.gov.qld.fire.jms.dao.hibernate.FileArchiveDaoImpl" />
+    <bean id="fileDocChkListDao" class="au.gov.qld.fire.jms.dao.hibernate.FileDocChkListDaoImpl" />
+    <bean id="fileStatusDao" class="au.gov.qld.fire.jms.dao.hibernate.FileStatusDaoImpl" />
+    <bean id="invoiceDao" class="au.gov.qld.fire.jms.dao.hibernate.InvoiceDaoImpl" />
+    <bean id="invoiceAreaDao" class="au.gov.qld.fire.jms.dao.hibernate.InvoiceAreaDaoImpl" />
+    <bean id="invoiceBatchDao" class="au.gov.qld.fire.jms.dao.hibernate.InvoiceBatchDaoImpl" />
+    <bean id="isolationHistoryDao" class="au.gov.qld.fire.jms.dao.hibernate.IsolationHistoryDaoImpl" />
+    <bean id="jobActionDao" class="au.gov.qld.fire.jms.dao.hibernate.JobActionDaoImpl" />
+    <bean id="jobDao" class="au.gov.qld.fire.jms.dao.hibernate.JobDaoImpl" />
+    <bean id="jobDocDao" class="au.gov.qld.fire.jms.dao.hibernate.JobDocDaoImpl" />
+    <bean id="jobRequestDao" class="au.gov.qld.fire.jms.dao.hibernate.JobRequestDaoImpl" />
+    <bean id="jobTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.JobTypeDaoImpl" />
+    <bean id="keyReceiptDao" class="au.gov.qld.fire.jms.dao.hibernate.KeyReceiptDaoImpl" />
+    <bean id="keyRegDao" class="au.gov.qld.fire.jms.dao.hibernate.KeyRegDaoImpl" />
+    <bean id="mailBatchDao" class="au.gov.qld.fire.jms.dao.hibernate.MailBatchDaoImpl" />
+    <bean id="mailBatchFileDao" class="au.gov.qld.fire.jms.dao.hibernate.MailBatchFileDaoImpl" />
+    <bean id="mailRegisterDao" class="au.gov.qld.fire.jms.dao.hibernate.MailRegisterDaoImpl" />
+    <bean id="ownerDao" class="au.gov.qld.fire.jms.dao.hibernate.OwnerDaoImpl" />
+    <bean id="aseChangeDao" class="au.gov.qld.fire.jms.dao.hibernate.AseChangeDaoImpl" />
+    <bean id="aseConnDao" class="au.gov.qld.fire.jms.dao.hibernate.AseConnDaoImpl" />
+    <bean id="aseConnTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.AseConnTypeDaoImpl" />
+    <bean id="aseFileDao" class="au.gov.qld.fire.jms.dao.hibernate.AseFileDaoImpl" />
+    <bean id="aseKeyDao" class="au.gov.qld.fire.jms.dao.hibernate.AseKeyDaoImpl" />
+    <bean id="aseKeyInvoiceDao" class="au.gov.qld.fire.jms.dao.hibernate.AseKeyInvoiceDaoImpl" />
+    <bean id="aseKeyOrderDao" class="au.gov.qld.fire.jms.dao.hibernate.AseKeyOrderDaoImpl" />
+    <bean id="aseKeyPriceDao" class="au.gov.qld.fire.jms.dao.hibernate.AseKeyPriceDaoImpl" />
+    <bean id="aseTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.AseTypeDaoImpl" />
+    <bean id="rfiDao" class="au.gov.qld.fire.jms.dao.hibernate.RfiDaoImpl" />
+    <bean id="sapHeaderDao" class="au.gov.qld.fire.jms.dao.hibernate.SapHeaderDaoImpl" />
+    <bean id="siteTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.SiteTypeDaoImpl" />
+    <bean id="stakeHolderDao" class="au.gov.qld.fire.jms.dao.hibernate.StakeHolderDaoImpl" />
+    <bean id="stakeHolderTypeDao" class="au.gov.qld.fire.jms.dao.hibernate.StakeHolderTypeDaoImpl" />
+    <bean id="subPanelDao" class="au.gov.qld.fire.jms.dao.hibernate.SubPanelDaoImpl" />
+
+    <!-- ========================= UAA DEFINITIONS ===================== -->
+    <bean id="injuryDao" class="au.gov.qld.fire.jms.uaa.dao.jpa.InjuryDaoImpl" />
+    <bean id="injuryTypeDao" class="au.gov.qld.fire.jms.uaa.dao.jpa.InjuryTypeDaoImpl" />
+    <bean id="injuryViewDao" class="au.gov.qld.fire.jms.uaa.dao.jpa.InjuryViewDaoImpl" />
+
+</beans>

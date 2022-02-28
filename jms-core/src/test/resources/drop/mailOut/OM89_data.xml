@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form1>
+	<Questions>
+		<ownershipchanged>0</ownershipchanged>
+		<bodycorporate>0</bodycorporate>
+		<propertymanager>1</propertymanager>
+		<commercialtenant />
+	</Questions>
+	<fca />
+	<adAlarmDetails>
+		<fca>61093-01</fca>
+		<customernumber>20031004</customernumber>
+		<lotplannumber />
+		<premisename>Spotlight Building</premisename>
+		<changepremisenameto>Spotlight Building Audit</changepremisenameto>
+		<streetnumber>318-A</streetnumber>
+		<streetname>Mulgrave Road Audit</streetname>
+		<suburb>Earlville Audit</suburb>
+		<postcode>4870</postcode>
+	</adAlarmDetails>
+	<poPremiseOwnerDetails>
+		<fca>61093-01</fca>
+		<ownername>Cairn Property Trust Audit</ownername>
+		<abnacn>90 905 079 908</abnacn>
+		<contactname>Neville Renton Audit</contactname>
+		<email>neville.renton@cbre.com.au</email>
+		<office>07 4051 8922</office>
+		<mobile>0407 321 814</mobile>
+		<fax>07 4052 1580</fax>
+		<streetname>PO Box 1101 Audit</streetname>
+		<suburb>CAIRNS</suburb>
+		<state>QLD</state>
+		<postcode>4870</postcode>
+	</poPremiseOwnerDetails>
+	<bcBodyCorporate>
+		<fca>61093-01</fca>
+		<companyname />
+		<abnacn />
+		<ctsnumber />
+		<bodycorpmanagement>ABC123</bodycorpmanagement>
+		<contactname />
+		<email />
+		<office />
+		<mobile />
+		<fax />
+		<streetname />
+		<suburb />
+		<state />
+		<postcode />
+	</bcBodyCorporate>
+	<pmPropertyManager>
+		<fca>61093-01</fca>
+		<companyname>CBRE</companyname>
+		<contactname>Neville Renton Audit</contactname>
+		<email>neville.renton@cbre.com.au</email>
+		<office>07 4051 8922</office>
+		<mobile>0407 321 814</mobile>
+		<fax>07 4052 1580</fax>
+		<streetname>PO Box 1101 Audit</streetname>
+		<suburb>CAIRNS</suburb>
+		<state>QLD</state>
+		<postcode>4870</postcode>
+		<sameassection3details>N</sameassection3details>
+	</pmPropertyManager>
+	<ptTenantDetails>
+		<fca>61093-01</fca>
+		<companyname />
+		<contactname />
+		<email />
+		<office />
+		<mobile />
+		<fax />
+		<streetname />
+		<suburb />
+		<State>NSW</State>
+		<postcode />
+		<owneroccupied>Y</owneroccupied>
+	</ptTenantDetails>
+	<ecEmergencyContactInfo>
+		<fca>61093-01</fca>
+		<contact1givenname>Claire</contact1givenname>
+		<contact1lastname>Hamlyn</contact1lastname>
+		<contact1daytimenumber>0740413322</contact1daytimenumber>
+		<contact1afterhoursnumber>0740413322</contact1afterhoursnumber>
+		<contact2givenname>Neville</contact2givenname>
+		<contact2lastname>Renton</contact2lastname>
+		<contact2daytimenumber>0740518922</contact2daytimenumber>
+		<contact2afterhoursnumber>0407321814</contact2afterhoursnumber>
+		<contact3givenname>Kerrie</contact3givenname>
+		<contact3lastname>Pickering</contact3lastname>
+		<contact3daytimenumber>0740518922</contact3daytimenumber>
+		<contact3afterhoursnumber>0459027485</contact3afterhoursnumber>
+	</ecEmergencyContactInfo>
+	<scSecurityContactInfo>
+		<fca>61093-01</fca>
+		<firealarmmaintenancecompanyname />
+		<firealarmmaintenancecompanyphonenumber />
+		<monitoredsecuritycompanyname>NQ Security Service</monitoredsecuritycompanyname>
+		<monitoredsecurityphonenumber>0408 744 107 Audit</monitoredsecurityphonenumber>
+		<onsitesecutritycompanyname />
+		<onsitesecurityphonenumber />
+		<onsite24hrs>False</onsite24hrs>
+		<onsiteafterhours>False</onsiteafterhours>
+		<onsiterandompatrols>False</onsiterandompatrols>
+		<othertimes />
+		<guarddogs>False</guarddogs>
+	</scSecurityContactInfo>
+	<fca2>61093-01</fca2>
+	<fecFutureEmergencyContacts>
+		<fca>61093-01</fca>
+		<contactperson>Alternate Person</contactperson>
+		<emailpost />
+		<email>Alternate@hotmail.com</email>
+		<relationship />
+		<contactnumber>1111 2222</contactnumber>
+		<streetname>1 York Street</streetname>
+		<suburb>Sydney</suburb>
+		<State>NSW</State>
+		<postcode>2000</postcode>
+	</fecFutureEmergencyContacts>
+	<aiAdditionalInfo>
+		<fca>61093-01</fca>
+		<confirmformcompleted>1</confirmformcompleted>
+		<contactperson>Neville Renton</contactperson>
+		<contactnumber>0740518922</contactnumber>
+		<contactposition>Property Manager - Asset Services</contactposition>
+		<dateformcompleted>2013-11-12</dateformcompleted>
+	</aiAdditionalInfo>
+	<cfCustomerFeedback>
+		<fca />
+		<feedback />
+	</cfCustomerFeedback>
+	<SubmittingForm xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/"
+		xfa:dataNode="dataGroup" />
+	<fca3>61093-01</fca3>
+</form1>

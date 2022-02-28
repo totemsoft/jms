@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <bean id="actionRequest" class="au.gov.qld.fire.jms.domain.action.ActionRequest">
+        <property name="messageConverter" ref="jsonMessageConverter" />
+    </bean>
+
+    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>au.gov.qld.fire.jms.domain.mailOut.OM89Form</value>
+            </list>
+        </property>
+    </bean>
+    <alias alias="marshaller"   name="jaxb2Marshaller" />
+    <alias alias="unmarshaller" name="jaxb2Marshaller" />
+
+</beans>

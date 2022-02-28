@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.refdata.FileStatus" 
+    table="FILE_STATUS"
+    dynamic-update="true"
+>
+	<cache usage="read-write" region="refdata" />
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="FILE_STATUS_ID"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="50"
+    />
+  
+</class>
+</hibernate-mapping>

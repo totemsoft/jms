@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.action.ActionWorkflow" 
+    table="ACTION_WORKFLOW"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="ACTION_WORKFLOW_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="nextDueDays"
+        type="long"
+        column="NEXT_DUE_DAYS"
+        not-null="true"
+        length="11"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to ActionCode -->
+    <many-to-one
+        name="actionCode"
+        class="au.gov.qld.fire.jms.domain.refdata.ActionCode"
+        not-null="true"
+    >
+        <column name="ACTION_CODE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionCode -->
+    <many-to-one
+        name="nextActionCode"
+        class="au.gov.qld.fire.jms.domain.refdata.ActionCode"
+    >
+        <column name="NEXT_ACTION_CODE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionOutcome -->
+    <many-to-one
+        name="actionOutcome"
+        class="au.gov.qld.fire.jms.domain.action.ActionOutcome"
+        not-null="true"
+    >
+        <column name="ACTION_OUTCOME_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="actionWorkflow.findByActionCode">
+        <![CDATA[
+            FROM ActionWorkflow WHERE actionCode = :actionCode
+        ]]>
+    </query>
+
+    <query name="actionWorkflow.findByActionCodeOutcome">
+        <![CDATA[
+            FROM ActionWorkflow WHERE actionCode = :actionCode
+                AND actionOutcome = :actionOutcome
+            ORDER BY nextDueDays
+        ]]>
+    </query>
+
+</hibernate-mapping>

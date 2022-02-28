@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.ase.AseChangeSupplier" 
+    table="ASE_CHANGE_SUPPLIER"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+    where="LOGICALLY_DELETED IS NULL"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="ASE_CHANGE_SUPPLIER_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="notation"
+        type="string"
+        column="NOTATION"
+        length="255"
+    />
+    <property
+        name="dateCompleted"
+        type="timestamp"
+        column="DATE_COMPLETED"
+        length="23"
+    />
+    <property
+        name="logicallyDeleted"
+        type="yes_no"
+        column="LOGICALLY_DELETED"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AseConnType -->
+    <many-to-one
+        name="aseConnType"
+        class="au.gov.qld.fire.jms.domain.refdata.AseConnType"
+    >
+        <column name="ASE_CONN_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AseFile -->
+    <many-to-one
+        name="aseChange"
+        class="au.gov.qld.fire.jms.domain.ase.AseChange"
+        not-null="true"
+    >
+        <column name="ASE_CHANGE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AseFile -->
+    <many-to-one
+        name="supplier"
+        class="au.gov.qld.fire.domain.supplier.Supplier"
+        not-null="true"
+    >
+        <column name="SUPPLIER_ID" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

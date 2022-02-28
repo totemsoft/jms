@@ -1,0 +1,299 @@
+<table class="nonDataTable">
+<caption>Email template</caption>
+<tr><td>Designed in WYSWYG <a href="http://www.fckeditor.net/" target="_blank">FCKeditor</a> 
+or uploaded xml file in predefined format.<br/>
+There are few pre-loaded email template with fixed <code>Code</code> that can be modified by user:
+<ul>
+<li><code>changePassword</code></li>
+<li><code>newUser</code></li>
+<li><code>aseChange</code></li>
+<li><code>rejectJobRequest</code></li>
+</ul> 
+</td></tr>
+</table>
+
+<br/><hr/><br/>
+
+<table class="nonDataTable">
+<caption>Letter and RFI template</caption>
+<tr><td>Designed in Word or WordPad and saved as RTF document. See list of available parameters below (usage %[parameter]%)</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="loggedUser">Logged User</a> properties</th></tr>
+    <tr><td>user [of type <a href="javascript:;">User</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="file">File</a> properties</th></tr>
+    <tr><td>file.fileId</td></tr>
+    <tr><td>file.fileStatus.name</td></tr>
+    <tr><td>file.fca [of type <a href="javascript:;">Fca</a>]..</td></tr>
+    <tr><td>file.afterHoursBuildingContacts[0] [of type <a href="javascript:;">List&lt;BuildingContact&gt;</a>]..</td></tr>
+    <tr><td>file.alarmPanel [of type <a href="javascript:;">AlarmPanel</a>]..</td></tr>
+    <tr><td>file.building [of type <a href="javascript:;">Building</a>]..</td></tr>
+    <tr><td>file.daytimeBuildingContacts[0] [of type <a href="javascript:;">List&lt;BuildingContact&gt;</a>]..</td></tr>
+    <tr><td>file.keyReceipt [of type <a href="javascript:;">KeyReceipt</a>]..</td></tr>
+    <tr><td>file.keyRegs[0] [of type <a href="javascript:;">List&lt;KeyReg&gt;</a>]..</td></tr>
+    <tr><td>file.owner [of type <a href="javascript:;">Owner</a>]..</td></tr>
+    <tr><td>file.aseFile [of type <a href="javascript:;">AseFile</a>]..</td></tr>
+    <tr><td>file.sapHeader [of type <a href="javascript:;">SapHeader</a>]..</td></tr>
+    <!--tr><td>file.fileDocChkLists [of type List]..</td></tr>
+    <tr><td>file.jobs [of type List]..</td></tr>
+    <tr><td>file.rfis [of type List]..</td></tr>
+    <tr><td>file.fileActions [of type List]..</td></tr>
+    <tr><td>file.fileDocs [of type List]..</td></tr-->
+    <tr><td>file.createdDate</td></tr>
+    <tr><td>file.createdBy [of type <a href="javascript:;">User</a>]..</td></tr>
+    <tr><td>file.updatedDate</td></tr>
+    <tr><td>file.updatedBy [of type <a href="javascript:;">User</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="jobRequest">JobRequest</a> properties</th></tr>
+    <tr><td>jobRequest.jobRequestId</td></tr>
+    <tr><td>jobRequest.accepted</td></tr>
+    <tr><td>jobRequest.acceptedBy [of type <a href="javascript:;">User</a>]..</td></tr>
+    <tr><td>jobRequest.acceptedDate</td></tr>
+    <tr><td>jobRequest.requestedBy [of type <a href="javascript:;">User</a>]..</td></tr>
+    <tr><td>jobRequest.requestedEmail</td></tr>
+    <tr><td>jobRequest.requestedDate</td></tr>
+    <tr><td>jobRequest.link</td></tr>
+    <tr><td>jobRequest.jobType.name</td></tr>
+    <tr><td>jobRequest.description</td></tr>
+    <tr><td>jobRequest.rejectReason</td></tr>
+    <tr><td>jobRequest.fca [of type <a href="javascript:;">Fca</a>]..</td></tr>
+    <tr><td>jobRequest.createdDate</td></tr>
+    <tr><td>jobRequest.createdBy [of type <a href="javascript:;">User</a>]..</td></tr>
+    <tr><td>jobRequest.updatedDate</td></tr>
+    <tr><td>jobRequest.updatedBy [of type <a href="javascript:;">User</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="address">Address</a> properties</th></tr>
+    <tr><td>.addrLine1</td></tr>
+    <tr><td>.addrLine2</td></tr>
+    <tr><td>.suburb</td></tr>
+    <tr><td>.postcode</td></tr>
+    <tr><td>.state.state</td></tr>
+    <tr><td>.addrLine</td></tr>
+    <tr><td>.suburbStatePostcode</td></tr>
+    <tr><td>.fullAddress</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable" title="Fire Panel Data">
+    <tr><th><a name="alarmPanel">AlarmPanel</a> properties</th></tr>
+    <tr><td>.supplier [of type <a href="javascript:;">Supplier</a>]..</td></tr>
+    <tr><td>.alrmSystType</td></tr>
+    <tr><td>.alrmManuf</td></tr>
+    <tr><td>.alrmModel</td></tr>
+    <tr><td>.panelLoc</td></tr>
+    <tr><td>.subPanelQty</td></tr>
+    <tr><td>.dthermQty</td></tr>
+    <tr><td>.dsmokeQty</td></tr>
+    <tr><td>.dcombustQty</td></tr>
+    <tr><td>.duvQty</td></tr>
+    <tr><td>.dinfredQty</td></tr>
+    <tr><td>.dmulticQty</td></tr>
+    <tr><td>.dsprinkQty</td></tr>
+    <tr><td>.dairsampQty</td></tr>
+    <tr><td>.dmancallQty</td></tr>
+    <tr><td>.dotherQty</td></tr>
+    <tr><td>.dotherDefine</td></tr>
+    <tr><td>.sfsDualDetect</td></tr>
+    <tr><td>.sfsAircon</td></tr>
+    <tr><td>.sfsElevator</td></tr>
+    <tr><td>.sfsEvacctrl</td></tr>
+    <tr><td>.sfsFiredoors</td></tr>
+    <tr><td>.sfsBooster</td></tr>
+    <tr><td>.sfsDrypipe</td></tr>
+    <tr><td>.sfsOther</td></tr>
+    <tr><td>.mimcLoc</td></tr>
+    <tr><td>.mimicLayout</td></tr>
+    <tr><td>.areaCircdes</td></tr>
+    <tr><td>.mods</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="area">Area</a> properties</th></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+    <tr><td>.address [of type <a href="javascript:;">Address</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="building">Building</a> properties</th></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.description</td></tr>
+    <tr><td>.usage</td></tr>
+    <tr><td>.keyRequired</td></tr>
+    <tr><td>.address [of type <a href="javascript:;">Address</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="buildingContact">BuildingContact</a> properties</th></tr>
+    <tr><td>.buildingContactType.name</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="contact">Contact</a> properties</th></tr>
+    <tr><td>.salutation.salutation</td></tr>
+    <tr><td>.firstName</td></tr>
+    <tr><td>.surname</td></tr>
+    <tr><td>.phone</td></tr>
+    <tr><td>.mobile</td></tr>
+    <tr><td>.fax</td></tr>
+    <tr><td>.skype</td></tr>
+    <tr><td>.email</td></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.fullName</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="fca">Fca</a> properties</th></tr>
+    <tr><td>.fcaId</td></tr>
+    <tr><td>.comment</td></tr>
+    <tr><td>.area [of type <a href="javascript:;">Area</a>]..</td></tr>
+    <tr><td>.station [of type <a href="javascript:;">Station</a>]..</td></tr>
+    <tr><td>.region [of type <a href="javascript:;">Region</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="keyReceipt">KeyReceipt</a> properties</th></tr>
+    <tr><td>.keyReceiptNo</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="keyReg">KeyReg</a> properties</th></tr>
+    <tr><td>.keyNo</td></tr>
+    <tr><td>.ownerKeyId</td></tr>
+    <tr><td>.lockType</td></tr>
+    <tr><td>.lockLocation</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="owner">Owner</a> properties</th></tr>
+    <tr><td>.legalName</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+    <tr><td>.address [of type <a href="javascript:;">Address</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="aseChange">AseChange</a> properties</th></tr>
+    <tr><td>.dateChange</td></tr>
+    <tr><td>todo - add more</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="aseConn">AseConn</a> properties</th></tr>
+    <tr><td>.aseConnType.name</td></tr>
+    <tr><td>.priRef</td></tr>
+    <tr><td>.secAseConnType.name</td></tr>
+    <tr><td>.secRef</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="aseFile">AseFile</a> properties</th></tr>
+    <tr><td>.aseSerialNo</td></tr>
+    <tr><td>.aseType.name</td></tr>
+    <tr><td>.aseConn [of type <a href="javascript:;">AseConn</a>]..</td></tr>
+    <tr><td>.aseChange [of type <a href="javascript:;">AseChange</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="region">Region</a> properties</th></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+    <tr><td>.address [of type <a href="javascript:;">Address</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable" title="SAP Billing Data">
+    <tr><th><a name="sapHeader">SapHeader</a> properties</th></tr>
+    <tr><td>.sapCustNo</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="station">Station</a> properties</th></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+    <tr><td>.address [of type <a href="javascript:;">Address</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="supplier">Supplier</a> properties</th></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.legalName</td></tr>
+    <tr><td>.abn</td></tr>
+    <tr><td>.serviceDescription</td></tr>
+    <tr><td>.supplierType.name</td></tr>
+    <tr><td>.name</td></tr>
+    <tr><td>.region [of type <a href="javascript:;">Region</a>]..</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+    <tr><td>.address [of type <a href="javascript:;">Address</a>]..</td></tr>
+    <tr><td>.postAddress [of type <a href="javascript:;">Address</a>]..</td></tr>
+</table>
+</td></tr>
+
+<tr><td>
+<table class="dataTable">
+    <tr><th><a name="user">User</a> properties</th></tr>
+    <tr><td>.active</td></tr>
+    <tr><td>.login</td></tr>
+    <tr><td>.contact [of type <a href="javascript:;">Contact</a>]..</td></tr>
+    <tr><td>.userType.name</td></tr>
+    <tr><td>.securityGroup.name</td></tr>
+    <tr><td>.securityGroup.description</td></tr>
+    <tr><td>.createdDate</td></tr>
+    <tr><td>.createdBy [of type <a href="javascript:;">User</a>]..</td></tr>
+    <tr><td>.updatedDate</td></tr>
+    <tr><td>.updatedBy [of type <a href="javascript:;">User</a>]..</td></tr>
+</table>
+</td></tr>
+
+</table>
+
+<br/><hr/><br/>
+
+<table class="nonDataTable">
+<caption>Report template</caption>
+<tr><td>Graphically designed XSL:FO stylesheets in <a href="http://www.altova.com/download/stylevision/db_xslt_stylesheet_designer_enterprise.html" target="_blank">StyleVision Enterprise Edition</a></td></tr>
+</table>

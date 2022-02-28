@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.action.FileAction" 
+    table="FILE_ACTION"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+    where="LOGICALLY_DELETED IS NULL"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="FILE_ACTION_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="dueDate"
+        type="timestamp"
+        column="DUE_DATE"
+        not-null="true"
+        length="23"
+    />
+    <property
+        name="notation"
+        type="string"
+        column="NOTATION"
+        not-null="true"
+        length="4098"
+    />
+    <property
+        name="destination"
+        type="string"
+        column="DESTINATION"
+        length="250"
+    />
+    <property
+        name="subject"
+        type="string"
+        column="SUBJECT"
+        length="250"
+    />
+    <property
+        name="completedDate"
+        type="timestamp"
+        column="COMPLETED_DATE"
+        length="23"
+    />
+    <property
+        name="logicallyDeleted"
+        type="yes_no"
+        column="LOGICALLY_DELETED"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="completedBy"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="COMPLETED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionCode -->
+    <many-to-one
+        name="actionCode"
+        class="au.gov.qld.fire.jms.domain.refdata.ActionCode"
+        not-null="true"
+    >
+        <column name="ACTION_CODE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionOutcome -->
+    <many-to-one
+        name="actionOutcome"
+        class="au.gov.qld.fire.jms.domain.action.ActionOutcome"
+    >
+        <column name="ACTION_OUTCOME_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Document -->
+    <many-to-one
+        name="document"
+        class="au.gov.qld.fire.domain.document.Document"
+        cascade="save-update"
+    >
+        <column name="DOCUMENT_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="fileAction.findByFile">
+        <![CDATA[
+            FROM FileAction WHERE file = :file
+        ]]>
+    </query>
+
+    <sql-query name="fileAction.findFileActionToDoByCriteria">
+        <![CDATA[
+            SELECT
+                FILES.FILE_ID AS fileId,
+                FCA.FCA_NO AS fcaId,
+                FILE_ACTION.DUE_DATE AS nextActionDate,
+                ACTION_CODE.CODE AS nextAction,
+                WORK_GROUP.NAME AS workGroup
+            FROM
+                ACTION_CODE INNER JOIN
+                FILE_ACTION ON ACTION_CODE.ACTION_CODE_ID = FILE_ACTION.ACTION_CODE_ID LEFT OUTER JOIN
+                WORK_GROUP ON ACTION_CODE.WORK_GROUP_ID = WORK_GROUP.WORK_GROUP_ID LEFT OUTER JOIN
+                FILES ON FILE_ACTION.FILE_ID = FILES.FILE_ID LEFT OUTER JOIN
+                FCA ON FILES.FILE_ID = FCA.FILE_ID
+            WHERE (FILES.FILE_STATUS_ID = 1)
+                AND (FILE_ACTION.LOGICALLY_DELETED IS NULL)
+                AND (FILE_ACTION.COMPLETED_DATE IS NULL)
+                AND (:fileNo IS NULL OR FILES.FILE_ID LIKE :fileNo)
+                AND (:fcaNo IS NULL OR FCA.FCA_NO LIKE :fcaNo)
+                AND (:actionCodeId IS NULL OR FILE_ACTION.ACTION_CODE_ID = :actionCodeId)
+                AND (:actionCode IS NULL OR ACTION_CODE.CODE LIKE :actionCode)
+                AND (:workGroupId IS NULL OR ACTION_CODE.WORK_GROUP_ID = :workGroupId)
+                AND (:workGroup IS NULL OR WORK_GROUP.NAME LIKE :workGroup)
+            ORDER BY FILE_ACTION.DUE_DATE, ACTION_CODE.CODE
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

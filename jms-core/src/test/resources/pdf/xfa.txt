@@ -1,0 +1,4 @@
+movie[0].\#subform[0].title[0]=fca/@id
+movie[0].\#subform[0].year[0]=sapHeader/@sapCustNo
+movie[0].\#subform[0].original[0]=building/@name
+movie[0].\#subform[0].duration[0]=bodyCorporate/@legalName

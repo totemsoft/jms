@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+    default-autowire="byName" default-lazy-init="false">
+
+    <!-- ========================= COMMON DEFINITIONS ===================== -->
+    <import resource="classpath:au/gov/qld/fire/spring/spring-inc-service.xml"/>
+
+    <!-- ========================= COMPONENT DEFINITIONS ===================== -->
+    <import resource="classpath:au/gov/qld/fire/jms/spring/spring-inc-component.xml"/>
+
+    <!-- ========================= SERVICE DEFINITIONS ===================== -->
+    <bean id="taskService" class="au.gov.qld.fire.service.impl.TaskServiceImpl">
+        <property name="om89Host"    value="${imap.host}" />
+        <property name="om89Port"    value="${imap.port}" />
+        <property name="om89User"    value="${imap.username}" />
+        <property name="om89Subject" value="${om89Subject}" />
+    </bean>
+
+    <bean id="actionService" class="au.gov.qld.fire.jms.service.impl.ActionServiceImpl" />
+    <bean id="documentService" class="au.gov.qld.fire.jms.service.impl.DocumentServiceImpl">
+        <property name="documentDirectory" value="${jms.document.directory}" />
+    </bean>
+    <bean id="entityService" class="au.gov.qld.fire.jms.service.impl.EntityServiceImpl">
+        <property name="dbVersion" value="${jms.db.version}" />
+    </bean>
+    <bean id="fcaService" class="au.gov.qld.fire.jms.service.impl.FcaServiceImpl" />
+    <bean id="fileService" class="au.gov.qld.fire.jms.service.impl.FileServiceImpl">
+        <property name="fileConverter" ref="jsonMessageConverter" />
+    </bean>
+    <bean id="invoiceService" class="au.gov.qld.fire.jms.service.impl.InvoiceServiceImpl" />
+    <bean id="jobService" class="au.gov.qld.fire.jms.service.impl.JobServiceImpl" />
+    <bean id="helpService" class="au.gov.qld.fire.jms.service.impl.HelpServiceImpl" />
+    <bean id="loaderService" class="au.gov.qld.fire.jms.service.impl.LoaderServiceImpl">
+        <property name="fileConverter" ref="jsonMessageConverter" />
+    </bean>
+
+    <!-- ========================= IMPORTERS ===================== -->
+    <bean id="isolationImporter" class="au.gov.qld.fire.jms.service.impl.IsolationImporterImpl" />
+    <bean id="uaaInvoiceImporter" class="au.gov.qld.fire.jms.service.impl.UaaInvoiceImporterImpl" />
+    <bean id="uaaIncidentImporter" class="au.gov.qld.fire.jms.service.impl.UaaIncidentImporterImpl" />
+    <bean id="om89FormImporter" class="au.gov.qld.fire.jms.service.impl.OM89FormImporterImpl" />
+
+    <!-- ========================= VALIDATORS ===================== -->
+    <bean id="isolationHistoryRequestValidator" class="au.gov.qld.fire.jms.validation.IsolationHistoryRequestValidator" />
+    <bean id="uaaHistoryRequestValidator" class="au.gov.qld.fire.jms.validation.UaaHistoryRequestValidator" />
+
+    <!-- ========================= APOLLOSOFT DEFINITIONS ===================== -->
+    <bean id="exporter" class="au.gov.qld.fire.exporter.impl.ExporterImpl" />
+
+    <!-- ========================= UAA DEFINITIONS ===================== -->
+    <!--bean id="documentService" class="au.gov.qld.fire.jms.uaa.service.impl.DocumentServiceImpl" />
+    <bean id="entityService" class="au.gov.qld.fire.jms.uaa.service.impl.EntityServiceImpl">
+        <property name="dbVersion" value="${uaa.db.version}" />
+    </bean-->
+    <bean id="firuImportService" class="au.gov.qld.fire.jms.uaa.service.impl.FiruImportServiceImpl" />
+    <bean id="injuryService" class="au.gov.qld.fire.jms.uaa.service.impl.InjuryServiceImpl" />
+
+</beans>

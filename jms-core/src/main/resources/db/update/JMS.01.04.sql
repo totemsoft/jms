@@ -1,0 +1,7 @@
+ALTER TABLE SECURITY_GROUP ADD CREATED_BY numeric(11);
+ALTER TABLE SECURITY_GROUP ADD CREATED_DATE datetime NOT NULL DEFAULT getDate();
+
+--
+-- this should be the last statement in any update script
+--
+INSERT INTO DBVERSION (DBVERSION, PREV_DBVERSION) VALUES ('JMS.01.04', 'JMS.01.03');

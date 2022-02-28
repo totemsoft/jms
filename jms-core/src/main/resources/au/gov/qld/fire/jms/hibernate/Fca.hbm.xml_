@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.Fca" 
+    table="FCA"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="string"
+        column="FCA_NO"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="subPanel"
+        type="yes_no"
+        column="SUB_PANEL"
+        not-null="true"
+        length="1"
+    />
+
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to Region -->
+    <many-to-one
+        name="region"
+        class="au.gov.qld.fire.domain.location.Region"
+    >
+        <column name="REGION_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Area -->
+    <many-to-one
+        name="area"
+        class="au.gov.qld.fire.domain.location.Area"
+    >
+        <column name="AREA_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Station -->
+    <many-to-one
+        name="station"
+        class="au.gov.qld.fire.domain.location.Station"
+    >
+        <column name="STATION_CODE" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to FCA -->
+    <many-to-one
+        name="parent"
+        not-null="false"
+        class="au.gov.qld.fire.jms.domain.Fca"
+    >
+        <column name="PARENT_FCA_NO" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to FCA -->
+    <bag
+        name="children"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key column="PARENT_FCA_NO" />
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.Fca"
+        />
+    </bag>
+
+</class>
+
+    <sql-query name="fca.findFcaNo">
+        <![CDATA[
+            SELECT FCA_NO, FILE_ID
+            FROM FCA
+            WHERE (FCA_NO LIKE :fcaNo)
+                AND ((:unassignedFca = 'Y' AND FILE_ID IS NULL) OR (:unassignedFca = 'N' AND FILE_ID IS NOT NULL))
+        ]]>
+    </sql-query>
+
+    <query name="fca.findByCriteriaUnassigned">
+        <![CDATA[
+            FROM Fca
+            WHERE 
+                    (file IS NULL)
+                AND (subPanel = :subPanel)
+                AND (:fcaNo IS NULL OR id LIKE :fcaNo)
+                AND (:region IS NULL OR region = :region)
+        ]]>
+    </query>
+    <query name="fca.findByCriteriaAssigned">
+        <![CDATA[
+            FROM Fca
+            WHERE
+                    (file IS NOT NULL)
+                AND (subPanel = :subPanel)
+                AND (:fcaNo IS NULL OR id LIKE :fcaNo)
+                AND (:region IS NULL OR region = :region)
+                AND (:area IS NULL OR area = :area)
+                AND (:station IS NULL OR station = :station)
+        ]]>
+    </query>
+    <query name="fca.findByFileId">
+        <![CDATA[
+            FROM Fca
+            WHERE (file.id = :fileId)
+        ]]>
+    </query>
+
+</hibernate-mapping>

@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.file.FileDocChkList" 
+    table="FILE_DOC_CHK_LIST"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <composite-id name="id" class="au.gov.qld.fire.jms.domain.file.FileDocChkListPK">
+        <key-property 
+            name="fileId" 
+            column="FILE_ID" 
+            type="java.lang.Long"
+            length="11"
+        />
+        <key-property 
+            name="docChkListId" 
+            column="DOC_CHK_LIST_ID" 
+            type="java.lang.Long"
+            length="11"
+        />
+    </composite-id>    
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="docOnFile"
+        type="yes_no"
+        column="DOC_ON_FILE"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        update="false"
+        insert="false"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    
+    <!-- bi-directional many-to-one association to DocChkList -->
+    <many-to-one
+        name="docChkList"
+        class="au.gov.qld.fire.jms.domain.document.DocChkList"
+        update="false"
+        insert="false"
+    >
+        <column name="DOC_CHK_LIST_ID" />
+    </many-to-one>
+    <!-- end of derived association(s) -->
+  
+</class>
+
+<query name="fileDocChkList.findByFile">
+    <![CDATA[
+        FROM FileDocChkList WHERE file = :file
+    ]]>
+</query>
+
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <task:executor id="jmsExecutor" pool-size="10" />
+    <task:scheduler id="jmsScheduler" pool-size="10" />
+    <task:annotation-driven executor="jmsExecutor" scheduler="jmsScheduler" />
+
+    <task:scheduled-tasks scheduler="jmsScheduler">
+        <!--task:scheduled ref="taskService" method="run" fixed-rate="60000" /-->
+        <task:scheduled ref="taskService" method="run" cron="${jms.cron.taskService-run}" />
+    </task:scheduled-tasks>
+
+</beans>

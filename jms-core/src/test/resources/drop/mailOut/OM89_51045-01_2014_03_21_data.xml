@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form1>
+	<Questions>
+		<ownershipchanged>0</ownershipchanged>
+		<bodycorporate>0</bodycorporate>
+		<propertymanager>0</propertymanager>
+		<commercialtenant>0</commercialtenant>
+	</Questions>
+	<fca />
+	<adAlarmDetails>
+		<fca>51045-01</fca>
+		<customernumber>20007882</customernumber>
+		<lotplannumber />
+		<premisename>Police Headquarters Mt Gravatt</premisename>
+		<changepremisenameto />
+		<streetnumber>2132</streetnumber>
+		<streetname>Logan Road</streetname>
+		<suburb>Upper Mount Gravatt</suburb>
+		<postcode>4122</postcode>
+	</adAlarmDetails>
+	<poPremiseOwnerDetails>
+		<fca>51045-01</fca>
+		<ownername>QUEENSLAND POLICE SERVICE</ownername>
+		<abnacn>294 0922 5509</abnacn>
+		<contactname>OFFICER IN CHARGE - STEPHEN HOLLANDS</contactname>
+		<email>hollands.stephenj@police.qld.gov.au</email>
+		<office>3364 3130 </office>
+		<mobile>0418 797 021</mobile>
+		<fax>3364 3154</fax>
+		<streetname>PO BOX 6464 </streetname>
+		<suburb>UPPER MT GRAVATT</suburb>
+		<state>QLD</state>
+		<postcode>4122</postcode>
+	</poPremiseOwnerDetails>
+	<bcBodyCorporate>
+		<fca>51045-01</fca>
+		<companyname />
+		<abnacn />
+		<ctsnumber />
+		<bodycorpmanagement />
+		<contactname />
+		<email />
+		<office />
+		<mobile />
+		<fax />
+		<streetname />
+		<suburb />
+		<state />
+		<postcode />
+	</bcBodyCorporate>
+	<pmPropertyManager>
+		<fca>51045-01</fca>
+		<companyname />
+		<contactname />
+		<email />
+		<office />
+		<mobile />
+		<fax />
+		<streetname />
+		<suburb />
+		<state />
+		<postcode />
+		<sameassection3details />
+	</pmPropertyManager>
+	<ptTenantDetails>
+		<fca>51045-01</fca>
+		<companyname />
+		<contactname />
+		<email />
+		<office />
+		<mobile />
+		<fax />
+		<streetname />
+		<suburb />
+		<State />
+		<postcode />
+		<owneroccupied />
+	</ptTenantDetails>
+	<ecEmergencyContactInfo>
+		<fca>51045-01</fca>
+		<contact1givenname>STEPHEN </contact1givenname>
+		<contact1lastname>HOLLANDS</contact1lastname>
+		<contact1daytimenumber>3364 3130</contact1daytimenumber>
+		<contact1afterhoursnumber>0418797021</contact1afterhoursnumber>
+		<contact2givenname>DONNA</contact2givenname>
+		<contact2lastname>SMITH</contact2lastname>
+		<contact2daytimenumber>3364 3143</contact2daytimenumber>
+		<contact2afterhoursnumber>3364 3200</contact2afterhoursnumber>
+		<contact3givenname />
+		<contact3lastname />
+		<contact3daytimenumber />
+		<contact3afterhoursnumber />
+	</ecEmergencyContactInfo>
+	<scSecurityContactInfo>
+		<fca>51045-01</fca>
+		<firealarmmaintenancecompanyname />
+		<firealarmmaintenancecompanyphonenumber />
+		<monitoredsecuritycompanyname />
+		<monitoredsecurityphonenumber />
+		<onsitesecutritycompanyname>24 HOUR POLICE STATION
+		</onsitesecutritycompanyname>
+		<onsitesecurityphonenumber>3364 3200</onsitesecurityphonenumber>
+		<onsite24hrs>1</onsite24hrs>
+		<onsiteafterhours>0</onsiteafterhours>
+		<onsiterandompatrols>0</onsiterandompatrols>
+		<othertimes />
+		<guarddogs>0</guarddogs>
+	</scSecurityContactInfo>
+	<fca2>51045-01</fca2>
+	<fecFutureEmergencyContacts>
+		<fca>51045-01</fca>
+		<contactperson>DONNA SMITH</contactperson>
+		<emailpost>9</emailpost>
+		<email>smith.donnac@police.qld.gov.au</email>
+		<relationship>Maintenance Administrator</relationship>
+		<contactnumber>3364 3143</contactnumber>
+		<streetname>PO BOX 6464</streetname>
+		<suburb>UPPER MT GRAVATT</suburb>
+		<State>QLD</State>
+		<postcode>4122</postcode>
+	</fecFutureEmergencyContacts>
+	<aiAdditionalInfo>
+		<fca>51045-01</fca>
+		<confirmformcompleted>1</confirmformcompleted>
+		<contactperson>DONNA SMITH</contactperson>
+		<contactnumber>3364 3143</contactnumber>
+		<contactposition>ADMINISTRATION OFFICER</contactposition>
+		<dateformcompleted>2014-03-21</dateformcompleted>
+	</aiAdditionalInfo>
+	<cfCustomerFeedback>
+		<fca />
+		<feedback />
+	</cfCustomerFeedback>
+	<SubmittingForm xmlns:xfa="http://www.xfa.org/schema/xfa-data/1.0/"
+		xfa:dataNode="dataGroup" />
+	<fca3>51045-01</fca3>
+</form1>

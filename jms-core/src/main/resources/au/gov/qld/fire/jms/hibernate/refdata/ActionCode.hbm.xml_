@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.refdata.ActionCode" 
+    table="ACTION_CODE"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+	<cache usage="read-write" region="refdata" />
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="ACTION_CODE_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="code"
+        type="string"
+        column="CODE"
+        not-null="true"
+        length="20"
+    />
+    <property
+        name="notation"
+        type="string"
+        column="NOTATION"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="active"
+        type="yes_no"
+        column="ACTIVE"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to Template -->
+    <many-to-one
+        name="template"
+        not-null="false"
+    >
+        <column name="TEMPLATE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to ActionType -->
+    <many-to-one
+        name="actionType"
+        class="au.gov.qld.fire.jms.domain.refdata.ActionType"
+        not-null="true"
+    >
+        <column name="ACTION_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to WorkGroup -->
+    <many-to-one
+        name="workGroup"
+        class="au.gov.qld.fire.domain.refdata.WorkGroup"
+        not-null="false"
+    >
+        <column name="WORK_GROUP_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Area -->
+    <many-to-one
+        name="area"
+        class="au.gov.qld.fire.domain.location.Area"
+        not-null="true"
+    >
+        <column name="AREA_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="actionCode.findByCode">
+        <![CDATA[
+            FROM ActionCode WHERE code = :code
+            AND (active = 'Y')
+        ]]>
+    </query>
+    <query name="actionCode.findAllByCriteria">
+        <![CDATA[
+            FROM ActionCode WHERE
+            (:actionTypes IS NULL OR actionType.name = :actionTypes)
+            AND (active = 'Y')
+            ORDER BY actionType.name, code
+        ]]>
+    </query>
+    <query name="actionCode.findAllByActionType">
+        <![CDATA[
+            FROM ActionCode WHERE actionType = :actionType
+            AND (active = 'Y')
+            ORDER BY actionType.name, code
+        ]]>
+    </query>
+
+    <sql-query name="actionCode.findActionCode">
+        <![CDATA[
+            SELECT CODE
+            FROM ACTION_CODE
+            WHERE (CODE LIKE :value)
+            AND (ACTIVE = 'Y')
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

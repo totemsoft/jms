@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.entity.Owner" 
+    table="OWNER"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="OWNER_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="legalName"
+        type="string"
+        column="LEGAL_NAME"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="abn"
+        type="string"
+        column="ABN"
+        not-null="false"
+        length="20"
+    />
+    <property
+        name="reference"
+        type="string"
+        column="REFERENCE"
+        not-null="false"
+        length="20"
+    />
+    <property
+        name="defaultContact"
+        type="yes_no"
+        column="DEFAULT_CONTACT"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="archDate"
+        type="date"
+        column="ARCH_DATE"
+        length="23"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="archBy"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="ARCH_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Owner -->
+    <many-to-one
+        name="nextOwner"
+        class="au.gov.qld.fire.jms.domain.entity.Owner"
+        not-null="false"
+    >
+        <column name="NEXT_OWNER_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Contact -->
+    <many-to-one
+        name="contact"
+        class="au.gov.qld.fire.domain.entity.Contact"
+        not-null="false"
+        cascade="save-update"
+    >
+        <column name="CONTACT_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Address -->
+    <many-to-one
+        name="address"
+        class="au.gov.qld.fire.domain.location.Address"
+        not-null="false"
+        cascade="save-update"
+    >
+        <column name="ADDRESS_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="owner.findByLegalName">
+        <![CDATA[
+            FROM Owner WHERE legalName = :legalName
+        ]]>
+    </query>
+
+    <sql-query name="owner.findLegalName">
+        <![CDATA[
+            SELECT LEGAL_NAME FROM OWNER
+            WHERE (LEGAL_NAME LIKE :value)
+        ]]>
+    </sql-query>
+
+    <sql-query name="owner.findContactSurname">
+        <![CDATA[
+            SELECT CONTACT.SURNAME
+            FROM OWNER INNER JOIN
+                CONTACT ON OWNER.CONTACT_ID = CONTACT.CONTACT_ID
+            WHERE (CONTACT.SURNAME LIKE :value)
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

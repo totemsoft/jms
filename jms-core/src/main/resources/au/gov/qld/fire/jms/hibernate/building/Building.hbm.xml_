@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.building.Building" 
+    table="BUILDING"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="BUILDING_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="name"
+        type="string"
+        column="NAME"
+        not-null="true"
+        length="100"
+    />
+    <property
+        name="description"
+        type="string"
+        column="DESCRIPTION"
+        length="1024"
+    />
+    <property
+        name="usage"
+        type="string"
+        column="USAGE"
+        length="1024"
+    />
+    <property
+        name="keyRequired"
+        type="yes_no"
+        column="KEY_REQUIRED"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="archDate"
+        type="date"
+        column="ARCH_DATE"
+        length="23"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="archBy"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="ARCH_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to BuildingClassification -->
+    <many-to-one
+        name="classification"
+        class="au.gov.qld.fire.jms.domain.refdata.BuildingClassification"
+    >
+        <column name="BUILDING_CLASSIFICATION_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Address -->
+    <many-to-one
+        name="address"
+        class="au.gov.qld.fire.domain.location.Address"
+        cascade="save-update"
+    >
+        <column name="ADDRESS_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Building -->
+    <many-to-one
+        name="nextBuilding"
+        class="au.gov.qld.fire.jms.domain.building.Building"
+    >
+        <column name="NEXT_BUILDING_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="building.findByName">
+        <![CDATA[
+            FROM Building WHERE name = :name
+        ]]>
+    </query>
+
+    <sql-query name="building.findBuildingName">
+        <![CDATA[
+            SELECT NAME FROM BUILDING WHERE NAME LIKE :value
+        ]]>
+    </sql-query>
+
+    <sql-query name="building.findBuildingSuburb">
+        <![CDATA[
+            SELECT SUBURB FROM BUILDING b INNER JOIN ADDRESS a ON b.ADDRESS_ID = a.ADDRESS_ID WHERE SUBURB LIKE :value
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

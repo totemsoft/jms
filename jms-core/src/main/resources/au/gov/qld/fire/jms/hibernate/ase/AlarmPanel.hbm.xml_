@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.ase.AlarmPanel" 
+    table="ALARM_PANEL"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <composite-id name="id" class="au.gov.qld.fire.jms.domain.ase.AlarmPanelPK">
+        <key-property 
+            name="fileId" 
+            column="FILE_ID" 
+            type="java.lang.Long"
+            length="11"
+        />
+        <key-property 
+            name="supplierId" 
+            column="SUPPLIER_ID" 
+            type="java.lang.Long"
+            length="11"
+        />
+    </composite-id>    
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="alrmSystType"
+        type="string"
+        column="ALRM_SYST_TYPE"
+        length="255"
+    />
+    <property
+        name="alrmManuf"
+        type="string"
+        column="ALRM_MANUF"
+        length="255"
+    />
+    <property
+        name="alrmModel"
+        type="string"
+        column="ALRM_MODEL"
+        length="255"
+    />
+    <property
+        name="panelLoc"
+        type="string"
+        column="PANEL_LOC"
+        length="255"
+    />
+    <property
+        name="subPanelQty"
+        type="long"
+        column="SUB_PANEL_QTY"
+        length="11"
+    />
+    <property
+        name="dthermQty"
+        type="long"
+        column="DTHERM_QTY"
+        length="11"
+    />
+    <property
+        name="dsmokeQty"
+        type="long"
+        column="DSMOKE_QTY"
+        length="11"
+    />
+    <property
+        name="dcombustQty"
+        type="long"
+        column="DCOMBUST_QTY"
+        length="11"
+    />
+    <property
+        name="duvQty"
+        type="long"
+        column="DUV_QTY"
+        length="11"
+    />
+    <property
+        name="dinfredQty"
+        type="long"
+        column="DINFRED_QTY"
+        length="11"
+    />
+    <property
+        name="dmulticQty"
+        type="long"
+        column="DMULTIC_QTY"
+        length="11"
+    />
+    <property
+        name="dsprinkQty"
+        type="long"
+        column="DSPRINK_QTY"
+        length="11"
+    />
+    <property
+        name="dairsampQty"
+        type="long"
+        column="DAIRSAMP_QTY"
+        length="11"
+    />
+    <property
+        name="dmancallQty"
+        type="long"
+        column="DMANCALL_QTY"
+        length="11"
+    />
+    <property
+        name="dotherQty"
+        type="long"
+        column="DOTHER_QTY"
+        length="11"
+    />
+    <property
+        name="dotherDefine"
+        type="string"
+        column="DOTHER_DEFINE"
+        length="255"
+    />
+    <property
+        name="sfsDualDetect"
+        type="string"
+        column="SFS_DUAL_DETECT"
+        length="255"
+    />
+    <property
+        name="sfsAircon"
+        type="string"
+        column="SFS_AIRCON"
+        length="255"
+    />
+    <property
+        name="sfsElevator"
+        type="string"
+        column="SFS_ELEVATOR"
+        length="255"
+    />
+    <property
+        name="sfsEvacctrl"
+        type="string"
+        column="SFS_EVACCTRL"
+        length="255"
+    />
+    <property
+        name="sfsFiredoors"
+        type="string"
+        column="SFS_FIREDOORS"
+        length="255"
+    />
+    <property
+        name="sfsBooster"
+        type="string"
+        column="SFS_BOOSTER"
+        length="255"
+    />
+    <property
+        name="sfsDrypipe"
+        type="string"
+        column="SFS_DRYPIPE"
+        length="255"
+    />
+    <property
+        name="sfsOther"
+        type="string"
+        column="SFS_OTHER"
+        length="255"
+    />
+    <property
+        name="mimcLoc"
+        type="string"
+        column="MIMC_LOC"
+        length="255"
+    />
+    <property
+        name="mimicLayout"
+        type="string"
+        column="MIMIC_LAYOUT"
+        length="255"
+    />
+    <property
+        name="areaCircdes"
+        type="string"
+        column="AREA_CIRCDES"
+        length="255"
+    />
+    <property
+        name="mods"
+        type="string"
+        column="MODS"
+        length="255"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        update="false"
+        insert="false"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    
+    <!-- bi-directional many-to-one association to Supplier -->
+    <many-to-one
+        name="supplier"
+        class="au.gov.qld.fire.domain.supplier.Supplier"
+        update="false"
+        insert="false"
+    >
+        <column name="SUPPLIER_ID" />
+    </many-to-one>  
+    <!-- end of derived association(s) -->  
+
+</class>
+
+<query name="alarmPanel.findByFile">
+    <![CDATA[
+        FROM AlarmPanel WHERE file = :file
+    ]]>
+</query>
+
+</hibernate-mapping>

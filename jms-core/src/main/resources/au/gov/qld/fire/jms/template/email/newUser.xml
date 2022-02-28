@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<email>
+    <from>${smtp.from}</from>
+    <subject>New Account</subject>
+    <body>
+<![CDATA[
+<b>Welcome to JMS</b><br/>
+<br/>
+Your username and login details:<br/>
+<br/>
+<b>Username:</b> %[user.login]%<br/>
+<b>Password:</b> %[user.login]%<br/>
+<br/>
+The JMS website is ${context.root}/${jms.context.root}/<br/>
+<br/>
+When you first login into JMS you will be requested to change your password.<br/>
+<br/>
+Kind regards,<br/>
+<br/>
+QFRS<br/>
+<br/>
+EMail: ${smtp.from}<br/>
+Phone: 07 0000 0000<br/>
+<br/>
+85 Hudson Road, Albion QLD 4010<br/>
+]]>
+    </body>
+</email>

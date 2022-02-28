@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.job.Job" 
+    table="JOBS"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="JOB_ID"
+    >
+        <generator class="identity" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="description"
+        type="string"
+        column="DESCRIPTION"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="requestedEmail"
+        type="string"
+        column="REQUESTED_EMAIL"
+        length="255"
+    />
+    <property
+        name="link"
+        type="string"
+        column="LINK"
+        length="255"
+    />
+    <property
+        name="status"
+        type="yes_no"
+        column="STATUS"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="completedDate"
+        type="timestamp"
+        column="COMPLETED_DATE"
+        length="23"
+    />
+    <property
+        name="closeReason"
+        type="string"
+        column="CLOSE_REASON"
+        length="255"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="responsibleUser"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="RESPONSIBLE_USER_ID" />
+    </many-to-one>
+
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="completedBy"
+        class="au.gov.qld.fire.domain.security.User"
+    >
+        <column name="COMPLETED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to File -->
+    <many-to-one
+        name="file"
+        class="au.gov.qld.fire.jms.domain.file.File"
+        not-null="true"
+    >
+        <column name="FILE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Fca -->
+    <many-to-one
+        name="fca"
+        class="au.gov.qld.fire.jms.domain.Fca"
+    >
+        <column name="FCA_NO" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to JobType -->
+    <many-to-one
+        name="jobType"
+        class="au.gov.qld.fire.jms.domain.refdata.JobType"
+        not-null="true"
+    >
+        <column name="JOB_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to JobDoc -->
+    <bag
+        name="jobDocs"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+    >
+        <key>
+            <column name="JOB_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.job.JobDoc"
+        />
+    </bag>
+    <!-- bi-directional one-to-many association to JobAction -->
+    <bag
+        name="jobActions"
+        lazy="true"
+        inverse="true"
+        cascade="none"
+        where="LOGICALLY_DELETED IS NULL"
+    >
+        <key>
+            <column name="JOB_ID" />
+        </key>
+        <one-to-many 
+            class="au.gov.qld.fire.jms.domain.action.JobAction"
+        />
+    </bag>
+    <!-- bi-directional many-to-one association to JobRequest -->
+    <many-to-one
+        name="jobRequest"
+        class="au.gov.qld.fire.jms.domain.job.JobRequest"
+        not-null="true"
+    >
+        <column name="JOB_REQUEST_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="job.findByJobType">
+        <![CDATA[
+            FROM Job WHERE jobType = :jobType
+        ]]>
+    </query>
+
+    <sql-query name="job.findJobNo">
+        <![CDATA[
+            SELECT CAST(JOB_ID AS VARCHAR(11))
+            FROM JOBS
+            WHERE (CAST(JOB_ID AS VARCHAR(11)) LIKE :value)
+            AND (STATUS = 'Y')
+        ]]>
+    </sql-query>
+
+</hibernate-mapping>

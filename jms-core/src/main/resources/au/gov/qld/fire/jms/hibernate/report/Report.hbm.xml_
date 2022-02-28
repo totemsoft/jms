@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+
+<!--
+        AND (:dateStart IS NULL)
+        AND (:dateEnd IS NULL)
+        AND (:workGroupId IS NULL)
+        AND (:supplierId IS NULL)
+-->
+
+<!-- R001 FileASEChange
+List of all files and the ASE Change details:
+File No
+then list Suppliers involved
+ASE Change Supplier
+http://msdn.microsoft.com/en-us/library/aa226054(SQL.80).aspx
+ASE Change Date: 103 = DD/MM/YYYY British/French
+ASE Change Time: 8 = hh:mm:ss
+Sort by FileNo or Date
+N.B. If Report with same name exists will use its SQL instead.
+-->
+    <sql-query name="R001"
+               comment="List of all files and the ASE Change details">
+	    <![CDATA[
+	    SELECT
+	        FILES.FILE_ID AS fileId,
+	        SUPPLIER.NAME AS supplierName,
+	        CONVERT(VARCHAR(10),ASE_CHANGE.DATE_CHANGE,103) AS changeDate,
+	        CONVERT(VARCHAR(8),ASE_CHANGE.DATE_CHANGE,8) AS changeTime
+	    FROM
+	        ASE_CHANGE_SUPPLIER INNER JOIN
+            SUPPLIER ON ASE_CHANGE_SUPPLIER.SUPPLIER_ID = SUPPLIER.SUPPLIER_ID RIGHT OUTER JOIN
+            ASE_CHANGE ON ASE_CHANGE_SUPPLIER.ASE_CHANGE_ID = ASE_CHANGE.ASE_CHANGE_ID RIGHT OUTER JOIN
+            FILES LEFT OUTER JOIN
+            ASE_FILE ON FILES.FILE_ID = ASE_FILE.FILE_ID ON ASE_CHANGE.ASE_FILE_ID = ASE_FILE.ASE_FILE_ID
+	    WHERE (FILES.FILE_STATUS_ID = 1)
+	        AND (ASE_CHANGE.DATE_CHANGE IS NOT NULL)
+	        AND (ASE_CHANGE.DATE_CHANGE >= :dateStart)
+	        AND (ASE_CHANGE.DATE_CHANGE < :dateEnd)
+	        AND (ASE_CHANGE_SUPPLIER.LOGICALLY_DELETED IS NULL)
+	        AND (:supplierId IS NULL OR SUPPLIER.SUPPLIER_ID = :supplierId)
+	    ORDER BY
+	        ASE_CHANGE.DATE_CHANGE, SUPPLIER.NAME
+	    ]]>
+	</sql-query>
+
+</hibernate-mapping>

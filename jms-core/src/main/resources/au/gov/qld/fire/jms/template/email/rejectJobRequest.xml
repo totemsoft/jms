@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<email>
+    <from>${smtp.from}</from>
+    <subject>Job Pending [rejected]</subject>
+    <body>
+<![CDATA[
+Hi,<br/>
+<br/>
+Job Pending No %[jobRequest.jobRequestId]% was rejected at ${context.root}/${jms.context.root}/<br/>
+<br/>
+Here are details:<br/>
+rejected by: %[user.contact.fullName]%<br/>
+reject reason: %[jobRequest.rejectReason]%<br/>
+<br/>
+Kind regards,<br/>
+<br/>
+QFRS<br/>
+<br/>
+EMail: ${smtp.from}<br/>
+Phone: 07 0000 0000<br/>
+<br/>
+85 Hudson Road, Albion QLD 4010<br/>
+]]>
+    </body>
+</email>

@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<class 
+    name="au.gov.qld.fire.jms.domain.ase.AseConn" 
+    table="ASE_CONN"
+    dynamic-update="true" optimistic-lock="version" lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="ASE_FILE_ID"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <version
+        name="lockVersion"
+        type="long"
+        column="LOCK_VERSION"
+    />
+
+    <property
+        name="priRef"
+        type="string"
+        column="PRI_REF"
+        length="100"
+    />
+    <property
+        name="secRef"
+        type="string"
+        column="SEC_REF"
+        length="100"
+    />
+    <property
+        name="createdDate"
+        type="timestamp"
+        column="CREATED_DATE"
+        not-null="true"
+        update="false"
+        length="23"
+    />
+    <property
+        name="updatedDate"
+        type="timestamp"
+        column="UPDATED_DATE"
+        insert="false"
+        length="23"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="createdBy"
+        class="au.gov.qld.fire.domain.security.User"
+        update="false"
+    >
+        <column name="CREATED_BY" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="updatedBy"
+        class="au.gov.qld.fire.domain.security.User"
+        insert="false"
+    >
+        <column name="UPDATED_BY" />
+    </many-to-one>
+
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to AseConnType -->
+    <many-to-one
+        name="aseConnType"
+        class="au.gov.qld.fire.jms.domain.refdata.AseConnType"
+    >
+        <column name="ASE_CONN_TYPE_ID" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to AseFile -->
+    <many-to-one
+        name="aseFile"
+        class="au.gov.qld.fire.jms.domain.ase.AseFile"
+        update="false"
+        insert="false"
+    >
+        <column name="ASE_FILE_ID" />
+    </many-to-one>    
+    <!-- end of derived association(s) -->
+
+    <!-- bi-directional many-to-one association to AseConnType -->
+    <many-to-one
+        name="secAseConnType"
+        class="au.gov.qld.fire.jms.domain.refdata.AseConnType"
+    >
+        <column name="SEC_ASE_CONN_TYPE_ID" />
+    </many-to-one>
+
+</class>
+
+    <query name="aseConn.findByAseConnType">
+        <![CDATA[
+            FROM AseConn WHERE aseConnType = :aseConnType
+        ]]>
+    </query>
+
+</hibernate-mapping>
