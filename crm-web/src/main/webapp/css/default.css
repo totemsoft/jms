@@ -1,0 +1,131 @@
+/*
+html {
+    filter: expression(document.execCommand('BackgroundImageCache', false, true));
+}
+*/
+/*
+margin and padding on body element can introduce errors
+in determining element position and are not recommended;
+we turn them off as a foundation for YUI CSS treatments.
+*/
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.mp-h1 {
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.mp-Panel-center {
+	margin: auto;
+	width:100%;
+}
+
+.height5 {height:5em !important;}
+.height10 {height:10em !important;}
+.height15 {height:15em !important;}
+.height20 {height:20em !important;}
+.height100 {height:100% !important;}
+
+.width1em {width:1em !important;}
+.width2em {width:2em !important;}
+.width3em {width:3em !important;}
+.width4em {width:4em !important;}
+.width5em {width:5em !important;}
+.width8em {width:8em !important;}
+.width10em {width:10em !important;}
+.width12em {width:12em !important;}
+.width15em {width:15em !important;}
+.width20em {width:20em !important;}
+.width20 {width:20% !important;}
+.width25 {width:25% !important;}
+.width30 {width:30% !important;}
+.width33 {width:33% !important;}
+.width40 {width:40% !important;}
+.width50 {width:50% !important;}
+.width100 {width:100% !important;}
+.width-auto {width:auto !important;}
+
+/* Fonts */
+.bold {font-weight:bold !important;}
+.italic {font-style:italic !important;}
+.normal {font-weight:normal !important;}
+
+.larger {font-size:1.2em !important;}
+.large {font-size:1.1em !important;}
+.small {font-size:0.9em !important;}
+.smaller {font-size:0.8em !important;}
+
+.capitalize {text-transform: capitalize;}
+.lowercase {text-transform: lowercase;}
+.uppercase {text-transform: uppercase;}
+
+.wrap {white-space: normal !important;}
+.nowrap {white-space: nowrap !important;}
+.left {text-align: left !important;}
+.center {text-align: center !important;}
+.right {text-align: right !important;}
+
+.valign-top {vertical-align: top !important;}
+.valign-middle {vertical-align: middle !important;}
+.valign-bottom {vertical-align: bottom !important;}
+
+.border {
+    border: thin solid gray;
+}
+
+.error {
+    color: red;
+    font-family: monospace;
+    text-align: left;
+}
+.error-hidden {
+    color: red;
+    font-family: monospace;
+    text-align: left;
+    display: none;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.warning {
+    color: red;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.float-left {
+    float: left;
+}
+.float-right {
+    float: right;
+}
+.clear {clear: both;}
+
+/*
+ * Non Data Table
+ */
+.nonDataTable {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+.nonDataTable table {
+    width: 100%;
+}
+.nonDataTable th {
+    font-weight: bold;
+    padding:0;
+    /*border-bottom: 1px solid #CCCCCC;*/
+}
+.nonDataTable td {
+    padding: 0 5px 2px 0;
+}
+.overflow {
+    overflow:auto
+}

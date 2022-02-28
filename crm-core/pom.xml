@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>au.gov.qld.fire</groupId>
+        <artifactId>qfrs</artifactId>
+        <version>${application.version}</version>
+    </parent>
+    <groupId>au.gov.qld.fire.crm</groupId>
+    <artifactId>crm-core</artifactId>
+    <version>${crm.version}</version>
+    <packaging>jar</packaging>
+    <name>QFRS JMS Core</name>
+    <description>QFRS Job management system.</description>
+    <url>http://myjms.com.au/qfrs/jms</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>au.gov.qld.fire.commons</groupId>
+            <artifactId>commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>au.gov.qld.fire.commons</groupId>
+            <artifactId>commons-core</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.jtds</groupId>
+            <artifactId>jtds</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm-tomcat55-lifecycle</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

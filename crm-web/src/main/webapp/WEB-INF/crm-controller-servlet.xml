@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+    default-autowire="byName" default-lazy-init="true">
+
+    <context:annotation-config />
+
+    <!-- The controllers are auto-detected POJOs label with the @Controller annotation. -->
+    <context:component-scan base-package="com.argus.financials.myplanner.gwt" />
+
+    <!--
+        The form-based controllers within this application provide @RequestMapping annotations
+        at the type level for path mapping URLs and @RequestMapping at the method level
+        for request type mappings (e.g., GET and POST). 
+        In contrast, XxxController - which is not form-based - provides @RequestMapping
+        only at the method level for path mapping URLs.
+        DefaultAnnotationHandlerMapping is driven by these annotations and is enabled by default with Java 5+.
+    -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <!--property name="interceptors">
+            <list>
+                <ref bean="contextPathInterceptor" />
+            </list>
+        </property-->
+    </bean>
+
+    <!-- 
+        Enables annotated POJO @Controllers
+        This bean processes annotated handler methods, applying application
+        specific PropertyEditors for request parameter binding.
+        It overrides the default AnnotationMethodHandlerAdapter.
+    -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+
+    <!-- Enables plain Controllers -->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="order" value="0" />
+        <property name="mappings">
+            <value>/com.argus.financials.myplanner.gwt.security.Login/SecurityService=securityController</value>
+        </property>
+    </bean>
+
+</beans>

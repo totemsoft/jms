@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>JMS CRM Web</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:applicationContext.xml
+        </param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>com.argus.financials.myplanner.web.servlet.SetupContextListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>Login.html</welcome-file>
+    </welcome-file-list>
+
+    <resource-env-ref>
+        <description>CRM DataSource (java:comp/env)</description>
+        <resource-env-ref-name>jdbc/DataSource_crm</resource-env-ref-name>
+        <resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
+    </resource-env-ref>
+
+    <!--
+      - Servlet that dispatches request to registered handlers (Controller implementations).
+      - Has its own application context, by default defined in "/WEB-INF/{servlet-name}-servlet.xml",
+      - A web app can contain any number of such servlets.
+      - Note that this web app has a shared root application context, serving as parent
+      - of all DispatcherServlet contexts.
+      -->
+    <servlet>
+        <servlet-name>crm-controller</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>crm-controller</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SecurityController</servlet-name>
+        <servlet-class>com.argus.financials.myplanner.gwt.security.server.SecurityController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SecurityController</servlet-name>
+        <url-pattern>/com.argus.financials.myplanner.gwt.security.Login/SecurityService</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>MainService</servlet-name>
+        <servlet-class>com.argus.financials.myplanner.gwt.main.server.MainServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainService</servlet-name>
+        <url-pattern>/com.argus.financials.myplanner.gwt.main.Main/MainService</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RefDataService</servlet-name>
+        <servlet-class>com.argus.financials.myplanner.gwt.main.server.RefDataServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RefDataService</servlet-name>
+        <url-pattern>/com.argus.financials.myplanner.gwt.main.Main/RefDataService</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>gwtRequestFactoryServlet</servlet-name>
+        <servlet-class>com.google.gwt.requestfactory.server.RequestFactoryServlet</servlet-class>
+        <init-param>
+            <param-name>symbolMapsDirectory</param-name>
+            <param-value>WEB-INF/classes/symbolMaps/</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>gwtRequestFactoryServlet</servlet-name>
+        <url-pattern>/gwtRequest</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>transactionFilter</filter-name>
+        <filter-class>com.argus.financials.myplanner.web.servlet.TransactionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+      <filter-name>transactionFilter</filter-name>
+      <url-pattern>/gwtRequest</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>gwtRequestFilter</filter-name>
+        <filter-class>com.argus.financials.myplanner.gwt.commons.server.ClientController</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>gwtRequestFilter</filter-name>
+        <url-pattern>/gwtRequest</url-pattern>
+    </filter-mapping>
+
+</web-app>
